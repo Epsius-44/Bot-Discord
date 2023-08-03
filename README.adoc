@@ -1,0 +1,13 @@
+= Luzilab/Epsiyx : Bot Discord
+// Settings
+ifdef::env-gitlab[:outfilesuffix: .adoc]
+// Project URLs
+:url-project: https://antora.org
+:url-docs: https://luzilab.gitlab.io/epsinyx/documentation
+:url-org: https://gitlab.com/luzilab
+:url-group: {url-org}/epsinyx
+:url-repo: {url-group}/bot-discord
+:url-ui-repo: {url-org}/ui-documentation
+:url-issues: {url-repo}/issues
+
+{url-repo}[Bot Discord] développé en TypeScript pour serveur Discord des B3 de l'EPSI WIS Nantes de la promo 2023-2024.
