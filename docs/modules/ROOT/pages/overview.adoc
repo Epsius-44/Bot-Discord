@@ -1,0 +1,8 @@
+= Le Bot fa:discord[set="fab"] Discord
+:description: Présentation du projet de bot discord en typescript pour le serveur.
+:sectanchors:
+:keywords: documentation, epsinyx, luzilab, projet, bot discord, discord, typescript
+
+https://gitlab.com/Luzilab/epsinyx/bot-discord[Bot Discord] développé en TypeScript pour serveur Discord des B3 de l'EPSI WIS Nantes de la promo 2023-2024.
+
+

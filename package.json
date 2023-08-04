@@ -1,0 +1,42 @@
+{
+  "name": "@luzilab.epsinyx/bot-discord",
+  "version": "0.1.0",
+  "description": "Bot Discord développé en TypeScript pour serveur Discord des B3 de l'EPSI WIS Nantes de la promo 2023-2024.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/Luzilab/epsinyx/bot-discord.git"
+  },
+  "keywords": [
+    "discord",
+    "discord",
+    "bot",
+    "discord.js",
+    "typescript",
+    "asciidoc",
+    "antora"
+  ],
+  "author": "Luzilab/Epsinyx",
+  "contributors": [
+    {
+      "name": "Louis Ducruet",
+      "email": "lducruet74@gmail.com"
+    }
+  ],
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://gitlab.com/Luzilab/epsinyx/bot-discord/issues"
+  },
+  "homepage": "https://gitlab.com/Luzilab/epsinyx/bot-discord#readme",
+  "devDependencies": {
+    "@types/node": "^20.4.7",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "discord.js": "^14.12.1",
+    "dotenv": "^16.3.1"
+  }
+}

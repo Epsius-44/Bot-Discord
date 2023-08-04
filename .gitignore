@@ -1,0 +1,12 @@
+# IDE
+/.vscode/
+/.idea/
+
+# Dependance
+/node_modules/
+
+# Build
+/dist/
+
+# Env
+.env.local
