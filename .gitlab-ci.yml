@@ -1,6 +1,6 @@
 image: node:18.17.0-stretch
 docs-update:
-  stage: .post
+  stage: deploy
   rules:
     - changes:
           - docs/**/*
