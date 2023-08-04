@@ -1,0 +1,13 @@
+image: node:18.17.0-stretch
+docs-update:
+  stage: docs
+  rules:
+    - changes:
+          - docs/**/*
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+  script:
+    - curl -X POST \
+      --fail \
+      -F token=$DOCS_CI_UPDATE \
+      -F ref=main \
+      https://gitlab.com/api/v4/projects/46789296/trigger/pipeline
