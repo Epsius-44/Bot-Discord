@@ -1,0 +1,33 @@
+= (/) Ping
+:description: Page de présentation de la slash commande ping
+:sectanchors:
+:keywords: documentation, epsinyx, luzilab, slash command, ping
+
+WARNING: La commande ping est une slash commande *Temporaire*.
+
+[.float-group]
+--
+.Propriété générique
+[width=50%,cols="1,3",stripes=even,float=right,role=float-gap]
+|===
+|Clé |Valeur
+
+|*Nom* |ping
+|*Description* |Test d'intéraction avec le bot
+|*Catégorie* | Test
+|*Accès* |Admin
+|*Paramètres* |Aucun
+|*Return* |Message public
+|===
+
+Elle permet de vérifier que :
+
+* Le bot est en ligne
+* Le bot enregistre bien la commande
+* Le bot reçoit bien l'interaction
+* Le bot répond à l'interaction
+
+Il est attendu que le bot au bout d'1 ou 2 seconde.s réponde à l'interaction par un message visible de tous :
+
+image::commands/ping-exemple.png[]
+--
