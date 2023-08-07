@@ -47,7 +47,15 @@ const command: SlashCommand = {
     execute: async (interaction) => {
 
         const userTimeout = interaction.options.getUser('utilisateur');
-        const memberTimeout = await interaction.guild?.members.fetch(userTimeout);
+        const memberTimeout = await interaction.guild?.members.fetch(userTimeout).then(
+            member => {
+                return member;
+            }
+        ).catch(
+            err => {
+                return null;
+            }
+        );
         const reasonTimeout = interaction.options.get('raison').value;
         const durationTimeout = interaction.options.get('durée').value;
         const unitTimeout = interaction.options.get('unité').value.toString();
