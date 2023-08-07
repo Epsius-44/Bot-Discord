@@ -3,3 +3,20 @@
 :sectanchors:
 :keywords: documentation, epsinyx, luzilab, gestionnaire, évènements, events
 
+Le gestionnaire d'évènement est appellé lors du lancement du bot en même temps que les autres gestionnaires.
+
+NOTE: Il charge automatiquement tout évènement présent dans le dossier menu:src[events]
+
+Avant de charger l'évènement il vérifie si ce dernier est un fichier `.js`
+
+WARNING: Le nom des évènements n'est pas libre et doit faire partie de la liste des évènements Discord
+
+Il s'occupe ensuite de déclarer à Discord qu'il prend en charge l'évènement.
+
+[TIP]
+--
+Il existe deux types d'évènement :
+
+* Once : évènement appelé qu'une fois par éxécution
+* On : évènement appelé plusieurs fois par éxécution
+--
