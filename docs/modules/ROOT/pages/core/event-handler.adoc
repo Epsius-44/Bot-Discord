@@ -1,0 +1,5 @@
+= (⚙️) Gestionnaire d'évènement
+:description: Page de présentation du gestionnaire d'évènement
+:sectanchors:
+:keywords: documentation, epsinyx, luzilab, gestionnaire, évènements, events
+
