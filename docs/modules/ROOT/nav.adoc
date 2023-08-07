@@ -1,1 +1,4 @@
 * xref:overview.adoc[]
+* Participer au projet
+** xref:getting-started.adoc[]
+** xref:contributing.adoc[]

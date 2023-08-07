@@ -1,0 +1,50 @@
+= Lancer le projet
+:description: Comment bien configurer et lancer le projet en local.
+:sectanchors:
+:keywords: documentation, epsinyx, luzilab, configurer, bot discord, projet, local
+
+== Les prérequis
+
+Etape 1:: La première étape consiste à être membre du serveur discord de test :
+image:https://img.shields.io/discord/1137697628990222448?style=for-the-badge&logo=discord&logoColor=%239999FF&label=Membre%20du%20serveur[Discord, link=https://discord.gg/GaUe3Hkay5]
++
+TIP: Le badge est un lien d'invitation sur ce serveur !
+
+Etape 2:: Créer une application Discord :
+* Se rendre sur le site fa:discord[set=fab] https://discord.com/developers/applications[Discord Développeur]
+* Créer une application en suivant la convention de nommage : `${Votre prénom} Epsinyx`
++
+NOTE: Garder de côter le token du bot et l'application id
+* Dans la section *Bot*, activer le `MESSAGE CONTENT INTENT` pour que le bot puisse lire les messages sur les serveurs
+Etape 3:: Inviter le bot Discord sur le serveur *Beta B3*
+* Se rendre dans menu:OAuth2[URL Générator]
+* Cocher les cases comme ci-dessous :
+image:app-permission.png[]
+image:bot-permission.png[]
+* Inviter le bot via l'URL généré
+
+== Du téléchargement au lancement
+
+Etape 1:: Clonner le projet
+[,shell]
+----
+git clone https://gitlab.com/Luzilab/epsinyx/bot-discord.git
+----
+
+Etape 2:: Installer les dépendances
+[,shell]
+----
+npm install
+----
+
+Etape 3:: Configurer les variables d'environnement
+* Copier le fichier `.env` dans un fichier `.env.local`
+* Compléter les variables avec les infos précédemment récupérées
+
+NOTE: La variable `LOGTAIL_TOKEN` reste vide car elle permet de récupérer et analyser les logs pour les bots dans un serveur
+
+Etape 4:: Compiler et lancer le projet
+[,shell]
+----
+npx tsc && npm run start
+----

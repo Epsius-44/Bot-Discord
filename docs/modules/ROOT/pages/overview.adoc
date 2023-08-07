@@ -4,3 +4,28 @@
 :keywords: documentation, epsinyx, luzilab, projet, bot discord, discord, typescript
 
 https://gitlab.com/Luzilab/epsinyx/bot-discord[Bot Discord] développé en TypeScript pour serveur Discord des B3 de l'EPSI WIS Nantes de la promo 2023-2024.
+
+== Les technologies utilisées
+
+[.text-center]
+--
+image:https://img.shields.io/badge/Node.JS-18.17.0-green?style=for-the-badge&logo=nodedotjs&logoColor=green&color=%23339933[Version de Node.JS]
+image:https://img.shields.io/badge/TypeScript-5.1.6-blue?style=for-the-badge&logo=typescript&logoColor=%2365ADF1&color=%233178C6[Static Badge]
+image:https://img.shields.io/badge/%40types%2Fnode-20.4.7-blue?style=for-the-badge&logo=tsnode&logoColor=%2365ADF1&color=%233178C6[Static Badge]
+
+image:https://img.shields.io/badge/dotenv-16.3.1-yellow?style=for-the-badge&logo=dotenv&logoColor=%23ECD53F&color=%23ECD53F[Static Badge]
+image:https://img.shields.io/badge/%40logtail%2Fnode-0.4.5-red?style=for-the-badge&logo=graylog&logoColor=%23FF3633&color=%23FF3633[Static Badge]
+image:https://img.shields.io/badge/discord.js-14.12.1-red?style=for-the-badge&logo=discord&logoColor=%239999FF&color=%235865F2[Static Badge]
+--
+
+== Licence
+
+Ce projet est sous license image:https://img.shields.io/badge/License-MPL--2.0-black?style=for-the-badge&logo=mozilla&logoColor=white[Static Badge, link={url-repo}/-/blob/main/LICENSE].
+
+== Lancer le projet
+
+Pour plus d'information sur comment initialiser le projet en local, une page est disponible : xref:getting-started.adoc[].
+
+== Contribuer
+
+Pour plus d'information sur comment contribuer au projet, une page est disponible : xref:contributing.adoc[].
