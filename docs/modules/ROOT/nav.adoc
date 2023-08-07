@@ -2,7 +2,3 @@
 * Participer au projet
 ** xref:getting-started.adoc[]
 ** xref:contributing.adoc[]
-* Fonctionnement du core
-
-* Les commandes
-** xref:commands/ping.adoc[]
