@@ -1,0 +1,33 @@
+= (🧩) Logger
+:description: Page de présentation de la classe Logger
+:sectanchors:
+:keywords: documentation, epsinyx, luzilab, class, Logger
+
+La classe Logger est utilisée dans l'ensemble du projet pour réaliser les logs.
+
+En fonction de l'environnement, les logs sont :
+
+* Soit envoyés dans la console
+* Soit envoyés à un serveur de log
+
+NOTE: Le serveur de log est destiné pour les versions en production pour avoir une remontée des erreurs automatiquement.
+
+Pour cela, lors de la création de l'objet, un token est passé dans le constructeur.
+
+S'il est `null`, les logs seront dans la console, sinon les logs seront envoyés sur le serveur en utilisant le token.
+
+Ainsi, il n'est pas nécessaire de réimplémenter la logique dans le reste du programme et une simple variable d'environnement permet de choisir.
+
+== Usage des niveaux de log
+
+.Correspondance des niveaux de log
+[cols="1,3",stripes=even]
+|===
+|Niveau |Usage
+
+|*log* |Conserver un historique des commandes
+|*info* |Les évènements et chargement d'évènements
+|*warn* |Les erreurs ayant un impact sur l'interaction en cours
+|*error* |Les erreurs ayant un impact général
+|*debug* |Les commandes chargées
+|===
