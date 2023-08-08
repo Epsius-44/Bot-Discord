@@ -14,7 +14,7 @@ const command: SlashCommand = {
             .setName('raison')
             .setDescription("Raison du unmute"))
         // l'utilisateur doit avoir la permission de mute les membres pour utiliser cette commande
-        .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         // la commande ne peut pas être utilisée en DM
         .setDMPermission(false),
     execute: async (interaction) => {
@@ -34,7 +34,7 @@ const command: SlashCommand = {
 
         // vérifié que l'utilisateur a la permission de mute
         //TODO: Corriger la vérification de la permission (la fonction has() ne semble pas prendre le bon type en entrée)
-        if (!commandUser.permissions.has(PermissionsBitField.Flags.MuteMembers)) {
+        if (!commandUser.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
             await interaction.reply(
                 {
                     content: `Vous n'avez pas la permission de unmute`,
@@ -70,14 +70,21 @@ const command: SlashCommand = {
         await memberTimeout.timeout(null, String(reasonTimeout))
             .then(async () => {
                 const reason = reasonTimeout ? ` pour la raison suivante : ***${reasonTimeout}***.` : ".";
+                let messageDM = "L'utilisateur a été notifié de la fin de sa sentence.";
+                // envoie un message à l'utilisateur unmute
+                await userTimeout.send(`Vous pouvez de nouveau interagir sur le serveur **${interaction.guild?.name}**${reason}`).catch(
+                    async err => {
+                        messageDM = "L'utilisateur n'a pas pu être notifié de la fin de sa sentence car il a bloqué les messages privés.";
+                    }
+                )
+                // renvoie un message à l'utilisateur qui a utilisé la commande
                 await interaction.reply(
                     {
-                        content: `Vous avez unmute **${userTimeout}**${reason}`,
+                        content: `Vous avez unmute **${userTimeout}**${reason}
+${messageDM}`,
                         ephemeral: true
                     }
                 );
-                // envoie un message à l'utilisateur unmute
-                await userTimeout.send(`Vous pouvez de nouveau interagir sur le serveur **${interaction.guild?.name}**${reason}`);
                 // envoie un message dans le channel de log (id stocké dans .env)
                 const channel = interaction.client.channels.cache.get(process.env.CHANNEL_LOG_ID!);
                 if (!channel) return;
