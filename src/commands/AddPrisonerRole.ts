@@ -1,5 +1,13 @@
 import {SlashCommand} from "../types";
 import {SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField, TextChannel} from "discord.js";
+import {
+    checkMemberHasRole,
+    checkMemberOnServer,
+    checkPermission,
+    checkRoleExist, discordReply,
+    getCommandMemberAsGuildMember,
+    getMemberFromUser, sendDM
+} from "../modules/discordFunction";
 
 const command: SlashCommand = {
     name: "prisonnier",
@@ -22,93 +30,32 @@ const command: SlashCommand = {
 
         const userPrisoner = interaction.options.getUser('utilisateur');
         const reason = interaction.options.get('raison') ? interaction.options.get('raison').value : "";
-        const commandUser = interaction.member;
+        const commandUser = getCommandMemberAsGuildMember(interaction)
         const prisonerRole = interaction.guild?.roles.cache.find(role => role.id === process.env.PRISONER_ROLE_ID);
-        if (!prisonerRole) {
-            await interaction.reply(
-                {
-                    content: `Le rôle pour les prisonniers n'a pas été trouvé`,
-                    ephemeral: true
-                }
-            );
-            return;
-        }
-        const memberPrisoner = await interaction.guild?.members.fetch(userPrisoner).then(
-            member => {
-                return member;
-            }
-        ).catch(
-            err => {
-                return null;
-            }
-        )
+        if (!await checkRoleExist(interaction, prisonerRole, "Le rôle pour les prisonniers n'a pas été trouvé")) return;
+        const memberPrisoner = await getMemberFromUser(interaction, userPrisoner)
 
         // vérifié que l'utilisateur a la permission de mute
-        //TODO: Corriger la vérification de la permission (la fonction has() ne semble pas prendre le bon type en entrée)
-        if (!commandUser.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
-            await interaction.reply(
-                {
-                    content: `Vous n'avez pas la permission de mettre en prison`,
-                    ephemeral: true
-                }
-            );
-            return;
-        }
+        if (!await checkPermission(interaction, commandUser, PermissionsBitField.Flags.ModerateMembers, `Vous n'avez pas la permission de mettre en prison`)) return;
 
-        // vérifié que l'utilisateur ciblé est sur le serveur
-        if (!memberPrisoner) {
-            await interaction.reply(
-                {
-                    content: `L'utilisateur n'est pas sur le serveur`,
-                    ephemeral: true
-                }
-            );
-            return;
-        }
+        if (!await checkMemberOnServer(interaction, memberPrisoner)) return;
 
         // vérifié que l'utilisateur ciblé n'a pas déjà le rôle prisonnier
-        if (memberPrisoner.roles.cache.has(prisonerRole?.id)) {
-            await interaction.reply(
-                {
-                    content: `L'utilisateur est déjà en prison`,
-                    ephemeral: true
-                }
-            );
-            return;
-        }
+        if (!await checkMemberHasRole(interaction, memberPrisoner, prisonerRole, `L'utilisateur est déjà en prison`, true)) return;
 
         await memberPrisoner.roles.add(prisonerRole)
-            .then(async () => {
-                let messageDM = "L'utilisateur a été notifié de sa sentence.";
-                // envoie un message à l'utilisateur unmute
-                await userPrisoner.send(`Vous avez été mis en prison sur le serveur **${interaction.guild?.name}** pour la raison suivante: ***${reason}***.
-Vos interactions avec le serveur ont été restrainte`).catch(
-                    async err => {
-                        messageDM = "L'utilisateur n'a pas pu être notifié de sa sentence car il a bloqué les messages privés.";
-                    }
-                )
-                // renvoie un message à l'utilisateur qui a utilisé la commande
-                await interaction.reply(
-                    {
-                        content: `Vous avez attribué le rôle ${prisonerRole} à **${userPrisoner}** pour la raison suivante: ***${reason}***
-${messageDM}`,
-                        ephemeral: true
-                    }
-                );
-                // envoie un message dans le channel de log (id stocké dans .env)
-                const channel = interaction.client.channels.cache.get(process.env.CHANNEL_LOG_ID!);
-                if (!channel) return;
-                await (channel as TextChannel).send(`**${commandUser}** a mis **${userPrisoner}** en prison.
-Raison: ***${reason}***`)
-            })
-            .catch(async err => {
-                await interaction.reply(
-                    {
-                        content: `L'utilisateur ${userPrisoner} n'a pas pu être mis en prison. L'erreur suivante est survenue : ${err}.`,
-                        ephemeral: true
-                    }
-                );
-            });
+        // .catch(async err => {
+        //     await discordReply(interaction, `L'utilisateur ${userPrisoner} n'a pas pu être mis en prison. L'erreur suivante est survenue : ${err}.`, true)
+        // });
+        // envoie un message à l'utilisateur unmute
+        const messageDM = await sendDM(userPrisoner, `Vous avez été mis en prison sur le serveur **${interaction.guild?.name}** pour la raison suivante: ***${reason}***.\nVos interactions avec le serveur **${interaction.guild?.name}** ont été restrainte.`)
+            ? `L'utilisateur a été notifié de sa sentence.` : `L'utilisateur n'a pas pu être notifié de sa sentence car il a bloqué les messages privés.`;
+        // renvoie un message à l'utilisateur qui a utilisé la commande
+        await discordReply(interaction, `Vous avez attribué le rôle ${prisonerRole} à **${userPrisoner}** pour la raison suivante: ***${reason}***\n${messageDM}`)
+        // envoie un message dans le channel de log (id stocké dans .env)
+        const channel = interaction.client.channels.cache.get(process.env.CHANNEL_LOG_ID!);
+        if (!channel) return;
+        await (channel as TextChannel).send(`**${commandUser}** a mis **${userPrisoner}** en prison.\nRaison: ***${reason}***`)
     }
 }
 

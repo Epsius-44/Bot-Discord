@@ -6,7 +6,7 @@ import {
     checkPermission,
     getCommandMemberAsGuildMember,
     checkMemberOnServer,
-    checkMemberKickable
+    checkMemberKickable, sendDM
 } from "../modules/discordFunction";
 
 const timeOptions: { [key: string]: { seconds: number, name: string } } = {
@@ -78,19 +78,14 @@ const command: SlashCommand = {
         const timestampTimeout = Math.round(Date.now() / 1000) + durationTimeoutSeconds;
         // mute l'utilisateur
         await memberTimeout.timeout(1000 * timeOptions[unitTimeout].seconds * Number(durationTimeout), String(reasonTimeout))
-            .catch(async err => {
-                await discordReply(interaction, `L'utilisateur ${userTimeout} n'a pas pu être mute. L'erreur suivante est survenue : ${err}.`);
-                return;
-            });
+            // .catch(async err => {
+            //     await discordReply(interaction, `L'utilisateur ${userTimeout} n'a pas pu être mute. L'erreur suivante est survenue : ${err}.`);
+            //     return;
+            // });
 
         // envoie un message à l'utilisateur muté
-        let messageDM = "L'utilisateur a été notifié du mute.";
-
-        await userTimeout.send(`Vous avez été mute pendant **${durationTimeout} ${timeOptions[unitTimeout].name}** sur le serveur **${interaction.guild?.name}** pour la raison suivante : ***${reasonTimeout}***
-Fin du mute: **<t:${timestampTimeout}:R>**`)
-            .catch(async () => {
-                messageDM = "L'utilisateur n'a pas pu être notifié du mute car il a bloqué les messages privés."
-            });
+        const messageDM = await sendDM(userTimeout, `Vous avez été mute pendant **${durationTimeout} ${timeOptions[unitTimeout].name}** sur le serveur **${interaction.guild?.name}** pour la raison suivante : ***${reasonTimeout}***\nFin du mute: **<t:${timestampTimeout}:R>**`)
+        ? "L'utilisateur a été notifié du mute." : "L'utilisateur n'a pas pu être notifié du mute car il a bloqué les messages privés.";
 
         await discordReply(interaction, `L'utilisateur ${userTimeout} a été mute pendant ${durationTimeout} ${timeOptions[unitTimeout].name} pour la raison suivante : ***${reasonTimeout}***.
 Fin du mute: **<t:${timestampTimeout}:R>**

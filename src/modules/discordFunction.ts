@@ -1,7 +1,7 @@
 import {
     PermissionFlagsBits,
     GuildMember,
-    CommandInteraction, CacheType, User
+    CommandInteraction, CacheType, User, Role
 } from "discord.js";
 
 export async function discordReply(interaction: CommandInteraction<CacheType>, message: string, ephemeral: boolean = true) {
@@ -66,4 +66,31 @@ export async function checkMemberKickable(interaction: CommandInteraction<CacheT
 export async function checkMemberIsTimeout(interaction: CommandInteraction<CacheType>, member: GuildMember, message_false: string = `Cet utilisateur n'est pas mute`): Promise<boolean> {
     // vérifié que l'utilisateur est mute et répondre à l'interaction si ce n'est pas le cas
     return await replyIfFalse(interaction, member.communicationDisabledUntil !== null, message_false);
+}
+
+export async function checkRoleExist(interaction: CommandInteraction<CacheType>, role: Role, message_false: string = "Le rôle n'existe pas"): Promise<boolean>{
+    // vérifié que le rôle existe et répondre à l'interaction si ce n'est pas le cas
+    return await replyIfFalse(interaction, role !== undefined, message_false);
+}
+
+export async function checkMemberHasRole(interaction: CommandInteraction<CacheType>, member: GuildMember, role: Role, message_false: string = "L'utilisateur n'a pas le rôle", inversed: boolean = false): Promise<boolean>{
+    // vérifié que l'utilisateur a le rôle et répondre à l'interaction si ce n'est pas le cas (inversed = true pour vérifier que l'utilisateur n'a pas le rôle)
+    if (inversed) {
+        return await replyIfFalse(interaction, !member.roles.cache.has(role.id), message_false);
+    } else {
+        return await replyIfFalse(interaction, member.roles.cache.has(role.id), message_false);
+    }
+}
+
+export async function sendDM(user: GuildMember | User, message: string): Promise<boolean> {
+    // envoyer un message privé à l'utilisateur
+    return await user.send(message).then(
+        () => {
+            return true;
+        }
+    ).catch(
+        () => {
+            return false;
+        }
+    );
 }
