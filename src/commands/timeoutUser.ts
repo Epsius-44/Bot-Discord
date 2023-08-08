@@ -1,7 +1,7 @@
 import {SlashCommand} from "../types";
 import {SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField, TextChannel} from "discord.js";
 
-const timeOptions : { [key: string]: {seconds: number, name: string} } = {
+const timeOptions: { [key: string]: { seconds: number, name: string } } = {
     s: {seconds: 1, name: "secondes"},
     m: {seconds: 60, name: "minutes"},
     h: {seconds: 60 * 60, name: "heures"},
@@ -41,7 +41,7 @@ const command: SlashCommand = {
             )
         )
         // l'utilisateur doit avoir la permission de mute les membres pour utiliser cette commande
-        .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         // la commande ne peut pas être utilisée en DM
         .setDMPermission(false),
     execute: async (interaction) => {
@@ -65,10 +65,12 @@ const command: SlashCommand = {
 
         // vérifié que l'utilisateur a la permission de mute
         //TODO: Corriger la vérification de la permission (la fonction has() ne semble pas prendre le bon type en entrée)
-        if (!commandUser.permissions.has(PermissionsBitField.Flags.MuteMembers)) {
+        if (!commandUser.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
             await interaction.reply(
-                { content:`Vous n'avez pas la permission de mute`,
-                    ephemeral: true }
+                {
+                    content: `Vous n'avez pas la permission de mute`,
+                    ephemeral: true
+                }
             );
             return;
         }
@@ -76,8 +78,10 @@ const command: SlashCommand = {
         // vérifié que l'utilisateur ciblé est sur le serveur
         if (!memberTimeout) {
             await interaction.reply(
-                { content:`L'utilisateur n'est pas sur le serveur`,
-                    ephemeral: true }
+                {
+                    content: `L'utilisateur n'est pas sur le serveur`,
+                    ephemeral: true
+                }
             );
             return;
         }
@@ -85,8 +89,10 @@ const command: SlashCommand = {
         // vérifié que l'utilisateur ciblé est muteable
         if (!memberTimeout.kickable) {
             await interaction.reply(
-                { content:`L'utilisateur n'est pas muteable`,
-                    ephemeral: true }
+                {
+                    content: `L'utilisateur n'est pas muteable`,
+                    ephemeral: true
+                }
             );
             return;
         }
@@ -94,8 +100,10 @@ const command: SlashCommand = {
         //vérifié que la durée du mute est égal ou inférieur à la durée maximum
         if (durationTimeoutSeconds > timeoutMax * 60 * 60 * 24) {
             await interaction.reply(
-                { content:`La durée maximum est de ${timeoutMax} secondes`,
-                    ephemeral: true }
+                {
+                    content: `La durée maximum est de ${timeoutMax} secondes`,
+                    ephemeral: true
+                }
             );
             return;
         }
@@ -103,8 +111,10 @@ const command: SlashCommand = {
         //vérifié que la durée du mute est supérieur à 0
         if (durationTimeoutSeconds <= 0) {
             await interaction.reply(
-                { content:`La durée doit être supérieur à 0`,
-                    ephemeral: true }
+                {
+                    content: `La durée doit être supérieur à 0`,
+                    ephemeral: true
+                }
             );
             return;
         }
@@ -114,27 +124,36 @@ const command: SlashCommand = {
         // mute l'utilisateur
         await memberTimeout.timeout(1000 * timeOptions[unitTimeout].seconds * Number(durationTimeout), String(reasonTimeout))
             .then(async () => {
-        await interaction.reply(
-            { content:`Vous avez muté **${userTimeout}** pendant **${durationTimeout} ${timeOptions[unitTimeout].name}** pour la raison suivante : ***${reasonTimeout}***.
-Fin du mute: **<t:${timestampTimeout}:R>**`,
-                ephemeral: true }
-        );
-        // envoie un message à l'utilisateur muté
-        await userTimeout.send(`Vous avez été mute pendant **${durationTimeout} ${timeOptions[unitTimeout].name}** sur le serveur **${interaction.guild?.name}** pour la raison suivante : ***${reasonTimeout}***
-Fin du mute: **<t:${timestampTimeout}:R>**`);
-        // envoie un message dans le channel de log (id stocké dans .env)
-            const channel = interaction.client.channels.cache.get(process.env.CHANNEL_LOG_ID!);
-            if (!channel) return;
-            await (channel as TextChannel).send(`**${commandUser}** a mute **${userTimeout}** pendant **${durationTimeout} ${timeOptions[unitTimeout].name}**.
+                // envoie un message à l'utilisateur muté
+                let messageDM = "L'utilisateur a été notifié du mute.";
+                await userTimeout.send(`Vous avez été mute pendant **${durationTimeout} ${timeOptions[unitTimeout].name}** sur le serveur **${interaction.guild?.name}** pour la raison suivante : ***${reasonTimeout}***
+Fin du mute: **<t:${timestampTimeout}:R>**`).catch(async err => {
+                    messageDM = "L'utilisateur n'a pas pu être notifié du mute car il a bloqué les messages privés."
+                });
+                await interaction.reply(
+                    {
+                        content: `Vous avez muté **${userTimeout}** pendant **${durationTimeout} ${timeOptions[unitTimeout].name}** pour la raison suivante : ***${reasonTimeout}***.
+Fin du mute: **<t:${timestampTimeout}:R>**
+${messageDM}`,
+                        ephemeral: true
+                    }
+                );
+                // envoie un message dans le channel de log (id stocké dans .env)
+                const channel = interaction.client.channels.cache.get(process.env.CHANNEL_LOG_ID!);
+                if (!channel) return;
+                await (channel as TextChannel).send(`**${commandUser}** a mute **${userTimeout}** pendant **${durationTimeout} ${timeOptions[unitTimeout].name}**.
 Raison: ***${reasonTimeout}***
 Fin du mute: **<t:${timestampTimeout}:R>**`);
 
-    }).catch(async err => {
-        console.log(err);
-        await interaction.reply(
-            { content: "L'utilisateur " + userTimeout + " n'a pas pu être mute. L'erreur suivante est survenue : " + err + ".", ephemeral: true }
-        );
-    });
+            }).catch(async err => {
+                console.log(err);
+                await interaction.reply(
+                    {
+                        content: "L'utilisateur " + userTimeout + " n'a pas pu être mute. L'erreur suivante est survenue : " + err + ".",
+                        ephemeral: true
+                    }
+                );
+            });
     }
 }
 
