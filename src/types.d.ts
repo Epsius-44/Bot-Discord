@@ -8,7 +8,8 @@ declare global {
             DISCORD_CLIENT_ID: string,
             DISCORD_TOKEN: string,
             LOGTAIL_TOKEN: string,
-            CHANNEL_LOG_ID: string
+            CHANNEL_LOG_ID: string,
+            PRISONER_ROLE_ID: string
         }
     }
 }
