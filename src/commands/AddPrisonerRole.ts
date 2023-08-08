@@ -2,27 +2,38 @@ import {SlashCommand} from "../types";
 import {SlashCommandBuilder, PermissionFlagsBits, PermissionsBitField, TextChannel} from "discord.js";
 
 const command: SlashCommand = {
-    name: "unmute",
+    name: "prisonnier",
     data: new SlashCommandBuilder()
-        .setName('unmute')
-        .setDescription("Rendre la parole à un utilisateur muté")
+        .setName('prisonnier')
+        .setDescription("Mettre un utilisateur en prison")
         .addUserOption(option => option
             .setName('utilisateur')
-            .setDescription("Utilisateur à unmute")
+            .setDescription("Utilisateur à mettre en prison")
             .setRequired(true))
         .addStringOption(option => option
             .setName('raison')
-            .setDescription("Raison du unmute"))
+            .setDescription("Raison de pourquoi l'utilisateur est en prison")
+            .setRequired(true))
         // l'utilisateur doit avoir la permission de mute les membres pour utiliser cette commande
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         // la commande ne peut pas être utilisée en DM
         .setDMPermission(false),
     execute: async (interaction) => {
 
-        const userTimeout = interaction.options.getUser('utilisateur');
-        const reasonTimeout = interaction.options.get('raison') ? interaction.options.get('raison').value : "";
+        const userPrisoner = interaction.options.getUser('utilisateur');
+        const reason = interaction.options.get('raison') ? interaction.options.get('raison').value : "";
         const commandUser = interaction.member;
-        const memberTimeout = await interaction.guild?.members.fetch(userTimeout).then(
+        const prisonerRole = interaction.guild?.roles.cache.find(role => role.id === process.env.PRISONER_ROLE_ID);
+        if (!prisonerRole) {
+            await interaction.reply(
+                {
+                    content: `Le rôle pour les prisonniers n'a pas été trouvé`,
+                    ephemeral: true
+                }
+            );
+            return;
+        }
+        const memberPrisoner = await interaction.guild?.members.fetch(userPrisoner).then(
             member => {
                 return member;
             }
@@ -37,7 +48,7 @@ const command: SlashCommand = {
         if (!commandUser.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
             await interaction.reply(
                 {
-                    content: `Vous n'avez pas la permission de unmute`,
+                    content: `Vous n'avez pas la permission de mettre en prison`,
                     ephemeral: true
                 }
             );
@@ -45,7 +56,7 @@ const command: SlashCommand = {
         }
 
         // vérifié que l'utilisateur ciblé est sur le serveur
-        if (!memberTimeout) {
+        if (!memberPrisoner) {
             await interaction.reply(
                 {
                     content: `L'utilisateur n'est pas sur le serveur`,
@@ -55,32 +66,31 @@ const command: SlashCommand = {
             return;
         }
 
-        // vérifié que l'utilisateur ciblé est mute
-        if (!memberTimeout.communicationDisabledUntil) {
+        // vérifié que l'utilisateur ciblé n'a pas déjà le rôle prisonnier
+        if (memberPrisoner.roles.cache.has(prisonerRole?.id)) {
             await interaction.reply(
                 {
-                    content: `L'utilisateur n'est pas muté`,
+                    content: `L'utilisateur est déjà en prison`,
                     ephemeral: true
                 }
             );
             return;
         }
 
-        // unmute l'utilisateur
-        await memberTimeout.timeout(null, String(reasonTimeout))
+        await memberPrisoner.roles.add(prisonerRole)
             .then(async () => {
-                const reason = reasonTimeout ? ` pour la raison suivante : ***${reasonTimeout}***.` : ".";
-                let messageDM = "L'utilisateur a été notifié de la fin de sa sentence.";
+                let messageDM = "L'utilisateur a été notifié de sa sentence.";
                 // envoie un message à l'utilisateur unmute
-                await userTimeout.send(`Vous pouvez de nouveau interagir sur le serveur **${interaction.guild?.name}**${reason}`).catch(
+                await userPrisoner.send(`Vous avez été mis en prison sur le serveur **${interaction.guild?.name}** pour la raison suivante: ***${reason}***.
+Vos interactions avec le serveur ont été restrainte`).catch(
                     async err => {
-                        messageDM = "L'utilisateur n'a pas pu être notifié de la fin de sa sentence car il a bloqué les messages privés.";
+                        messageDM = "L'utilisateur n'a pas pu être notifié de sa sentence car il a bloqué les messages privés.";
                     }
                 )
                 // renvoie un message à l'utilisateur qui a utilisé la commande
                 await interaction.reply(
                     {
-                        content: `Vous avez unmute **${userTimeout}**${reason}
+                        content: `Vous avez attribué le rôle ${prisonerRole} à **${userPrisoner}** pour la raison suivante: ***${reason}***
 ${messageDM}`,
                         ephemeral: true
                     }
@@ -88,17 +98,17 @@ ${messageDM}`,
                 // envoie un message dans le channel de log (id stocké dans .env)
                 const channel = interaction.client.channels.cache.get(process.env.CHANNEL_LOG_ID!);
                 if (!channel) return;
-                const reasonLog = reasonTimeout ? `\nRaison: ***${reasonTimeout}***.` : "";
-                await (channel as TextChannel).send(`**${commandUser}** a libéré **${userTimeout}** de son mute.${reasonLog}`)
-                    .catch(async err => {
-                        await interaction.reply(
-                            {
-                                content: "L'utilisateur " + userTimeout + " n'a pas pu être unmute. L'erreur suivante est survenue : " + err + ".",
-                                ephemeral: true
-                            }
-                        );
-                    });
+                await (channel as TextChannel).send(`**${commandUser}** a mis **${userPrisoner}** en prison.
+Raison: ***${reason}***`)
             })
+            .catch(async err => {
+                await interaction.reply(
+                    {
+                        content: `L'utilisateur ${userPrisoner} n'a pas pu être mis en prison. L'erreur suivante est survenue : ${err}.`,
+                        ephemeral: true
+                    }
+                );
+            });
     }
 }
 
