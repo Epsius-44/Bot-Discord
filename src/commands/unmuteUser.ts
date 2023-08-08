@@ -6,7 +6,7 @@ import {
     checkPermission,
     getCommandMemberAsGuildMember,
     checkMemberOnServer,
-    checkMemberIsTimeout
+    checkMemberIsTimeout, sendDM
 } from "../modules/discordFunction";
 
 
@@ -50,13 +50,9 @@ const command: SlashCommand = {
             });
 
         const reason = reasonTimeout ? ` pour la raison suivante : ***${reasonTimeout}***.` : ".";
-        let messageDM = "L'utilisateur a été notifié de la fin de sa sentence.";
-        // envoie un message à l'utilisateur unmute
-        await userTimeout.send(`Vous pouvez de nouveau interagir sur le serveur **${interaction.guild?.name}**${reason}`).catch(
-            async () => {
-                messageDM = "L'utilisateur n'a pas pu être notifié de la fin de sa sentence car il a bloqué les messages privés.";
-            }
-        )
+        const messageDM = await sendDM(userTimeout, `Vous pouvez de nouveau interagir sur le serveur **${interaction.guild?.name}**${reason}`)
+        ? `L'utilisateur a été notifié de la fin de sa sentence.` : `L'utilisateur n'a pas pu être notifié de la fin de sa sentence car il a bloqué les messages privés.`;
+
         // renvoie un message à l'utilisateur qui a utilisé la commande
         await discordReply(interaction, `Vous avez enlever le mute de **${userTimeout}**${reason}\n${messageDM}`);
 
