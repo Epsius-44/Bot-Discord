@@ -6,7 +6,7 @@ import {
     checkPermission,
     getCommandMemberAsGuildMember,
     checkMemberOnServer,
-    checkMemberIsTimeout, sendDM
+    checkMemberIsTimeout, sendDM, sendLogEmbed
 } from "../modules/discordFunction";
 
 
@@ -59,12 +59,9 @@ const command: SlashCommand = {
         // envoie un message dans le channel de log (id stocké dans .env)
         const channel = interaction.client.channels.cache.get(process.env.CHANNEL_LOG_ID!);
         if (!channel) return;
-        const reasonLog = reasonTimeout ? `\nRaison: ***${reasonTimeout}***.` : "";
-        await (channel as TextChannel).send(`**${commandUser}** a libéré **${userTimeout}** de son mute.${reasonLog}`)
-            .catch(async err => {
-                await discordReply(interaction, `Impossible d'envoyer un message dans le channel de log. L'erreur suivante est survenue : ${err}.`);
-                return;
-            });
+        // const reasonLog = reasonTimeout ? `\nRaison: ***${reasonTimeout}***.` : "";
+        // await (channel as TextChannel).send(`**${commandUser}** a libéré **${userTimeout}** de son mute.${reasonLog}`)
+        await sendLogEmbed((channel as TextChannel), commandUser, userTimeout, String(reasonTimeout), 'Fin du mute', false);
     }
 }
 
