@@ -78,4 +78,4 @@ bot-restart:
     - sed -i "s|API_BOT_SITE|$API_BOT_SITE|" bot-srv-restart.sh
     - sed -i "s|API_BOT_SRV|$API_BOT_SRV|" bot-srv-restart.sh
     - sed -i "s|API_BOT_TOKEN|$API_BOT_TOKEN|" bot-srv-restart.sh
-    - ./bot-srv-restart.sh
+    - source bot-srv-restart.sh
