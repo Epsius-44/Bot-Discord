@@ -1,4 +1,57 @@
 image: node:18.17.0
+install:
+  stage: .pre
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+      changes:
+        - src/**/*
+        - package.json
+        - package-lock.json
+  cache:
+    paths:
+      - .cache/npm
+  script:
+    - &npm_install
+        npm install --quiet --no-progress --cache=.cache/npm
+build:
+  stage: build
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+      changes:
+        - src/**/*
+        - package.json
+        - package-lock.json
+  needs:
+    - install
+  cache: &pull_cache
+    policy: pull
+    paths:
+      - .cache/npm
+  script:
+    - *npm_install
+    - &build_bot
+        npx tsc
+  artifacts:
+    paths:
+      - dist/
+      - package.json
+      - package-lock.json
+      - .env
+bot-upgrade:
+  stage: deploy
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+      changes:
+        - src/**/*
+        - package.json
+        - package-lock.json
+  needs:
+    - build
+  script:
+    - *build_bot
+    - apt-get update -qq && apt-get install -y -qq sshpass
+    - sshpass -p "${SFTP_BOT_PSW}" scp -P 2022 -r dist $SFTP_BOT_USER@$SFTP_BOT_SITE:/
+    - sshpass -p "${SFTP_BOT_PSW}" scp -P 2022 {package.json,package-lock.json,.env} $SFTP_BOT_USER@$SFTP_BOT_SITE:/
 docs-update:
   stage: deploy
   rules:
@@ -7,3 +60,24 @@ docs-update:
         - docs/**/*
   script:
     - curl -X POST --fail -F token=$DOCS_CI_UPDATE -F ref=main https://gitlab.com/api/v4/projects/46789296/trigger/pipeline
+bot-restart:
+  stage: .post
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+      changes:
+        - src/**/*
+        - package.json
+        - package-lock.json
+  needs:
+    - bot-upgrade
+  script:
+    - >
+      RESULT=$(curl "https://${API_BOT_SITE}/api/client/servers/${API_BOT_SRV}/power" \
+        -H 'Accept: application/json' \
+        -H 'Content-Type: application/json' \
+        -H 'Authorization: Bearer ${API_BOT_TOKEN}' \
+        -X POST \
+        -d '{
+          "signal": "restart"
+        }')
+      
