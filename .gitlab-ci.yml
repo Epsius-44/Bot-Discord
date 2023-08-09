@@ -52,7 +52,7 @@ bot-upgrade:
     - *npm_install
     - *build_bot
     - apt-get update -qq && apt-get install -y -qq lftp
-    - lftp -c "set ssl:verify-certificate no; set sftp:auto-confirm yes; open sftp://${SFTP_BOT_USER}:${SFTP_BOT_PSW}@${SFTP_BOT_SITE}:2022; mirror -v ./ / --reverse --ignore-time --parallel=10 --exclude-glob .git* --exclude src/ --exclude LICENSE --exclude README.adoc --exclude tsconfig.json --exclude .npm/ --exclude node_modules"
+    - lftp -c "set ssl:verify-certificate no; set sftp:auto-confirm yes; open sftp://${SFTP_BOT_USER}:${SFTP_BOT_PSW}@${SFTP_BOT_SITE}:2022; mirror -v ./ / --reverse --ignore-time --parallel=10 --exclude-glob .git* --exclude src/ --exclude LICENSE --exclude README.adoc --exclude tsconfig.json --exclude .npm/ --exclude node_modules --exclude .git/ --exclude docs/"
 docs-update:
   stage: deploy
   rules:
@@ -72,13 +72,14 @@ bot-restart:
   needs:
     - bot-upgrade
   script:
-    - >
-      RESULT=$(curl "https://${API_BOT_SITE}/api/client/servers/${API_BOT_SRV}/power" \
-        -H 'Accept: application/json' \
-        -H 'Content-Type: application/json' \
-        -H 'Authorization: Bearer ${API_BOT_TOKEN}' \
-        -X POST \
-        -d '{
-          "signal": "restart"
-        }')
+    - >-
+      curl "https://${API_BOT_SITE}/api/client/servers/${API_BOT_SRV}/power"
+      -H 'Accept: application/json'
+      -H 'Content-Type: application/json'
+      -H 'Authorization: Bearer ${API_BOT_TOKEN}'
+      -X POST
+      -d '{
+      "signal": "restart"
+      }'
+
       
