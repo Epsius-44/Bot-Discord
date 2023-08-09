@@ -71,15 +71,11 @@ bot-restart:
         - package-lock.json
   needs:
     - bot-upgrade
+  variables:
+    SECURE_FILES_DOWNLOAD_PATH: './'
   script:
-    - >-
-      curl "https://${API_BOT_SITE}/api/client/servers/${API_BOT_SRV}/power"
-      -H 'Accept: application/json'
-      -H 'Content-Type: application/json'
-      -H 'Authorization: Bearer ${API_BOT_TOKEN}'
-      -X POST
-      -d '{
-      "signal": "restart"
-      }'
-
-      
+    - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | sh
+    - sed -i "s|API_BOT_SITE|$API_BOT_SITE|" bot-srv-restart.sh
+    - sed -i "s|API_BOT_SRV|$API_BOT_SRV|" bot-srv-restart.sh
+    - sed -i "s|API_BOT_TOKEN|$API_BOT_TOKEN|" bot-srv-restart.sh
+    - ./bot-srv-restart.sh
