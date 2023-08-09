@@ -51,9 +51,8 @@ bot-upgrade:
   script:
     - *npm_install
     - *build_bot
-    - apt-get update -qq && apt-get install -y -qq sshpass
-    - sshpass -p "${SFTP_BOT_PSW}" scp -v -P 2022 -r dist $SFTP_BOT_USER@$SFTP_BOT_SITE:/ 
-    - sshpass -p "${SFTP_BOT_PSW}" scp -P 2022 {package.json,package-lock.json,.env} $SFTP_BOT_USER@$SFTP_BOT_SITE:/
+    - apt-get update -qq && apt-get install -y -qq lftp
+    - lftp -c "set ssl:verify-certificate no; set sftp:auto-confirm yes; open sftp://${SFTP_BOT_USER}:${SFTP_BOT_PSW}@${SFTP_BOT_SITE}:2022; mirror -v ./ / --reverse --ignore-time --parallel=10 --exclude-glob .git* --exclude src/ --exclude LICENSE --exclude README.adoc --exclude tsconfig.json --exclude .npm/ --exclude node_modules"
 docs-update:
   stage: deploy
   rules:
