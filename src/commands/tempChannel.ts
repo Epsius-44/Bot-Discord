@@ -21,10 +21,10 @@ const categorie_id = process.env.CHANNEL_TEMP_CATEGORIE_ID;
 // exemple de json récupéré depuis le .env: [{"name": "test", "role_id": "123456789", "tag": "test"}]
 const choices = JSON.parse(process.env.CLASSROOM_LIST || "[]") as { name: string, role_id: string, tag: string }[];
 // transforme le tableau en tableau de choix pour les options
-const choicesOptions = choices.map(({name, role_id}) => {
-    return {name: name, value: role_id.toString()}
-
-});
+// const choicesOptions = choices.map(({name, role_id}) => {
+//     return {name: name, value: role_id.toString()}
+//
+// });
 
 const command: SlashCommand = {
     name: "temp_channel",
@@ -44,9 +44,11 @@ const command: SlashCommand = {
                     .setName('groupe')
                     .setDescription("Groupe du salon temporaire")
                     .setRequired(true)
-                    .addChoices(
-                        ...choicesOptions
-                    )),
+                    // .addChoices(
+                    //     ...choicesOptions
+                    // )
+                    .setAutocomplete(true)
+                ),
         )
         .addSubcommand(subcommand =>
             subcommand
@@ -106,17 +108,33 @@ const command: SlashCommand = {
         .setDMPermission(false),
 
     autocomplete: async (interaction) => {
-        //récupérer la liste des salons temporaires
-        const temp_channels = interaction.guild?.channels.cache.filter(channel => channel.parentId == categorie_id && channel.type == ChannelType.GuildText);
-        if (!temp_channels) return;
-        //filtrer les salons temporaires pour ne garder que ceux qui contiennent une partie du nom donné par l'utilisateur (remplacer les espaces par des tirets)
-        const filtered_channels = temp_channels.filter(channel => channel.name.toLowerCase().includes(interaction.options.getString('salon')?.toLowerCase()?.replace(/ /g, "_") || ""));
-        //transformer les salons filtrés en tableau de choix
-        const choices = filtered_channels.map(channel => {
-            return {name: channel.name, value: channel.id}
-        });
-        //renvoyer les choix à l'utilisateur
-        await interaction.respond(choices);
+        const focusedOption = interaction.options.getFocused(true);
+        if (!focusedOption) return;
+
+        if (focusedOption.name == "salon") {
+            //récupérer la liste des salons temporaires
+            const temp_channels = interaction.guild?.channels.cache.filter(channel => channel.parentId == categorie_id && channel.type == ChannelType.GuildText);
+            if (!temp_channels) return;
+            //filtrer les salons temporaires pour ne garder que ceux qui contiennent une partie du nom donné par l'utilisateur (remplacer les espaces par des tirets)
+            const filtered_channels = temp_channels.filter(channel => channel.name.toLowerCase().includes(interaction.options.getString('salon')?.toLowerCase()?.replace(/ /g, "_") || ""));
+            //transformer les salons filtrés en tableau de choix
+            const choices = filtered_channels.map(channel => {
+                return {name: channel.name, value: channel.id}
+            });
+            //renvoyer les choix à l'utilisateur
+            await interaction.respond(choices);
+        } else if (focusedOption.name == "groupe") {
+            //récupérer la liste des groupes auquel appartient l'utilisateur et qui sont dans choices
+            const member = getCommandMemberAsGuildMember(interaction);
+            const member_roles = member.roles.cache.filter(role => choices.some(choice => choice.role_id == role.id));
+            //transformer les groupes en tableau de choix
+            const choices_autocompletion_groupes = member_roles.map(role => {
+                return {name: role.name, value: role.id}
+            });
+
+            //renvoyer les choix à l'utilisateur
+            await interaction.respond(choices_autocompletion_groupes);
+        }
 
     },
 

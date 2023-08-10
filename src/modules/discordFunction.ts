@@ -1,7 +1,7 @@
 import {
     PermissionFlagsBits,
     GuildMember,
-    CommandInteraction, CacheType, User, Role, TextChannel, EmbedBuilder, ButtonInteraction
+    CommandInteraction, CacheType, User, Role, TextChannel, EmbedBuilder, ButtonInteraction, AutocompleteInteraction
 } from "discord.js";
 
 export async function discordReply(interaction: CommandInteraction<CacheType>| ButtonInteraction<CacheType>, message: string, ephemeral: boolean = true) {
@@ -36,7 +36,7 @@ export async function getMemberFromUser(interaction: CommandInteraction<CacheTyp
     );
 }
 
-export function getCommandMemberAsGuildMember(interaction: CommandInteraction<CacheType>): GuildMember {
+export function getCommandMemberAsGuildMember(interaction: CommandInteraction |AutocompleteInteraction): GuildMember {
     // récupérer le membre depuis l'utilisateur
     return interaction.member as GuildMember;
 }
