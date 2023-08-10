@@ -1,7 +1,7 @@
 import {
     PermissionFlagsBits,
     GuildMember,
-    CommandInteraction, CacheType, User, Role, ButtonInteraction
+    CommandInteraction, CacheType, User, Role, TextChannel, EmbedBuilder
 } from "discord.js";
 
 export async function discordReply(interaction: CommandInteraction<CacheType>| ButtonInteraction<CacheType>, message: string, ephemeral: boolean = true) {
@@ -22,7 +22,8 @@ export async function replyIfFalse(interaction: CommandInteraction<CacheType>| B
     }
     return result;
 }
-export async function getMemberFromUser(interaction: CommandInteraction<CacheType>, user: User) : Promise<GuildMember | null> {
+
+export async function getMemberFromUser(interaction: CommandInteraction<CacheType>, user: User): Promise<GuildMember | null> {
     // récupérer le membre depuis l'utilisateur
     return await interaction.guild?.members.fetch(user).then(
         member => {
@@ -39,6 +40,7 @@ export function getCommandMemberAsGuildMember(interaction: CommandInteraction<Ca
     // récupérer le membre depuis l'utilisateur
     return interaction.member as GuildMember;
 }
+
 export function memberExist(member: GuildMember | null): boolean {
     // vérifié que l'utilisateur ciblé est sur le serveur
     return member !== null;
@@ -68,12 +70,12 @@ export async function checkMemberIsTimeout(interaction: CommandInteraction<Cache
     return await replyIfFalse(interaction, member.communicationDisabledUntil !== null, message_false);
 }
 
-export async function checkRoleExist(interaction: CommandInteraction<CacheType>, role: Role, message_false: string = "Le rôle n'existe pas"): Promise<boolean>{
+export async function checkRoleExist(interaction: CommandInteraction<CacheType>, role: Role, message_false: string = "Le rôle n'existe pas"): Promise<boolean> {
     // vérifié que le rôle existe et répondre à l'interaction si ce n'est pas le cas
     return await replyIfFalse(interaction, role !== undefined, message_false);
 }
 
-export async function checkMemberHasRole(interaction: CommandInteraction<CacheType>, member: GuildMember, role: Role, message_false: string = "L'utilisateur n'a pas le rôle", inversed: boolean = false): Promise<boolean>{
+export async function checkMemberHasRole(interaction: CommandInteraction<CacheType>, member: GuildMember, role: Role, message_false: string = "L'utilisateur n'a pas le rôle", inversed: boolean = false): Promise<boolean> {
     // vérifié que l'utilisateur a le rôle et répondre à l'interaction si ce n'est pas le cas (inversed = true pour vérifier que l'utilisateur n'a pas le rôle)
     if (inversed) {
         return await replyIfFalse(interaction, !member.roles.cache.has(role.id), message_false);
@@ -97,4 +99,43 @@ export async function sendDM(user: GuildMember | User, message: string): Promise
 
 export async function checkLength(interaction: CommandInteraction<CacheType>, value: number, minValue:number = 0, maxValue:number, message_false: string = `La valeur doit être comprise entre ${minValue} et ${maxValue}`): Promise<boolean> {
     return await replyIfFalse(interaction, value >= minValue && value <= maxValue, message_false);
+}
+
+export async function sendLogEmbed(
+    channel: TextChannel, administrator: GuildMember | User, accused: GuildMember | User, reason: string, action: string | null = null, isSentence: boolean = false, timestampEnd: number | null = null) {
+    // créer un embed pour les logs
+    console.log("raison: " + reason);
+    console.log("timestampEnd: " + timestampEnd);
+    console.log("isSentence: " + isSentence);
+    const timestampStart = Date.now();
+    const embed = new EmbedBuilder()
+        .setColor(isSentence ? 15879747 : 35406)
+        .setTitle(`Modération`)
+        .addFields({name: `Modérateur`, value: `${administrator}`, inline: false}, {
+                name: `Accusé`,
+                value: `${accused}`,
+                inline: false
+            },
+            // {name: `Raison`, value: reason !== null ? `${reason}`: '', inline: false},
+            {name: `Action`, value: `${action}`, inline: false});
+    if (reason !== null && reason !== '') {
+        embed.addFields({name: `Raison`, value: `${reason}`, inline: false});
+    }
+    embed.addFields({
+        name: isSentence ? 'Date de début' : 'Date',
+        value: `<t:${Math.floor(timestampStart / 1000)}:F>`,
+        inline: true
+    });
+    if (timestampEnd !== null) {
+        embed.addFields({
+            name: isSentence ? 'Date de fin' : '',
+            value: `<t:${Math.floor(timestampEnd)}:F>`,
+            inline: true
+        }, {
+            name: isSentence ? 'Fin: ' : '',
+            value: `<t:${Math.floor(timestampEnd)}:R>`,
+            inline: false
+        });
+    }
+    await channel.send({embeds: [embed]});
 }

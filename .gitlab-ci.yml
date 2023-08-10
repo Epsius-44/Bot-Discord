@@ -1,4 +1,58 @@
 image: node:18.17.0
+install:
+  stage: .pre
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+      changes:
+        - src/**/*
+        - package.json
+        - package-lock.json
+  cache:
+    paths:
+      - .cache/npm
+  script:
+    - &npm_install
+      npm install --quiet --no-progress --cache=.cache/npm
+build:
+  stage: build
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+      changes:
+        - src/**/*
+        - package.json
+        - package-lock.json
+  needs:
+    - install
+  cache: &pull_cache
+    policy: pull
+    paths:
+      - .cache/npm
+  script:
+    - *npm_install
+    - &build_bot
+        npx tsc
+  artifacts:
+    paths:
+      - dist/
+      - package.json
+      - package-lock.json
+      - .env
+bot-upgrade:
+  stage: deploy
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+      changes:
+        - src/**/*
+        - package.json
+        - package-lock.json
+  needs:
+    - build
+  cache: *pull_cache
+  script:
+    - *npm_install
+    - *build_bot
+    - apt-get update -qq && apt-get install -y -qq lftp
+    - lftp -c "set ssl:verify-certificate no; set sftp:auto-confirm yes; open sftp://${SFTP_BOT_USER}:${SFTP_BOT_PSW}@${SFTP_BOT_SITE}:2022; mirror -v ./ / --reverse --ignore-time --parallel=10 --exclude-glob .git* --exclude src/ --exclude LICENSE --exclude README.adoc --exclude tsconfig.json --exclude .npm/ --exclude node_modules --exclude .git/ --exclude docs/"
 docs-update:
   stage: deploy
   rules:
@@ -7,3 +61,21 @@ docs-update:
         - docs/**/*
   script:
     - curl -X POST --fail -F token=$DOCS_CI_UPDATE -F ref=main https://gitlab.com/api/v4/projects/46789296/trigger/pipeline
+bot-restart:
+  stage: .post
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+      changes:
+        - src/**/*
+        - package.json
+        - package-lock.json
+  needs:
+    - bot-upgrade
+  variables:
+    SECURE_FILES_DOWNLOAD_PATH: './'
+  script:
+    - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | sh
+    - sed -i "s|API_BOT_SITE|$API_BOT_SITE|" bot-srv-restart.sh
+    - sed -i "s|API_BOT_SRV|$API_BOT_SRV|" bot-srv-restart.sh
+    - sed -i "s|API_BOT_TOKEN|$API_BOT_TOKEN|" bot-srv-restart.sh
+    - source bot-srv-restart.sh
