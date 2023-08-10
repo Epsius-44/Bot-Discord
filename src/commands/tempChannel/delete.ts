@@ -5,7 +5,7 @@ import {
     CommandInteraction,
     EmbedBuilder,
     GuildMember,
-    TextChannel
+    TextChannel,
 } from "discord.js";
 import {discordReply} from "../../modules/discordFunction";
 
@@ -39,12 +39,26 @@ export default async function deleteTempChannel(
             .setDescription(`Le salon ${channel_select} a été demandé à être supprimé par ${member} le <t:${Math.floor(Date.now() / 1000)}:f>`)
             .addFields({name: "Raison", value: reason.value.toString()})
         //ajouter un bouton pour accepter la demande de suppression ou pour la refuser
+        const customIdDelete = `tempChannelDelete_delete_${channel_select.id}`
+
+        //vérifier si une demande de suppression a déjà été envoyée (si le message existe) en cherchant un message avec le même customId (vérifier les messages des dernières 48h) (utilisé after:2d dans la barre de recherche)
+        const date = new Date(Date.now()-48*60*60*1000)
+        const twoDaysAgoSnowflake = (date.getTime() * 1000).toString();
+
+        const message = await log_channel.messages.fetch({after:twoDaysAgoSnowflake, limit: 100})
+        const messageExist = message.find(message => message.components[0]?.components[0]?.customId === customIdDelete)
+        if (messageExist) {
+            await discordReply(interaction, `Une demande de suppression du salon ${channel_select} est déjà en cours de traitement. Si aucune action n'a été effectuée au bout de 48h, vous pourrez en refaire une.`)
+            return;
+        }
+
+
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
                 new ButtonBuilder()
                     .setLabel("Accepter")
                     .setStyle(ButtonStyle.Success)
-                    .setCustomId(`tempChannelDelete_delete_${channel_select.id}`),
+                    .setCustomId(customIdDelete),
                 new ButtonBuilder()
                     .setLabel("Refuser")
                     .setStyle(ButtonStyle.Danger)

@@ -17,6 +17,8 @@ export default async function addTempChannel(
     if (!await checkLength(interaction, module.value.toString().length, 3, 30, "Le nom du salon doit faire entre 3 et 30 caractères")) return false;
     if (!await checkMemberHasRole(interaction, member, role, `Vous n'avez pas l'autorisation de créer un salon pour le groupe ${role}`)) return false;
 
+
+
     //définition des permissions
     const permissions = [
         {
@@ -33,6 +35,16 @@ export default async function addTempChannel(
     const groupe_name = choices.find(({role_id}) => role_id === groupe.value)?.name;
     const groupe_tag = choices.find(({role_id}) => role_id === groupe.value)?.tag;
     const channelName = `${groupe_tag}-${module.value.toString().replace(/\s+/g, "_")}`
+    //vérifier que le nom du salon n'est pas similaire à un salon existant (en ignorant la casse, les espaces et les tirets (haut et bas))
+
+    //récupérer les noms des salons de la catégorie
+    const channels = interaction.guild?.channels.cache.filter(channel => channel.parentId === categorie_id);
+    const channelNames = channels?.map(channel => channel.name.toLowerCase().replace(/[-_]/g, "").replace(/\s+/g, ""));
+    //vérifier que le nom du salon n'est pas similaire à un salon existant
+    if (channelNames?.includes(channelName.toString().toLowerCase().replace(/[-_]/g, "").replace(/\s+/g, ""))) {
+        await discordReply(interaction, "Un salon avec ce nom existe déjà");
+        return false;
+    }
     const channel = await interaction.guild?.channels.create(
         {
             name: channelName,

@@ -14,11 +14,12 @@ const command: ButtonActionMessage = {
         //vérifier que l'utilisateur a la permission de gérer les salons
         if (!await checkPermission(interaction, user, PermissionsBitField.Flags.ManageChannels, "Vous n'avez pas l'autorisation de supprimer des salons")) return;
         //vérifier que le salon existe
-        const channel = await interaction.guild.channels.fetch(channelId);
-        if (!channel) {
+        const channelExist = interaction.guild.channels.cache.has(channelId);
+        if (!channelExist) {
             await discordReply(interaction, "Ce salon n'existe pas");
             return;
         }
+        const channel = await interaction.guild.channels.fetch(channelId);
         //vérifier que le salon est un salon temporaire à partir de l'id parent du salon
         if (channel.parentId !== process.env.CHANNEL_TEMP_CATEGORIE_ID) {
             await discordReply(interaction, "Ce salon n'est pas un salon temporaire");
