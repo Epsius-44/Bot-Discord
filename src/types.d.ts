@@ -1,4 +1,10 @@
-import {Collection, CommandInteraction, SlashCommandBuilder} from "discord.js";
+import {
+    AutocompleteInteraction,
+    ButtonInteraction,
+    Collection,
+    CommandInteraction,
+    SlashCommandBuilder
+} from "discord.js";
 import {Logtail} from "@logtail/node";
 import {Logger} from "./modules/logger";
 
@@ -17,6 +23,7 @@ declare global {
 declare module "discord.js" {
     export interface Client {
         slashCommands: Collection<string, SlashCommand>,
+        buttons: Collection<string, ButtonActionMessage>,
         log: Logger;
     }
 }
@@ -31,6 +38,12 @@ export interface SlashCommand {
     name: string,
     data: SlashCommandBuilder,
     execute: (interaction: CommandInteraction) => Promise<void>
+    autocomplete?: (interaction: AutocompleteInteraction) => Promise<void>
+}
+
+export interface ButtonActionMessage {
+    name: string,
+    execute: (interaction: ButtonInteraction) => Promise<void>
 }
 
 export {}

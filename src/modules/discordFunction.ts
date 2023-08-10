@@ -4,7 +4,7 @@ import {
     CommandInteraction, CacheType, User, Role, TextChannel, EmbedBuilder
 } from "discord.js";
 
-export async function discordReply(interaction: CommandInteraction<CacheType>, message: string, ephemeral: boolean = true) {
+export async function discordReply(interaction: CommandInteraction<CacheType>| ButtonInteraction<CacheType>, message: string, ephemeral: boolean = true) {
     // répondre à l'interaction
     await interaction.reply(
         {
@@ -15,7 +15,7 @@ export async function discordReply(interaction: CommandInteraction<CacheType>, m
     // .catch(() => {});
 }
 
-export async function replyIfFalse(interaction: CommandInteraction<CacheType>, result: boolean, message: string): Promise<boolean> {
+export async function replyIfFalse(interaction: CommandInteraction<CacheType>| ButtonInteraction<CacheType>, result: boolean, message: string): Promise<boolean> {
     // répondre à l'interaction si le résultat est faux
     if (!result) {
         await discordReply(interaction, message);
@@ -55,7 +55,7 @@ export function hasPermission(member: GuildMember, permission: bigint) {
     return member.permissions.has(permission);
 }
 
-export function checkPermission(interaction: CommandInteraction<CacheType>, member: GuildMember, permission: bigint, message_false: string = `Vous n'avez pas la permission de faire cela`): Promise<boolean> {
+export function checkPermission(interaction: CommandInteraction<CacheType> | ButtonInteraction<CacheType>, member: GuildMember, permission: bigint, message_false: string = `Vous n'avez pas la permission de faire cela`): Promise<boolean> {
     // vérifié que l'utilisateur a la permission demandée et répondre à l'interaction si ce n'est pas le cas
     return replyIfFalse(interaction, hasPermission(member, permission), message_false);
 }
@@ -95,6 +95,10 @@ export async function sendDM(user: GuildMember | User, message: string): Promise
             return false;
         }
     );
+}
+
+export async function checkLength(interaction: CommandInteraction<CacheType>, value: number, minValue:number = 0, maxValue:number, message_false: string = `La valeur doit être comprise entre ${minValue} et ${maxValue}`): Promise<boolean> {
+    return await replyIfFalse(interaction, value >= minValue && value <= maxValue, message_false);
 }
 
 export async function sendLogEmbed(
