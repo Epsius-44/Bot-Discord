@@ -6,7 +6,7 @@ import {
     checkPermission,
     getCommandMemberAsGuildMember,
     checkMemberOnServer,
-    checkMemberKickable, sendDM
+    checkMemberKickable, sendDM, sendLogEmbed
 } from "../modules/discordFunction";
 
 const timeOptions: { [key: string]: { seconds: number, name: string } } = {
@@ -95,9 +95,10 @@ ${messageDM}`);
         const channel = interaction.client.channels.cache.get(process.env.CHANNEL_LOG_ID!);
         if (!channel) return;
 
-        await (channel as TextChannel).send(`**${commandUser}** a mute **${userTimeout}** pendant **${durationTimeout} ${timeOptions[unitTimeout].name}**.
-Raison: ***${reasonTimeout}***
-Fin du mute: **<t:${timestampTimeout}:R>**`);
+        //         await (channel as TextChannel).send(`**${commandUser}** a mute **${userTimeout}** pendant **${durationTimeout} ${timeOptions[unitTimeout].name}**.
+        // Raison: ***${reasonTimeout}***
+        // Fin du mute: **<t:${timestampTimeout}:R>**`);
+        await sendLogEmbed((channel as TextChannel), commandUser, userTimeout, String(reasonTimeout), `Timeout (${durationTimeout} ${timeOptions[unitTimeout].name})`, true, timestampTimeout);
 
     }
 }
