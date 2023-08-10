@@ -20,12 +20,16 @@ const event: BotEvent = {
             //exécuter le bouton
             await button.execute(interaction);
 
-        } else if (interaction.type == InteractionType.ApplicationCommandAutocomplete) {
+        } else if (interaction.isAutocomplete()) {
             const command = interaction.client.slashCommands.get(interaction.commandName);
             if (!command) return;
             await command.autocomplete(interaction);
+        } else if (interaction.isModalSubmit()) {
+            const modalId = interaction.customId.split('_')[0];
+            const modal = interaction.client.modals.get(modalId);
+            if (!modal) return;
+            await modal.execute(interaction);
         }
-
         else return;
     }
 }
