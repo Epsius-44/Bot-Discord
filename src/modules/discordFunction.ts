@@ -1,7 +1,7 @@
 import {
     PermissionFlagsBits,
     GuildMember,
-    CommandInteraction, CacheType, User, Role, TextChannel, EmbedBuilder
+    CommandInteraction, CacheType, User, Role, TextChannel, EmbedBuilder, ButtonInteraction
 } from "discord.js";
 
 export async function discordReply(interaction: CommandInteraction<CacheType>| ButtonInteraction<CacheType>, message: string, ephemeral: boolean = true) {
