@@ -14,6 +14,11 @@ export default async function addTempChannel(
     const module = interaction.options.get('module');
     const groupe = interaction.options.get('groupe');
     const role = interaction.guild?.roles.cache.get(groupe.value.toString());
+    //vérifier que le groupe existe
+    if (!role || !choices.find(({role_id}) => role_id === groupe.value.toString())) {
+        await discordReply(interaction, "Veuillez sélectionner un groupe valide");
+        return false;
+    }
     if (!await checkLength(interaction, module.value.toString().length, 3, 30, "Le nom du salon doit faire entre 3 et 30 caractères")) return false;
     if (!await checkMemberHasRole(interaction, member, role, `Vous n'avez pas l'autorisation de créer un salon pour le groupe ${role}`)) return false;
 
