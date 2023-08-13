@@ -19,7 +19,7 @@ const command: AppCommand = {
         let is_remove = true;
         let author_is_removable = true;
 
-        if (!await checkMemberHasRole(interaction, member, role_responsable)) return;
+        if (!await checkMemberHasRole(interaction, member, role_responsable, `Seul les ${role_responsable} sont autorisés pour utiliser cette commande.`)) return;
 
         const embed = new EmbedBuilder()
             .setTitle(`Signalement d'un message`)
