@@ -23,6 +23,8 @@ declare global {
             ROLE_INTERVENANT_ID: string,
             ROLE_ADMIN_ID: string,
             CURL_UPDATE_URL: string,
+            CURL_PING_URL: string,
+            CURL_PING_INTERVAL: string,
         }
     }
 }
