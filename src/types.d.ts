@@ -22,6 +22,7 @@ declare global {
             CHANNEL_ARCHIVE_CATEGORIE_ID: string,
             ROLE_INTERVENANT_ID: string,
             ROLE_ADMIN_ID: string,
+            CURL_UPDATE_URL: string,
         }
     }
 }
