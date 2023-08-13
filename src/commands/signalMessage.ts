@@ -3,9 +3,9 @@ import {ApplicationCommandType, ContextMenuCommandBuilder, EmbedBuilder, Permiss
 import {checkMemberHasRole} from "../modules/discordFunction";
 
 const command: AppCommand = {
-    name: "report",
+    name: "Signaler le message",
     data: new ContextMenuCommandBuilder()
-        .setName('report')
+        .setName('Signaler le message')
         .setType(ApplicationCommandType.Message)
         .setDMPermission(false),
     // .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
