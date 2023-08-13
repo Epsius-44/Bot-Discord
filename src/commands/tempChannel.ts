@@ -151,6 +151,13 @@ const command: SlashCommand = {
         //vérifié qie le salon existe et qu'il est bien un salon temporaire
         let channel_select_option: TextChannel = interaction.channel as TextChannel;
 
+
+        //vérifier que l'utilisateur a la permission de créer/modifier/archiver des salons
+        if (!(member.roles.cache.has(role_responsable.id) || (subcommand == "delete" && member.roles.cache.has(role_admin.id)))) {
+            await discordReply(interaction, "Vous n'avez pas la permission d'utiliser cette commande");
+            return;
+        }
+
         if (subcommand != "add") {
             //vérifier si un salon a été donné en option et qu'il est accessible à l'utilisateur
             if (channel_select_get && temp_channels?.has(channel_select_get.value.toString())) {
@@ -165,11 +172,6 @@ const command: SlashCommand = {
             if (!channel_select_option) return;
         }
 
-        //vérifier que l'utilisateur a la permission de créer/modifier/archiver des salons
-        if (!(member.roles.cache.has(role_responsable.id) || (subcommand == "delete" && member.roles.cache.has(role_admin.id)))) {
-            await discordReply(interaction, "Vous n'avez pas la permission d'utiliser cette commande");
-            return;
-        }
         switch (subcommand) {
             case "add":
                 await addTempChannel(interaction, choices, categorie_id, member);
