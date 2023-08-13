@@ -3,7 +3,7 @@ import {Client, Collection, GatewayIntentBits} from "discord.js";
 import * as dotenv from "dotenv";
 import {join} from "path";
 import {readdirSync} from "fs";
-import {ButtonActionMessage, Modal, SlashCommand, AppCommand} from "./types";
+import {ButtonActionMessage, Modal, SlashCommand} from "./types";
 import {Logger} from "./modules/logger";
 
 // Load env var
@@ -19,7 +19,7 @@ const client = new Client({
     ]
 });
 
-client.commands = new Collection<string, SlashCommand | AppCommand>();
+client.slashCommands = new Collection<string, SlashCommand>();
 client.buttons = new Collection<string, ButtonActionMessage>();
 client.modals = new Collection<string, Modal>();
 client.log = new Logger(process.env.LOGTAIL_TOKEN);

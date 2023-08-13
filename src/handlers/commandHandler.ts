@@ -13,7 +13,7 @@ module.exports = async (client: Client) => {
         const command: SlashCommand = require(`${commandsDirs}/${file}`).default;
 
         body.push(command.data.toJSON());
-        client.commands.set(command.name, command);
+        client.slashCommands.set(command.name, command);
 
         client.log.debug(`La commande ${command.name} est chargée (${commandsDirs}/${file})`, {"type": "Local Load", "file": __filename})
     });

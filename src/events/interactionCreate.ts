@@ -5,9 +5,9 @@ const event: BotEvent = {
     name: Events.InteractionCreate,
     once: false,
     async execute(interaction: Interaction) {
-        if (interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand() || interaction.isUserContextMenuCommand()) {
+        if (interaction.isChatInputCommand()) {
 
-            const command = interaction.client.commands.get(interaction.commandName);
+            const command = interaction.client.slashCommands.get(interaction.commandName);
             if (!command) return;
             await command.execute(interaction);
 
@@ -21,11 +21,9 @@ const event: BotEvent = {
             await button.execute(interaction);
 
         } else if (interaction.isAutocomplete()) {
-            const command = interaction.client.commands.get(interaction.commandName);
+            const command = interaction.client.slashCommands.get(interaction.commandName);
             if (!command) return;
-            if ("autocomplete" in command) {
-                await command.autocomplete(interaction);
-            }
+            await command.autocomplete(interaction);
         } else if (interaction.isModalSubmit()) {
             const modalId = interaction.customId.split('_')[0];
             const modal = interaction.client.modals.get(modalId);
