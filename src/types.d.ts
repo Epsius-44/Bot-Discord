@@ -2,7 +2,7 @@ import {
     AutocompleteInteraction,
     ButtonInteraction,
     Collection,
-    CommandInteraction, ModalSubmitInteraction,
+    CommandInteraction, ContextMenuCommandBuilder, ModalSubmitInteraction,
     SlashCommandBuilder
 } from "discord.js";
 import {Logtail} from "@logtail/node";
@@ -28,7 +28,7 @@ declare global {
 
 declare module "discord.js" {
     export interface Client {
-        slashCommands: Collection<string, SlashCommand>,
+        commands: Collection<string, SlashCommand | AppCommand>,
         buttons: Collection<string, ButtonActionMessage>,
         modals: Collection<string, Modal>,
         log: Logger;
@@ -56,6 +56,12 @@ export interface ButtonActionMessage {
 export interface Modal {
     name: string,
     execute: (interaction: ModalSubmitInteraction) => Promise<void>
+}
+
+export interface AppCommand {
+    name: string,
+    data: ContextMenuCommandBuilder,
+    execute: (message: Message) => Promise<void>
 }
 
 export {}
