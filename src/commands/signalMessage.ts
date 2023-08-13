@@ -109,7 +109,7 @@ const command: AppCommand = {
 
         //envoyer un message dans le channel du message signalé
         await message.channel.send({
-            content: `${member} a signalé un message de ${message.author} le <t:${Math.floor(Date.now() / 1000)}:F>.${is_remove ? `. Le message a été supprimé.` : ""}`,
+            content: `${member} a signalé un message de ${message.author} le <t:${Math.floor(Date.now() / 1000)}:F>.${is_remove ? ` Le message a été supprimé.` : ""}`,
         });
     }
 }
