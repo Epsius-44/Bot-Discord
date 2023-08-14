@@ -2,10 +2,11 @@ import {
     AutocompleteInteraction,
     ButtonInteraction,
     Collection,
-    CommandInteraction, ContextMenuCommandBuilder, ModalSubmitInteraction,
+    CommandInteraction,
+    ContextMenuCommandBuilder,
+    ModalSubmitInteraction,
     SlashCommandBuilder
 } from "discord.js";
-import {Logtail} from "@logtail/node";
 import {Logger} from "./modules/logger";
 
 declare global {
@@ -25,6 +26,7 @@ declare global {
             CURL_UPDATE_URL: string,
             CURL_PING_URL: string,
             CURL_PING_INTERVAL: string,
+            TIMEOUT_MS_EDT: string,
         }
     }
 }
@@ -70,8 +72,15 @@ export interface AppCommand {
 export interface HelpCommand {
     name: string,
     description: string,
-    args?: { name: string, description: string,required: boolean }[],
+    args?: { name: string, description: string, required: boolean }[],
 }
 
+export interface IEdtEpsiJS {
+    name: string,
+    room: string,
+    teacher: string,
+    start_hour: string,
+    end_hour: string
+}
 
 export {}
