@@ -11,7 +11,7 @@ import {
 
 
 const command: SlashCommand = {
-    name: "unmute",
+    roles: [process.env.ROLE_ADMIN_ID],
     data: new SlashCommandBuilder()
         .setName('unmute')
         .setDescription("Rendre la parole à un utilisateur muté")

@@ -13,9 +13,9 @@ module.exports = async (client: Client) => {
         const command: SlashCommand = require(`${commandsDirs}/${file}`).default;
 
         body.push(command.data.toJSON());
-        client.commands.set(command.name, command);
+        client.commands.set(command.data.name, command);
 
-        client.log.debug(`La commande ${command.name} est chargée (${commandsDirs}/${file})`, {"type": "Local Load", "file": __filename})
+        client.log.debug(`La commande ${command.data.name} est chargée (${commandsDirs}/${file})`, {"type": "Local Load", "file": __filename})
     });
 
     const rest = new REST({version: '10'}).setToken(process.env.DISCORD_TOKEN);

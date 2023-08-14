@@ -3,12 +3,11 @@ import {
     AutoModerationRuleEventType,
     AutoModerationRuleTriggerType,
     EmbedBuilder,
-    GuildMember,
     TextChannel,
     User,
     UserContextMenuCommandInteraction
 } from "discord.js";
-import {checkMemberHasRole, discordReply} from "../../modules/discordFunction";
+import {discordReply} from "../../modules/discordFunction";
 
 export default async function signalUsername(
     interaction: UserContextMenuCommandInteraction,
@@ -16,13 +15,10 @@ export default async function signalUsername(
 ): Promise<void> {
     const memberReport = interaction.guild?.members.cache.get(user.id);
     //vérifié que l'utilisateur a le rôle de délégué / responsable
-    const role_responsable = interaction.guild?.roles.cache.get(process.env.ROLE_RESPONSABLE_ID);
     const role_admin = interaction.guild?.roles.cache.get(process.env.ROLE_ADMIN_ID);
     const log_channel = interaction.guild?.channels.cache.get(process.env.CHANNEL_LOG_ID) as TextChannel;
     const member = interaction.member;
     let is_admin = false;
-
-    if (!await checkMemberHasRole(interaction, member as GuildMember, role_responsable, `Seul les ${role_responsable} sont autorisés pour utiliser cette commande.`)) return;
 
     const embed = new EmbedBuilder()
         .setTitle(`Signalement d'un pseudo`)

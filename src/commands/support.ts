@@ -6,7 +6,7 @@ import {
 } from "discord.js";
 
 const command: SlashCommand = {
-    name: "support",
+    roles: [], //@everyone
     data: new SlashCommandBuilder()
         .setName('support')
         .setDescription("Demander de l'aide ou proposer une suggestion")

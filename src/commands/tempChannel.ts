@@ -27,7 +27,7 @@ const choices = JSON.parse(process.env.CLASSROOM_LIST || "[]") as { name: string
 // });
 
 const command: SlashCommand = {
-    name: "temp_channel",
+    roles: [process.env.ROLE_ADMIN_ID, process.env.ROLE_RESPONSABLE_ID],
     data: new SlashCommandBuilder()
         .setName('temp_channel')
         .setDescription("Gérer les salons temporaires")
@@ -142,7 +142,6 @@ const command: SlashCommand = {
 
         const subcommand = interaction.isChatInputCommand() ? interaction.options.getSubcommand() : null;
         const member = getCommandMemberAsGuildMember(interaction);
-        const role_responsable = interaction.guild?.roles.cache.get(process.env.ROLE_RESPONSABLE_ID);
         const role_admin = interaction.guild?.roles.cache.get(process.env.ROLE_ADMIN_ID);
         //si un salon est donné en option, le récupérer, sinon récupérer le salon dans lequel la commande a été utilisée
         const channel_select_get = interaction.options.get('salon');
@@ -151,9 +150,8 @@ const command: SlashCommand = {
         //vérifié qie le salon existe et qu'il est bien un salon temporaire
         let channel_select_option: TextChannel = interaction.channel as TextChannel;
 
-
         //vérifier que l'utilisateur a la permission de créer/modifier/archiver des salons
-        if (!(member.roles.cache.has(role_responsable.id) || (subcommand == "delete" && member.roles.cache.has(role_admin.id)))) {
+        if (member.roles.cache.has(role_admin.id) && subcommand != "delete") {
             await discordReply(interaction, "Vous n'avez pas la permission d'utiliser cette commande");
             return;
         }

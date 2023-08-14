@@ -19,7 +19,7 @@ const timeOptionsChoices = Object.entries(timeOptions).map(([key, value]) => {
 const timeoutMax = 28 // durée maximum d'un timeout en jours (autorisé par discord)
 
 const command: SlashCommand = {
-    name: "mute",
+    roles: [process.env.ROLE_ADMIN_ID],
     data: new SlashCommandBuilder()
         .setName('mute')
         .setDescription("Mute un utilisateur")

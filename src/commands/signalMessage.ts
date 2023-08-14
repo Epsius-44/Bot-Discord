@@ -1,9 +1,8 @@
 import {AppCommand} from "../types";
 import {ApplicationCommandType, ContextMenuCommandBuilder, EmbedBuilder, PermissionFlagsBits} from "discord.js";
-import {checkMemberHasRole} from "../modules/discordFunction";
 
 const command: AppCommand = {
-    name: "Signaler le message",
+    roles: [process.env.ROLE_RESPONSABLE_ID],
     data: new ContextMenuCommandBuilder()
         .setName('Signaler le message')
         .setType(ApplicationCommandType.Message)
@@ -12,14 +11,11 @@ const command: AppCommand = {
     execute: async (interaction) => {
         const message = interaction.options.getMessage('message');
         //vérifié que l'utilisateur à le rôle de délégué / responsable
-        const role_responsable = interaction.guild?.roles.cache.get(process.env.ROLE_RESPONSABLE_ID);
         const role_admin = interaction.guild?.roles.cache.get(process.env.ROLE_ADMIN_ID);
         const log_channel = interaction.guild?.channels.cache.get(process.env.CHANNEL_LOG_ID);
         const member = interaction.member;
         let is_remove = true;
         let author_is_removable = true;
-
-        if (!await checkMemberHasRole(interaction, member, role_responsable, `Seul les ${role_responsable} sont autorisés pour utiliser cette commande.`)) return;
 
         const embed = new EmbedBuilder()
             .setTitle(`Signalement d'un message`)

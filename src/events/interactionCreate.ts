@@ -1,5 +1,6 @@
 import {Events, Interaction, InteractionType} from "discord.js";
 import {BotEvent} from "../types";
+import {discordReply} from "../modules/discordFunction";
 
 const event: BotEvent = {
     name: Events.InteractionCreate,
@@ -9,6 +10,19 @@ const event: BotEvent = {
 
             const command = interaction.client.commands.get(interaction.commandName);
             if (!command) return;
+            //récupération des permissions de l'utilisateur
+            if (command.roles !== undefined && command.roles.length > 0) {
+                const member = interaction.guild.members.cache.get(interaction.user.id);
+                if (!member) return;
+                const roles = member.roles.cache;
+                const hasPermission = command.roles.some(role => roles.has(role));
+                if (!hasPermission) {
+                    //récupérer les rôles de la commande sous forme de rôles
+                    const rolesCommand = command.roles.map(role => interaction.guild.roles.cache.get(role));
+                    await discordReply(interaction, `Vous n'avez pas la permission d'utiliser cette commande, seul les rôles ${rolesCommand.join(', ')} peuvent l'utiliser`);
+                    return;
+                }
+            }
             await command.execute(interaction);
 
         } else if (interaction.isButton()) {
@@ -23,6 +37,7 @@ const event: BotEvent = {
         } else if (interaction.isAutocomplete()) {
             const command = interaction.client.commands.get(interaction.commandName);
             if (!command) return;
+            //exécuter l'autocomplete de la commande si elle a été définie
             if ("autocomplete" in command) {
                 await command.autocomplete(interaction);
             }
