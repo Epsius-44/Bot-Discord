@@ -8,7 +8,7 @@ import {
 import signalUsername from "./signalUsername/signalUsername";
 
 const command: AppCommand = {
-    name: "Signaler le pseudo",
+    roles: [process.env.ROLE_RESPONSABLE_ID],
     data: new ContextMenuCommandBuilder()
         .setName('Signaler le pseudo')
         .setType(ApplicationCommandType.Message)

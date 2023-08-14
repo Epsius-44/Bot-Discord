@@ -2,7 +2,7 @@ import {SlashCommand} from "../types";
 import {SlashCommandBuilder} from "discord.js";
 
 const command: SlashCommand = {
-    name: "ping",
+    roles: [], //@everyone
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription("Test d'intéraction avec le bot"),

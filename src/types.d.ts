@@ -45,10 +45,10 @@ export interface BotEvent {
 }
 
 export interface SlashCommand {
-    name: string,
     data: SlashCommandBuilder,
     execute: (interaction: CommandInteraction) => Promise<void>
     autocomplete?: (interaction: AutocompleteInteraction) => Promise<void>
+    roles?: string[] //liste des roles autorisés à utiliser la commande (si vide ou non défini, tout le monde peut utiliser la commande)
 }
 
 export interface ButtonActionMessage {
@@ -62,11 +62,16 @@ export interface Modal {
 }
 
 export interface AppCommand {
-    name: string,
     data: ContextMenuCommandBuilder,
-    execute: (message: Message) => Promise<void>
+    execute: (message: Message) => Promise<void>,
+    roles?: string[], //liste des roles autorisés à utiliser la commande (si vide ou non défini, tout le monde peut utiliser la commande)
 }
 
+export interface HelpCommand {
+    name: string,
+    description: string,
+    args?: { name: string, description: string,required: boolean }[],
+}
 
 
 export {}

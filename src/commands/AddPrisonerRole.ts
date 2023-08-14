@@ -10,7 +10,7 @@ import {
 } from "../modules/discordFunction";
 
 const command: SlashCommand = {
-    name: "prisonnier",
+    roles: [process.env.ROLE_ADMIN_ID],
     data: new SlashCommandBuilder()
         .setName('prisonnier')
         .setDescription("Mettre un utilisateur en prison")
