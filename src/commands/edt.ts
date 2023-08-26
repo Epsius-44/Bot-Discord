@@ -4,8 +4,10 @@ import {discordReply} from "../modules/discordFunction";
 import {getEdtEpsi} from "../modules/edt";
 
 const date_command = new Date();
-const day_command = date_command.getDay();
+const day_command = date_command.getDate();
+const day_string = day_command < 10 ? `0${day_command}` : day_command.toString()
 const month_command = date_command.getMonth() + 1;
+const month_string = month_command < 10 ? `0${month_command}` : month_command.toString()
 const year_command = date_command.getFullYear();
 
 const command: SlashCommand = {
@@ -16,7 +18,7 @@ const command: SlashCommand = {
             .setDescription("Votre identifiant (ex: jean.dupont)")
             .setRequired(true))
         .addStringOption(option => option.setName('date')
-            .setDescription(`La date de l'emploi du temps (ex: ${day_command}/${month_command}/${year_command} ou ${year_command}-${month_command}-${day_command}) (Par défaut: date du jour)`)
+            .setDescription(`La date de l'emploi du temps (ex: ${day_string}/${month_string}/${year_command} ou ${day_string}-${month_string}-${day_command}) (Par défaut: date du jour)`)
             .setRequired(false))
         .setDMPermission(true),
     execute: async (interaction) => {
@@ -74,26 +76,21 @@ const command: SlashCommand = {
         const identifiantSplit = identifiant.split('.');
         identifiantSplit[0] = identifiantSplit[0].charAt(0).toUpperCase() + identifiantSplit[0].slice(1);
         identifiantSplit[1] = identifiantSplit[1].charAt(0).toUpperCase() + identifiantSplit[1].slice(1);
+
+        const date_month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+        const date_day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
         //récupérer la réponse et l'afficher
         const embed = new EmbedBuilder()
             .setTitle(`Emploi du temps de ${identifiantSplit[0]} ${identifiantSplit[1]}`)
+            .setURL(`https://edtmobiliteng.wigorservices.net//WebPsDyn.aspx?action=posEDTBEECOME&serverid=C&Tel=${identifiant}&date=${date_month}/${date_day}/${date.getFullYear()}`)
             .setDescription(`Date: <t:${Math.floor(date.getTime() / 1000)}:D>`)
             .setThumbnail('https://cdn.icon-icons.com/icons2/317/PNG/512/calendar-clock-icon_34472.png')
             .setColor(0x0099ff);
 
         const fields = [];
         response.forEach((cours) => {
-            const dateStartHour = new Date(cours.start_hour,);
-            const dateEndHour = new Date(cours.end_hour);
-
-            const startHour = dateStartHour.getHours();
-            const startMinute = dateStartHour.getMinutes();
-            const startHourString = `${startHour}h${startMinute == 0 ? '' : (startMinute < 10 ? '0' + startMinute : startMinute)}`;
-            const endHour = dateEndHour.getHours();
-            const endMinute = dateEndHour.getMinutes();
-            const endHourString = `${endHour}h${endMinute == 0 ? '' : (endMinute < 10 ? '0' + endMinute : endMinute)}`;
             fields.push({
-                name: `${startHourString} - ${endHourString} : ${cours.name}`,
+                name: `${cours.start_hour} - ${cours.end_hour} : ${cours.name}`,
                 value: `:teacher: : ${cours.teacher}\n:school: : ${cours.room}`,
                 inline: false
             });

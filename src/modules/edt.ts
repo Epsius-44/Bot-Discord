@@ -2,7 +2,7 @@ import {IEdtEpsiJS} from "../types";
 
 export async function getEdtEpsi(login: string, date: Date, timeoutMs: number): Promise<IEdtEpsiJS[]> {
     try {
-        const fetchPromise = fetch(`https://epsius-connect.luzilab.net/edt-epsi?login=${login}&date=${date.getTime().toString()}`, {
+        const fetchPromise = fetch(`https://epsius-connect.luzilab.net/api/edt-epsi?login=${login}&date=${date.getTime().toString()}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
