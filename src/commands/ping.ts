@@ -2,7 +2,7 @@ import {SlashCommand} from "../types";
 import {SlashCommandBuilder, PermissionFlagsBits} from "discord.js";
 
 const command: SlashCommand = {
-    roles: [], //@everyone
+    roles: [process.env.ROLE_ADMIN_ID], //@root
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription("Test d'intéraction avec le bot")
