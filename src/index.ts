@@ -29,7 +29,11 @@ const handlersDirs = join(__dirname, "./handlers");
 
 readdirSync(handlersDirs).forEach(file => {
     require(`${handlersDirs}/${file}`)(client);
-})
+});
+
+process.on("uncaughtException", (error, origin) => client.log.error(error.message, {...error, origin}));
+process.on("unhandledRejection", (reason) => client.log.error(reason.toString()));
+process.on('exit', code => client.log.warn(`Le processus s'est arrêté avec un code`, {code}));
 
 // Login client to Discord
 client.login(process.env.DISCORD_TOKEN);

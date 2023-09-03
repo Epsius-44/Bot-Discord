@@ -1,7 +1,7 @@
 import {SlashCommand} from "../types";
 import {supportType} from "../modules/constant";
 import {
-    SlashCommandBuilder,
+    SlashCommandBuilder, PermissionFlagsBits,
     ModalBuilder, ActionRowBuilder, TextInputBuilder,TextInputStyle
 } from "discord.js";
 
@@ -18,6 +18,9 @@ const command: SlashCommand = {
                 ...supportType
             )
         )
+        // l'utilisateur doit avoir la permission de mute les membres pour utiliser cette commande
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+        // la commande ne peut pas être utilisée en DM
         .setDMPermission(false),
     execute: async (interaction) => {
         //récupération du type de demande

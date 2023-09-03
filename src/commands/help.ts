@@ -2,7 +2,6 @@ import {HelpCommand, SlashCommand} from "../types";
 import {
     EmbedBuilder,
     GuildMember,
-    RESTPostAPIChatInputApplicationCommandsJSONBody,
     SlashCommandBuilder,
     ToAPIApplicationCommandOptions
 } from "discord.js";
