@@ -7,7 +7,8 @@ const event: BotEvent = {
     once: true,
     execute(client: Client) {
         client.log.info(`Le bot est disponible en tant que ${client.user.tag} (${client.user.id})`, {"type": "Bot Ready", "file": __filename, "dir": __dirname});
-        client.user.setActivity(`Version: ${require('../../package.json').version}`, { type: ActivityType.Custom });
+        const botStatus = (process.env.BOT_MESSAGE === "")? `Version: ${require('../../package.json').version}` : process.env.BOT_MESSAGE;
+        client.user.setActivity(botStatus, { type: ActivityType.Custom });
     }
 }
 

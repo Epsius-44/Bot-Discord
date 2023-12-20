@@ -9,7 +9,7 @@ const command: ButtonActionMessage = {
         const action = interaction.customId.split('_')[1];
         let check = false;
         user.roles.cache.forEach(role => {
-            if (ROLES.includes(<string>role.id)) {
+            if (ROLES.includes(<string>role.id) && !(ROLES[ACTIONS.indexOf(action)].toString() === "1173260123507015750" && <string>role.id === "1173260048856776787")) {
                 check = true;
                 return interaction.reply({
                     content: `${user} vous avez déjà le role \`${role.name}\` de spécialité, nous ne pouvons pas vous donner aussi le role <@&${ROLES[ACTIONS.indexOf(action)]}>`,

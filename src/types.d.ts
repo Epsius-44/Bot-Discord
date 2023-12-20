@@ -27,6 +27,7 @@ declare global {
             CURL_PING_URL: string,
             CURL_PING_INTERVAL: string,
             TIMEOUT_MS_EDT: string,
+            BOT_MESSAGE: string,
         }
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@luzilab.epsinyx/bot-discord",
-  "version": "lzl-1.0.1",
+  "version": "lzl-1.0.2",
   "description": "Bot Discord développé en TypeScript pour serveur Discord des B3 de l'EPSI WIS Nantes de la promo 2023-2024.",
   "main": "src/index.ts",
   "scripts": {
@@ -36,6 +36,7 @@
   "homepage": "https://gitlab.com/Luzilab/epsinyx/bot-discord#readme",
   "devDependencies": {
     "@types/node": "^20.4.7",
+    "oxlint": "^0.0.20",
     "typescript": "^5.1.6"
   },
   "dependencies": {
