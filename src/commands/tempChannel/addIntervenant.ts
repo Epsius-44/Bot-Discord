@@ -30,6 +30,8 @@ export default async function addIntervenant(
     await channel_select.permissionOverwrites.edit(intervenant,
         {
             ViewChannel: true,
+            ManageMessages: true,
+            MentionEveryone: true,
         }
     )
     await discordReply(interaction, `L'intervenant ${intervenant} a été ajouté avec succès.`)

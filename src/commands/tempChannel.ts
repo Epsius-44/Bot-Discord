@@ -150,12 +150,6 @@ const command: SlashCommand = {
         //vérifié qie le salon existe et qu'il est bien un salon temporaire
         let channel_select_option: TextChannel = interaction.channel as TextChannel;
 
-        //vérifier que l'utilisateur a la permission de créer/modifier/archiver des salons
-        if (member.roles.cache.has(role_admin.id) && subcommand != "delete") {
-            await discordReply(interaction, "Vous n'avez pas la permission d'utiliser cette commande");
-            return;
-        }
-
         if (subcommand != "add") {
             //vérifier si un salon a été donné en option et qu'il est accessible à l'utilisateur
             if (channel_select_get && temp_channels?.has(channel_select_get.value.toString())) {
