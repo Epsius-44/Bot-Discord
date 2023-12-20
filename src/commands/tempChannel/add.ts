@@ -33,6 +33,10 @@ export default async function addTempChannel(
         {
             id: role?.id,
             allow: [PermissionsBitField.Flags.ViewChannel]
+        },
+        {
+            id: process.env.ROLE_RESPONSABLE_ID,
+            allow: [PermissionsBitField.Flags.MentionEveryone]
         }
     ]
 
