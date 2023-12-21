@@ -11,7 +11,10 @@ const command: SlashCommand = {
         // la commande ne peut pas être utilisée en DM
         .setDMPermission(false),
     execute: async (interaction) => {
-        await interaction.reply('PONG !');
+        await interaction.reply({
+                content: `Version du bot : ${require('../../package.json').version}`,
+                ephemeral: true
+            });
     }
 }
 
