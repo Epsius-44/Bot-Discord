@@ -15,6 +15,7 @@ import deleteTempChannel from "./tempChannel/delete";
 import renameTempChannel from "./tempChannel/rename";
 import archiveTempChannel from "./tempChannel/archive";
 import addTempChannel from "./tempChannel/add";
+import updateAllPerms from "./tempChannel/updateAllPerms.ts.bck";
 
 
 const categorie_id = process.env.CHANNEL_TEMP_CATEGORIE_ID;
@@ -104,6 +105,11 @@ const command: SlashCommand = {
                     .setAutocomplete(true)
                 )
         )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('update_all_perms')
+                .setDescription("Met à jour les permissions de tous les salons temporaires")
+        )
         // la commande ne peut pas être utilisée en DM
         .setDMPermission(false),
 
@@ -150,7 +156,7 @@ const command: SlashCommand = {
         //vérifié qie le salon existe et qu'il est bien un salon temporaire
         let channel_select_option: TextChannel = interaction.channel as TextChannel;
 
-        if (subcommand != "add") {
+        if (subcommand != "add" && subcommand != "update_all_perms") {
             //vérifier si un salon a été donné en option et qu'il est accessible à l'utilisateur
             if (channel_select_get && temp_channels?.has(channel_select_get.value.toString())) {
                 channel_select_option = interaction.guild?.channels.cache.get(channel_select_get.value.toString()) as TextChannel;
@@ -184,6 +190,14 @@ const command: SlashCommand = {
             case "add_intervenant":
                 await addIntervenant(interaction, channel_select_option, categorie_id);
                 break;
+            case "update_all_perms":
+                if (!member.roles.cache.has(role_admin.id)) {
+                    await interaction.reply({content: "ET NON !", ephemeral: true})
+                }
+                else{
+                    // await updateAllPerms(interaction, member)
+                    await interaction.reply({content: "Commande désactivée, voir avec l'admin en cas de besoin", ephemeral: true})
+                }
         }
     }
 }
