@@ -2,9 +2,8 @@ FROM node:lts as builder
 
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm ci
 COPY . .
-RUN npm run build
+RUN npm ci && npm run build
 
 FROM node:lts-slim
 ENV NODE_ENV production

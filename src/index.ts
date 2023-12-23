@@ -37,4 +37,3 @@ process.on('exit', code => client.log.warn(`Le processus s'est arrêté avec un 
 
 // Login client to Discord
 client.login(process.env.DISCORD_TOKEN);
-

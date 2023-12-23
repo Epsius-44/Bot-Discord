@@ -1,4 +1,5 @@
 image: node:18.17.0
+
 install:
   stage: .pre
   rules:
@@ -13,6 +14,7 @@ install:
   script:
     - &npm_install
       npm install --quiet --no-progress --cache=.cache/npm
+
 build:
   stage: build
   rules:
@@ -37,22 +39,23 @@ build:
       - package.json
       - package-lock.json
       - .env
-bot-upgrade:
-  stage: deploy
+
+build-docker-image:
+  stage: build
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
   rules:
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
       changes:
         - src/**/*
         - package.json
         - package-lock.json
-  needs:
-    - build
-  cache: *pull_cache
   script:
-    - *npm_install
-    - *build_bot
-    - apt-get update -qq && apt-get install -y -qq lftp
-    - lftp -c "set ssl:verify-certificate no; set sftp:auto-confirm yes; open sftp://${SFTP_BOT_USER}:${SFTP_BOT_PSW}@${SFTP_BOT_SITE}:2022; mirror -v ./ / --reverse --ignore-time --parallel=10 --exclude-glob .git* --exclude src/ --exclude LICENSE --exclude README.adoc --exclude tsconfig.json --exclude .npm/ --exclude node_modules --exclude .git/ --exclude docs/"
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE .
+    - docker push $CI_REGISTRY_IMAGE
+
 docs-update:
   stage: deploy
   rules:
