@@ -33,12 +33,6 @@ build:
     - *npm_install
     - &build_bot
         npx tsc
-  artifacts:
-    paths:
-      - dist/
-      - package.json
-      - package-lock.json
-      - .env
 
 build-docker-image:
   stage: build
@@ -55,6 +49,18 @@ build-docker-image:
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker build -t $CI_REGISTRY_IMAGE .
     - docker push $CI_REGISTRY_IMAGE
+
+bot-update:
+  stage: deploy
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+      changes:
+        - src/**/*
+        - package.json
+        - package-lock.json
+  needs: build-docker-image
+  script:
+    - curl -X POST $API_BOT_UPDATE
 
 docs-update:
   stage: deploy
