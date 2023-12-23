@@ -58,7 +58,8 @@ bot-update:
         - src/**/*
         - package.json
         - package-lock.json
-  needs: build-docker-image
+  needs: 
+    - build-docker-image
   script:
     - curl -X POST $API_BOT_UPDATE
 
