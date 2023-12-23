@@ -15,7 +15,7 @@ import deleteTempChannel from "./tempChannel/delete";
 import renameTempChannel from "./tempChannel/rename";
 import archiveTempChannel from "./tempChannel/archive";
 import addTempChannel from "./tempChannel/add";
-import updateAllPerms from "./tempChannel/updateAllPerms.ts.bck";
+// import updateAllPerms from "./tempChannel/updateAllPerms.ts.bck";
 
 
 const categorie_id = process.env.CHANNEL_TEMP_CATEGORIE_ID;

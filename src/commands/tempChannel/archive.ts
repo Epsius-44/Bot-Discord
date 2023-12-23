@@ -26,10 +26,17 @@ export default async function archiveTempChannel(
 
     //ajouter les permissions de lecture pour les personnes et rôles ayant des permissions sur le salon (sauf le rôle @everyone)
     permission.forEach((perm) => {
-        if (perm.id !== interaction.guild?.roles.everyone.id) {
+        if (perm.id !== interaction.guild?.roles.everyone.id && perm.id !== process.env.ROLE_RESPONSABLE_ID && perm.id !== process.env.ROLE_INTERVENANT_ID) {
             permission_archive.push({
                 id: perm.id,
                 allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.ReadMessageHistory],
+                deny: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.AttachFiles, PermissionFlagsBits.SendMessages],
+                type: perm.type
+            })
+        } else if (perm.id === process.env.ROLE_RESPONSABLE_ID || perm.id === process.env.ROLE_INTERVENANT_ID) {
+            permission_archive.push({
+                id: perm.id,
+                allow: [],
                 deny: [PermissionFlagsBits.AddReactions, PermissionFlagsBits.AttachFiles, PermissionFlagsBits.SendMessages],
                 type: perm.type
             })
