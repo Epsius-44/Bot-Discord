@@ -16,7 +16,6 @@ import renameTempChannel from "./tempChannel/rename";
 import archiveTempChannel from "./tempChannel/archive";
 import addTempChannel from "./tempChannel/add";
 import cleanVoiceChannel from "./tempChannel/cleanVoiceChannel";
-// import updateAllPerms from "./tempChannel/updateAllPerms.ts.bck";
 
 
 const categorie_id = process.env.CHANNEL_TEMP_CATEGORIE_ID;
@@ -110,11 +109,6 @@ const command: SlashCommand = {
             subcommand
                 .setName('clean_voice_channel')
                 .setDescription("Supprime les salons vocaux vides s'ils n'ont pas été supprimés automatiquement"))
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('update_all_perms')
-                .setDescription("Met à jour les permissions de tous les salons temporaires")
-        )
         // la commande ne peut pas être utilisée en DM
         .setDMPermission(false),
 
@@ -195,18 +189,13 @@ const command: SlashCommand = {
             case "add_intervenant":
                 await addIntervenant(interaction, channel_select_option, categorie_id);
                 break;
+            // TODO: A retirer dans la prochaine version mineure (1.3.1 -> 1.4.0) permet de gérer le décommissionnement d'une sous commande
             case "update_all_perms":
-                if (!member.roles.cache.has(role_admin.id)) {
-                    await interaction.reply({content: "ET NON !", ephemeral: true})
-                }
-                else{
-                    // await updateAllPerms(interaction, member)
-                    await interaction.reply({content: "Commande désactivée, voir avec l'admin en cas de besoin", ephemeral: true})
-                }
-                break;
+                await interaction.reply({content: "Commande désactivée, voir avec l'admin en cas de besoin", ephemeral: true})
+
             case "clean_voice_channel":
-                    await cleanVoiceChannel(interaction)
-                    break;
+                await cleanVoiceChannel(interaction)
+                break;
         }
     }
 }
