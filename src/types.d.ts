@@ -19,6 +19,7 @@ declare global {
             PRISONER_ROLE_ID: string,
             CLASSROOM_LIST: string,
             CHANNEL_TEMP_CATEGORIE_ID: string,
+            CHANNEL_TEMP_VOCAL_ID: string,
             ROLE_RESPONSABLE_ID: string,
             CHANNEL_ARCHIVE_CATEGORIE_ID: string,
             ROLE_INTERVENANT_ID: string,
