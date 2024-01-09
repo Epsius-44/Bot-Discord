@@ -15,6 +15,7 @@ import deleteTempChannel from "./tempChannel/delete";
 import renameTempChannel from "./tempChannel/rename";
 import archiveTempChannel from "./tempChannel/archive";
 import addTempChannel from "./tempChannel/add";
+import cleanVoiceChannel from "./tempChannel/cleanVoiceChannel";
 // import updateAllPerms from "./tempChannel/updateAllPerms.ts.bck";
 
 
@@ -107,6 +108,10 @@ const command: SlashCommand = {
         )
         .addSubcommand(subcommand =>
             subcommand
+                .setName('clean_voice_channel')
+                .setDescription("Supprime les salons vocaux vides s'ils n'ont pas été supprimés automatiquement"))
+        .addSubcommand(subcommand =>
+            subcommand
                 .setName('update_all_perms')
                 .setDescription("Met à jour les permissions de tous les salons temporaires")
         )
@@ -156,7 +161,7 @@ const command: SlashCommand = {
         //vérifié qie le salon existe et qu'il est bien un salon temporaire
         let channel_select_option: TextChannel = interaction.channel as TextChannel;
 
-        if (subcommand != "add" && subcommand != "update_all_perms") {
+        if (subcommand != "add" && subcommand != "update_all_perms" && subcommand != "clean_voice_channel") {
             //vérifier si un salon a été donné en option et qu'il est accessible à l'utilisateur
             if (channel_select_get && temp_channels?.has(channel_select_get.value.toString())) {
                 channel_select_option = interaction.guild?.channels.cache.get(channel_select_get.value.toString()) as TextChannel;
@@ -198,6 +203,10 @@ const command: SlashCommand = {
                     // await updateAllPerms(interaction, member)
                     await interaction.reply({content: "Commande désactivée, voir avec l'admin en cas de besoin", ephemeral: true})
                 }
+                break;
+            case "clean_voice_channel":
+                    await cleanVoiceChannel(interaction)
+                    break;
         }
     }
 }
