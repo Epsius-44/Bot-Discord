@@ -82,8 +82,8 @@ const command: SlashCommand = {
         //récupérer la réponse et l'afficher
         const embed = new EmbedBuilder()
             .setTitle(`Emploi du temps de ${identifiantSplit[0]} ${identifiantSplit[1]}`)
-            .setURL(`https://edtmobiliteng.wigorservices.net//WebPsDyn.aspx?action=posEDTBEECOME&serverid=C&Tel=${identifiant}&date=${date_month}/${date_day}/${date.getFullYear()}`)
-            .setDescription(`Date: <t:${Math.floor(date.getTime() / 1000)}:D>`)
+            .setURL(`https://ws-edt-cd.wigorservices.net/WebPsDyn.aspx?action=posEDTLMS&serverid=C&Tel=${identifiant}&date=${date_month}/${date_day}/${date.getFullYear()}`)
+            .setDescription(`Date: <t:${Math.floor(date.getTime() / 1000)}:D>\n :warning: Cette commande ne gère pas les salles multiples et en affique qu'une :warning:`)
             .setThumbnail('https://cdn.icon-icons.com/icons2/317/PNG/512/calendar-clock-icon_34472.png')
             .setColor(0x0099ff);
 
