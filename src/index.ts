@@ -1,5 +1,5 @@
 // Import
-import {Client, Collection, GatewayIntentBits} from "discord.js";
+import {Client, Collection, IntentsBitField} from "discord.js";
 import * as dotenv from "dotenv";
 import {join} from "path";
 import {readdirSync} from "fs";
@@ -11,16 +11,18 @@ dotenv.config();
 dotenv.config({ path: ".env.local", override: true });
 
 // Setup client
+const myIntents = new IntentsBitField();
+myIntents.add(
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.MessageContent
+);
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
+    intents: myIntents
 });
 
 client.slashCommands = new Collection<string, SlashCommand>();
-client.log = new Logger(process.env.LOGTAIL_TOKEN);
+client.log = new Logger();
 
 const handlersDirs = join(__dirname, "./handlers");
 
@@ -30,4 +32,3 @@ readdirSync(handlersDirs).forEach(file => {
 
 // Login client to Discord
 client.login(process.env.DISCORD_TOKEN);
-

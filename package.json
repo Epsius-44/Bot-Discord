@@ -1,11 +1,12 @@
 {
   "name": "@luzilab.epsinyx/bot-discord",
-  "version": "0.1.0",
-  "description": "Bot Discord développé en TypeScript pour serveur Discord des B3 de l'EPSI WIS Nantes de la promo 2023-2024.",
+  "version": "2.0.0-alpha.0",
+  "description": "Bot Discord développé en TypeScript pour serveur Discord des I1 de l'EPSI WIS Nantes de la promo 2024-2025.",
   "main": "src/index.ts",
   "scripts": {
     "start": "node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "build:start": "tsc && node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,9 @@
     {
       "name": "Louis Ducruet",
       "email": "lducruet74@gmail.com"
+    },
+    {
+      "name": "Tom Chanson"
     }
   ],
   "license": "MPL-2.0",
@@ -33,12 +37,11 @@
   },
   "homepage": "https://gitlab.com/Luzilab/epsinyx/bot-discord#readme",
   "devDependencies": {
-    "@types/node": "^20.4.7",
-    "typescript": "^5.1.6"
+    "@types/node": "^20.12.8",
+    "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@logtail/node": "^0.4.5",
-    "discord.js": "^14.12.1",
-    "dotenv": "^16.3.1"
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5"
   }
 }

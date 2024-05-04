@@ -15,15 +15,15 @@ module.exports = async (client: Client) => {
         body.push(command.data.toJSON());
         client.slashCommands.set(command.name, command);
 
-        client.log.debug(`La commande ${command.name} est chargée (${commandsDirs}/${file})`, {"type": "Local Load", "file": __filename})
+        client.log.debug(`La commande ${command.name} est chargée (${commandsDirs}/${file})`)
     });
 
     const rest = new REST({version: '10'}).setToken(process.env.DISCORD_TOKEN);
 
     try {
         await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID), {body: body});
-        client.log.info(`Les commandes sont envoyées à Discord`, {"type": "Discord API Request", "file": __filename});
+        client.log.info(`Les commandes sont envoyées à Discord`);
     } catch (error) {
-        client.log.error(`Lors de l'envoie des commandes à discord : ${error}`, {"type": "Discord API Request", "file": __filename});
+        client.log.error(`Lors de l'envoie des commandes à discord : ${error}`);
     }
 }

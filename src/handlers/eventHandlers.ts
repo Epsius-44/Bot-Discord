@@ -15,6 +15,6 @@ module.exports = (client: Client) => {
             ? client.once(event.name, (...args) => event.execute(...args))
             : client.on(event.name,  (...args) => event.execute(...args));
 
-        client.log.info(`L'évènement ${event.name} est terminé (${eventsDir}/${file})`, {"type": "Local Load", "file": __filename})
+        client.log.info(`L'évènement ${event.name} est terminé (${eventsDir}/${file})`)
     });
 }
