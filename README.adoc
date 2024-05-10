@@ -10,4 +10,4 @@ ifdef::env-gitlab[:outfilesuffix: .adoc]
 :url-ui-repo: {url-org}/ui-documentation
 :url-issues: {url-repo}/issues
 
-{url-repo}[Bot Discord] développé en TypeScript pour serveur Discord des B3 de l'EPSI WIS Nantes de la promo 2023-2024.
+{url-repo}[Bot Discord] développé en TypeScript pour serveur Discord des I1 de l'EPSI WIS Nantes de la promo 2024-2025.

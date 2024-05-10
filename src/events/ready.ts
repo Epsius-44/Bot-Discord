@@ -6,6 +6,7 @@ const event: BotEvent = {
     once: true,
     execute(client: Client) {
         client.log.info(`Le bot est disponible en tant que ${client.user.tag} (${client.user.id})`);
+        client.activeHa.start();
     }
 }
 

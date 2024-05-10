@@ -1,0 +1,31 @@
+{
+  "name": "@luzilab.epsinyx/ha-redis",
+  "version": "0.1.0",
+  "description": "Un système de haute disponibilité (Actif/Passif) basé sur Redis",
+  "main": "index.node",
+  "scripts": {
+    "build": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
+    "build-debug": "npm run build --",
+    "build-release": "npm run build -- --release",
+    "install": "npm run build-release",
+    "test": "cargo test"
+  },
+  "author": "Louis DUCRUET",
+  "license": "ISC",
+  "devDependencies": {
+    "cargo-cp-artifact": "^0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/Luzilab/epsinyx/ha-redis.git"
+  },
+  "keywords": [
+    "redis",
+    "ha",
+    "rust"
+  ],
+  "bugs": {
+    "url": "https://gitlab.com/Luzilab/epsinyx/ha-redis/issues"
+  },
+  "homepage": "https://gitlab.com/Luzilab/epsinyx/ha-redis#readme"
+}

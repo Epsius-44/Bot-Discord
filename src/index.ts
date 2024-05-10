@@ -5,6 +5,7 @@ import {join} from "path";
 import {readdirSync} from "fs";
 import {SlashCommand} from "./types";
 import {Logger} from "./modules/logger";
+import {ActiveHa} from "./modules/active-ha";
 
 // Load env var
 dotenv.config();
@@ -23,6 +24,7 @@ const client = new Client({
 
 client.slashCommands = new Collection<string, SlashCommand>();
 client.log = new Logger();
+client.activeHa = new ActiveHa(client);
 
 const handlersDirs = join(__dirname, "./handlers");
 

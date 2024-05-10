@@ -1,0 +1,17 @@
+[package]
+name = "ha-redis"
+version = "0.1.0"
+description = "Un système de haute disponibilitée (Actif/Passif) basé sur Redis"
+authors = ["Louis DUCRUET"]
+license = "ISC"
+edition = "2021"
+exclude = ["index.node"]
+
+[lib]
+crate-type = ["cdylib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+neon = "1"
+redis = { version = "0.25", features = ["tls-native-tls"] }

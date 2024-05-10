@@ -37,11 +37,13 @@
   },
   "homepage": "https://gitlab.com/Luzilab/epsinyx/bot-discord#readme",
   "devDependencies": {
-    "@types/node": "^20.12.8",
+    "@types/node": "^20.12.11",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "discord.js": "^14.14.1",
-    "dotenv": "^16.4.5"
+    "@luzilab.epsinyx/ha-redis": "file:modules/ha-redis",
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5",
+    "ioredis": "^5.4.1"
   }
 }
