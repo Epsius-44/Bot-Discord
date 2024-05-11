@@ -39,7 +39,7 @@ export interface InstanceInfo {
     id: string,
     name: string,
     botVersion: string,
-    NodeVersion: string,
+    nodeVersion: string,
     isOnline: boolean,
     isMaster: boolean,
 }

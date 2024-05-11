@@ -36,11 +36,11 @@ const command: SlashCommand = {
                 let clusterInfo: InstanceInfo[] = ha_redis.getClusterInfo(process.env.LZLHA_REDIS_URI)
                 for (let instanceInfo of clusterInfo) {
                     haEmbed.addFields({
-                        name: `Instance ${instanceInfo["id"]} : ${instanceInfo["name"]}`,
-                        value: `- Version du bot : \`${instanceInfo["botVersion"]}\`\n` +
-                            `- Version de NodeJS : \`${instanceInfo["nodeVersion"]}\`\n` +
-                            `- En ligne : ${instanceInfo["isOnline"] ? ":white_check_mark:" : ":x:"}\n` +
-                            `- Maître : ${instanceInfo["isMaster"] ? ":white_check_mark:" : ":x:"}`,
+                        name: `Instance ${instanceInfo.id} : ${instanceInfo.name}`,
+                        value: `- Version du bot : \`${instanceInfo.botVersion}\`\n` +
+                            `- Version de NodeJS : \`${instanceInfo.nodeVersion}\`\n` +
+                            `- En ligne : ${instanceInfo.isOnline ? ":white_check_mark:" : ":x:"}\n` +
+                            `- Maître : ${instanceInfo.isMaster ? ":white_check_mark:" : ":x:"}`,
                         inline: true
                     })
                 }
