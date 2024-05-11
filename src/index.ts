@@ -22,7 +22,8 @@ const client = new Client({
     intents: myIntents
 });
 
-client.slashCommands = new Collection<string, SlashCommand>();
+client.commands = new Collection<string, SlashCommand>();
+
 client.log = new Logger();
 if (process.env.LZLHA_IS_MASTER !== "true") {
     process.env.LZLHA_IS_MASTER = "false";

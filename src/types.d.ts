@@ -1,4 +1,9 @@
-import {Collection, CommandInteraction, SlashCommandBuilder} from "discord.js";
+import {
+    Collection,
+    CommandInteraction,
+    SlashCommandBuilder,
+    SlashCommandOptionsOnlyBuilder
+} from "discord.js";
 import {Logger} from "./modules/logger";
 import {ActiveHa} from "./modules/active-ha";
 
@@ -17,7 +22,7 @@ declare global {
 
 declare module "discord.js" {
     export interface Client {
-        slashCommands: Collection<string, SlashCommand>,
+        commands: Collection<string, SlashCommand>,
         log: Logger;
         activeHa: ActiveHa;
     }
@@ -30,9 +35,9 @@ export interface BotEvent {
 }
 
 export interface SlashCommand {
-    name: string,
-    data: SlashCommandBuilder,
-    execute: (interaction: CommandInteraction) => Promise<void>
+    data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder,
+    execute: (interaction: CommandInteraction) => Promise<void>,
+    roles?: string[], // Liste des rôles autorisés à utiliser la commande
 }
 
 export interface InstanceInfo {

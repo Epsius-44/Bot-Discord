@@ -5,12 +5,11 @@ import * as ha_redis from "@luzilab.epsinyx/ha-redis";
 import * as packageData from "../../package.json";
 
 const command: SlashCommand = {
-    name: "ping",
     data: new SlashCommandBuilder()
-        .setName('ping')
+        .setName("ping")
         .setDescription("Affiche l'état du bot à un instant T")
-        .setDefaultMemberPermissions(PermissionsBitField.Flags.ModerateMembers)
         .setDMPermission(false),
+    roles: [],
     execute: async (interaction) => {
         const versionEmbed = new EmbedBuilder()
             .setTitle("Version et dépendances du bot")

@@ -6,12 +6,13 @@ const event: BotEvent = {
     once: false,
     async execute(interaction: Interaction) {
         if (process.env.LZLHA_IS_MASTER === "false") {
-            interaction.client.log.info("This bot is not the master bot. Ignoring interaction.");
+            interaction.client.log.debug(`Ignore l'interaction ${interaction.id} de ${interaction.user.tag} car je ne suis pas le master`);
             return;
         }
+
         if (!interaction.isChatInputCommand()) return;
 
-        const command = interaction.client.slashCommands.get(interaction.commandName);
+        const command = interaction.client.commands.get(interaction.commandName);
 
         if (!command) return;
 
