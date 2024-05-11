@@ -1,8 +1,7 @@
+import {Client, ActivityType} from "discord.js";
 // @ts-ignore
 import * as ha_redis from '@luzilab.epsinyx/ha-redis';
-import {Client, ActivityType} from "discord.js";
-
-const packageInfo = require('../../package.json');
+import * as packageInfo from '../../package.json';
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 

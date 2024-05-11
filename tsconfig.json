@@ -3,6 +3,7 @@
     "target": "ES2016",
     "module": "CommonJS",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "outDir": "dist"

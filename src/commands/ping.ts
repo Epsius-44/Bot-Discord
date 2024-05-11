@@ -1,9 +1,8 @@
 import {InstanceInfo, SlashCommand} from "../types";
 import {EmbedBuilder, PermissionsBitField, SlashCommandBuilder} from "discord.js";
 // @ts-ignore
-import * as ha_redis from '@luzilab.epsinyx/ha-redis';
-
-const packageData = require('../../package.json');
+import * as ha_redis from "@luzilab.epsinyx/ha-redis";
+import * as packageData from "../../package.json";
 
 const command: SlashCommand = {
     name: "ping",
