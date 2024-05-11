@@ -35,4 +35,13 @@ export interface SlashCommand {
     execute: (interaction: CommandInteraction) => Promise<void>
 }
 
+export interface InstanceInfo {
+    id: string,
+    name: string,
+    botVersion: string,
+    NodeVersion: string,
+    isOnline: boolean,
+    isMaster: boolean,
+}
+
 export {}

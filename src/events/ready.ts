@@ -6,7 +6,7 @@ const event: BotEvent = {
     once: true,
     execute(client: Client) {
         client.log.info(`Le bot est disponible en tant que ${client.user.tag} (${client.user.id})`);
-        if (process.env.LZLHA_IS_MASTER === 'false') {
+        if (client.activeHa) {
             client.log.info('Activation du module de haute disponibilité');
             client.activeHa.start();
         } else {

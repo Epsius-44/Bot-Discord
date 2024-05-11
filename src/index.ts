@@ -24,7 +24,10 @@ const client = new Client({
 
 client.slashCommands = new Collection<string, SlashCommand>();
 client.log = new Logger();
-client.activeHa = new ActiveHa(client);
+if (process.env.LZLHA_IS_MASTER !== "true") {
+    process.env.LZLHA_IS_MASTER = "false";
+    client.activeHa = new ActiveHa(client);
+}
 
 const handlersDirs = join(__dirname, "./handlers");
 
