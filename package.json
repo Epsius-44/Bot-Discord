@@ -43,7 +43,6 @@
   "dependencies": {
     "@luzilab.epsinyx/ha-redis": "file:modules/ha-redis",
     "discord.js": "^14.15.2",
-    "dotenv": "^16.4.5",
-    "ioredis": "^5.4.1"
+    "dotenv": "^16.4.5"
   }
 }
