@@ -1,1 +1,34 @@
-EN COURS DE REDACTION
+ifdef::env-gitlab[]
+= Luzilab/Epsiyx : Contribuer
+endif::[]
+ifdef::env-github[]
+= Epsius : Contribuer
+endif::[]
+// Settings
+ifdef::env-gitlab[:outfilesuffix: .adoc]
+// Project URLs
+:url-project: https://antora.org
+ifdef::env-gitlab[]
+:url-org: https://gitlab.com/luzilab
+:url-group: {url-org}/epsinyx
+:url-repo: {url-group}/bot-discord
+endif::[]
+ifdef::env-github[]
+:url-org: https://github.com/Epsius-44
+:url-group: {url-org}
+:url-repo: {url-group}/Bot-Discord
+endif::[]
+:url-issues: {url-repo}/issues
+
+ifdef::env-github[]
+IMPORTANT: CE REPOSITORY N'EST PAS LE REPOSITORY PRINCIPAL DU PROJET. LE REPOSITORY PRINCIPAL EST HÉBERGÉ SUR GITLAB.
+
+Aucune contribution ne sera acceptée sur ce repository. +
+Pour contribuer, rendez-vous sur le repository principal du projet (privé) : https://gitlab.com/luzilab/epsinyx/bot-discord
+endif::[]
+ifdef::env-gitlab[]
+Pour que le code source reste propre et lisible dans le temps, nous avons fait le choix de ne pas accepter de contributions externes et de restreindre l'accès au repository principal du projet.
+
+Cependant, le code source des branches protégées est accessible dans un repository public miroir sur GitHub : https://github.com/Epsius-44/Bot-Discord
+endif::[]
+

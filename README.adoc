@@ -1,4 +1,9 @@
+ifdef::env-gitlab[]
 = Luzilab/Epsiyx : Bot Discord
+endif::[]
+ifdef::env-github[]
+= Epsius : Bot Discord
+endif::[]
 // Settings
 ifdef::env-gitlab[:outfilesuffix: .adoc]
 // Project URLs
