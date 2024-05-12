@@ -32,3 +32,26 @@ Pour que le code source reste propre et lisible dans le temps, nous avons fait l
 Cependant, le code source des branches protégées est accessible dans un repository public miroir sur GitHub : https://github.com/Epsius-44/Bot-Discord
 endif::[]
 
+== Comment contribuer
+
+Pour contribuer à ce projet, vous devez le cloner sur votre machine locale et créer une branche à partir de la branche `main` (ou `dev-v2` si la modification concerne la V2).
+
+Le nom de la branche doit être explicite en décrivant la modification apportée (ex: `feature/ajout-commande-help`).
+
+.Convention de nommages des branches
+* Ajout / Modification d'une fonctionnalité : `feature/`
+* Correction d'un bug : `fix/`
+* Modules rust : `rust/`
+* Amélioration de la documentation : `doc/`
+* Refactoring : `refactor/`
+* Mise à jour des dépendances : `deps/`
+
+Une fois la branche créée, vous pouvez effectuer les modifications nécessaires et tester votre code sur le serveur de test `Beta B3` avec votre propre bot Discord.
+
+Une fois les modifications testées et validées, vous pouvez créer une Merge Request (MR) sur le repository principal.
+
+== Et après ?
+
+Une fois la MR validée, vous devez supprimer la branche. Vos modifications seront alors intégrées au projet sur le bot de pré-production `Epsinyx`.
+
+La modification ne sera propagée sur le bot de production `Epsius` qu'une fois vos modifications intégrées dans une release.
