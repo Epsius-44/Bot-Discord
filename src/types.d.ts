@@ -12,6 +12,9 @@ declare global {
         interface ProcessEnv {
             DISCORD_CLIENT_ID: string,
             DISCORD_TOKEN: string,
+            GUILD_ROLE_ADMIN: string,
+            GUILD_ROLE_DELEGUE: string,
+            GUILD_ROLE_INTERVENANT: string,
             LZLHA_IS_MASTER: string,
             LZLHA_INSTANCE_ID: string,
             LZLHA_INSTANCE_NAME: string,

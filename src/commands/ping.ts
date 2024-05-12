@@ -9,7 +9,7 @@ const command: SlashCommand = {
         .setName("ping")
         .setDescription("Affiche l'état du bot à un instant T")
         .setDMPermission(false),
-    roles: [],
+    roles: [process.env.GUILD_ROLE_ADMIN],
     execute: async (interaction) => {
         const versionEmbed = new EmbedBuilder()
             .setTitle("Version et dépendances du bot")
