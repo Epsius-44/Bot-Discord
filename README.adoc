@@ -3,11 +3,33 @@
 ifdef::env-gitlab[:outfilesuffix: .adoc]
 // Project URLs
 :url-project: https://antora.org
-:url-docs: https://luzilab.gitlab.io/epsinyx/documentation
+ifdef::env-gitlab[]
 :url-org: https://gitlab.com/luzilab
 :url-group: {url-org}/epsinyx
 :url-repo: {url-group}/bot-discord
-:url-ui-repo: {url-org}/ui-documentation
+endif::[]
+ifdef::env-github[]
+:url-org: https://github.com/Epsius-44
+:url-group: {url-org}
+:url-repo: {url-group}/Bot-Discord
+endif::[]
 :url-issues: {url-repo}/issues
 
 {url-repo}[Bot Discord] développé en TypeScript pour serveur Discord des I1 de l'EPSI WIS Nantes de la promo 2024-2025.
+
+== Licence
+
+Ce projet est sous license image:https://img.shields.io/badge/License-MPL--2.0-black?style=for-the-badge&logo=mozilla&logoColor=white[Static Badge, link={url-repo}/-/blob/main/LICENSE].
+
+== Contribuer
+
+Si vous souhaitez contribuer à ce projet, vous pouvez consulter la page dédiée : xref:CONTRIBUTING.adoc[CONTRIBUTING].
+
+ifdef::env-gitlab[]
+NOTE: Ce repository privé est le repository principal du projet. L'ensemble des contributions doit se faire sur ce repository. +
+Les branches protégées sont synchronisées avec le repository public (`main` et `dev-v2`).
+endif::[]
+ifdef::env-github[]
+WARNING: Ce repository public est le repository miroir du projet. Aucune contribution ne doit se faire sur ce repository. +
+Les modifications apportées sur ce repository seront écrasées lors de la prochaine synchronisation.
+endif::[]
