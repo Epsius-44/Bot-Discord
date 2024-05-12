@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@logtail/node": "^0.4.5",
-    "discord.js": "^14.12.1",
+    "discord.js": "^14.15.2",
     "dotenv": "^16.3.1"
   }
 }
