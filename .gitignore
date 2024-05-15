@@ -4,9 +4,14 @@
 
 # Dependance
 /node_modules/
+/.husky/_/
 
 # Build
 /dist/
 
 # Env
 .env.local
+
+# Cache
+/.cache/
+.eslintcache

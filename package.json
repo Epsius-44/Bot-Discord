@@ -1,48 +1,68 @@
 {
-  "name": "@luzilab.epsinyx/bot-discord",
-  "version": "2.0.0-alpha.0",
-  "description": "Bot Discord développé en TypeScript pour serveur Discord des I1 de l'EPSI WIS Nantes de la promo 2024-2025.",
-  "main": "src/index.ts",
-  "scripts": {
-    "start": "node dist/index.js",
-    "build": "rm -r dist/ && tsc",
-    "build:start": "npm run build && npm start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://gitlab.com/Luzilab/epsinyx/bot-discord.git"
-  },
-  "keywords": [
-    "discord",
-    "discord",
-    "bot",
-    "discord.js",
-    "typescript",
-    "asciidoc",
-    "antora"
-  ],
-  "author": "Luzilab/Epsinyx",
-  "contributors": [
-    {
-      "name": "Louis Ducruet",
-      "email": "lducruet74@gmail.com"
+    "type": "commonjs",
+    "lint-staged": {
+        "*.ts": "eslint --cache --fix",
+        "*.{ts,md,adoc,json,yml}": "prettier --write"
     },
-    {
-      "name": "Tom Chanson"
+    "name": "@luzilab.epsinyx/bot-discord",
+    "version": "2.0.0-alpha.0",
+    "description": "Bot Discord développé en TypeScript pour serveur Discord des I1 de l'EPSI WIS Nantes de la promo 2024-2025.",
+    "main": "src/index.ts",
+    "scripts": {
+        "prepare": "husky",
+        "lint": "eslint --cache src",
+        "prettier": "prettier --write src",
+        "compile": "tsc",
+        "clean": "rimraf dist/",
+        "build": "npm run lint && npm run prettier && npm run clean && npm run compile",
+        "start": "node dist/.",
+        "dev": "npm run clean && tsc-watch --onSuccess \\\"npm run start\\\"",
+        "prod": "npm run build && npm run start"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://gitlab.com/Luzilab/epsinyx/bot-discord.git"
+    },
+    "keywords": [
+        "discord",
+        "discord",
+        "bot",
+        "discord.js",
+        "typescript",
+        "asciidoc",
+        "antora"
+    ],
+    "author": "Luzilab/Epsinyx",
+    "contributors": [
+        {
+            "name": "Louis Ducruet",
+            "email": "lducruet74@gmail.com"
+        },
+        {
+            "name": "Tom Chanson"
+        }
+    ],
+    "license": "MPL-2.0",
+    "bugs": {
+        "url": "https://gitlab.com/Luzilab/epsinyx/bot-discord/issues"
+    },
+    "homepage": "https://gitlab.com/Luzilab/epsinyx/bot-discord#readme",
+    "devDependencies": {
+        "@types/node": "^20.12.11",
+        "@typescript-eslint/eslint-plugin": "^7.9.0",
+        "@typescript-eslint/parser": "^7.9.0",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0",
+        "husky": "^9.0.11",
+        "lint-staged": "^15.2.2",
+        "prettier": "^3.2.5",
+        "rimraf": "^5.0.7",
+        "tsc-watch": "^6.2.0",
+        "typescript": "^5.4.5"
+    },
+    "dependencies": {
+        "@luzilab.epsinyx/ha-redis": "file:modules/ha-redis",
+        "discord.js": "^14.15.2",
+        "dotenv": "^16.4.5"
     }
-  ],
-  "license": "MPL-2.0",
-  "bugs": {
-    "url": "https://gitlab.com/Luzilab/epsinyx/bot-discord/issues"
-  },
-  "homepage": "https://gitlab.com/Luzilab/epsinyx/bot-discord#readme",
-  "devDependencies": {
-    "@types/node": "^20.12.11",
-    "typescript": "^5.4.5"
-  },
-  "dependencies": {
-    "@luzilab.epsinyx/ha-redis": "file:modules/ha-redis",
-    "discord.js": "^14.15.2",
-    "dotenv": "^16.4.5"
-  }
 }

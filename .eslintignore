@@ -1,0 +1,10 @@
+# Node Modules
+/node_modules/
+/modules/
+/.husky/
+# Build files
+/dist/
+/.cache/
+# IDE
+/.vscode/
+/.idea/
