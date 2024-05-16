@@ -1,9 +1,10 @@
 {
+    "extends": "@tsconfig/node20/tsconfig.json",
     "compilerOptions": {
-        "target": "ES2022",
-        "module": "CommonJS",
-        "esModuleInterop": true,
         "resolveJsonModule": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         "outDir": "dist",

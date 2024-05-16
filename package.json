@@ -1,5 +1,5 @@
 {
-    "type": "commonjs",
+    "type": "module",
     "lint-staged": {
         "*.ts": "eslint --cache --fix",
         "*.{ts,md,adoc,json,yml}": "prettier --write"
@@ -9,14 +9,15 @@
     "description": "Bot Discord développé en TypeScript pour serveur Discord des I1 de l'EPSI WIS Nantes de la promo 2024-2025.",
     "main": "src/index.ts",
     "scripts": {
-        "prepare": "husky",
+        "prepare": "husky init",
         "lint": "eslint --cache src",
         "prettier": "prettier --write src",
-        "compile": "tsc",
+        "compile": "tsc && npm run copy",
         "clean": "rimraf dist/",
+        "copy": "npx copyfiles -u 1 src/.env* src/**/*.json dist/",
         "build": "npm run lint && npm run prettier && npm run clean && npm run compile",
-        "start": "node dist/.",
-        "dev": "npm run clean && tsc-watch --onSuccess \\\"npm run start\\\"",
+        "start": "npm run copy && cd dist && node . && cd ..",
+        "dev": "npm run clean && tsc-watch --onSuccess \"npm run start\"",
         "prod": "npm run build && npm run start"
     },
     "repository": {
@@ -48,6 +49,7 @@
     },
     "homepage": "https://gitlab.com/Luzilab/epsinyx/bot-discord#readme",
     "devDependencies": {
+        "@tsconfig/node20": "^20.1.4",
         "@types/node": "^20.12.11",
         "@typescript-eslint/eslint-plugin": "^7.9.0",
         "@typescript-eslint/parser": "^7.9.0",
