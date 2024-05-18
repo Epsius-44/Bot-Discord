@@ -10,10 +10,17 @@ const delay = (ms: number) => new Promise<void>((res) => setTimeout(res, ms))
 
 const ha_redis = require('@luzilab.epsinyx/ha-redis')
 
+export interface InstanceInfo {
+    id: string
+    name: string
+    botVersion: string
+    nodeVersion: string
+    isOnline: boolean
+    isMaster: boolean
+}
 /**
  * Représentation du module de haute disponibilité (écrit en Rust)
  */
-
 export class ActiveHA {
     private client: Client
     private isMaster: boolean = false
@@ -62,5 +69,17 @@ export class ActiveHA {
             }
             await delay(60000)
         }
+    }
+
+    isConnected(): boolean {
+        const connection: boolean = ha_redis.isConnected(this.redisURI)
+        return connection
+    }
+
+    getClusterInfo(): InstanceInfo[] {
+        const clusterInfo: InstanceInfo[] = ha_redis.getClusterInfo(
+            this.redisURI
+        )
+        return clusterInfo
     }
 }
