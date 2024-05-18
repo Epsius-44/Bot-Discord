@@ -7,7 +7,7 @@ export default new Handler({
     folder: './events',
     async execute(client: Client, files: string[]): Promise<void> {
         for (const file of files) {
-            const event: Event = (await import(`../events/${file}`))
+            const event: Event = (await import(`../${this.folder}/${file}`))
                 .default as Event
             if (event.once) {
                 client.once(

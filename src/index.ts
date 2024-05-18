@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import * as dotenv from 'dotenv'
 import { readdirSync } from 'fs'
-import { Client, GatewayIntentBits } from 'discord.js'
+import { Client, Collection, GatewayIntentBits } from 'discord.js'
 import Handler from './class/Handler.js'
 import { ActiveHA } from './class/ActiveHA.js'
 import { Logger } from './class/Logger.js'
+import type AppCommand from './class/AppCommand.js'
 
 // Load environment variables from .env and .env.local files
 dotenv.config()
@@ -22,6 +23,7 @@ const client = new Client({
 })
 
 client.logger = new Logger()
+client.applicationCommands = new Collection<string, AppCommand>()
 
 if (process.env.LZLHA_IS_MASTER !== 'true') {
     process.env.LZLHA_IS_MASTER = 'false'
