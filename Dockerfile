@@ -9,11 +9,12 @@ RUN npm ci && npm run build
 FROM node:lts-alpine
 ENV NODE_ENV production
 
-WORKDIR /usr/src/app
+WORKDIR /app
 COPY package*.json ./
 COPY --from=builder /usr/src/app/modules ./modules
 COPY modules/ha-redis/package.docker.json ./modules/ha-redis/package.json
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --ignore-scripts
 COPY --from=builder /usr/src/app/dist ./dist
+WORKDIR /app/dist
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "."]

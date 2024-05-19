@@ -4,6 +4,7 @@ import type {
     ChatInputCommandInteraction,
     ContextMenuCommandBuilder,
     SlashCommandBuilder,
+    SlashCommandOptionsOnlyBuilder,
     SlashCommandSubcommandsOnlyBuilder
 } from 'discord.js'
 import type SubCommand from './SubCommand.js'
@@ -14,6 +15,7 @@ import type SubCommand from './SubCommand.js'
 export default class AppCommand {
     data:
         | SlashCommandBuilder
+        | SlashCommandOptionsOnlyBuilder
         | ContextMenuCommandBuilder
         | SlashCommandSubcommandsOnlyBuilder
     hasSubCommands?: boolean
@@ -25,7 +27,7 @@ export default class AppCommand {
 
     /**
      * @param {{
-     *      data: SlashCommandBuilder | ContextMenuCommandBuilder | SlashCommandSubcommandsOnlyBuilder
+     *      data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | ContextMenuCommandBuilder | SlashCommandSubcommandsOnlyBuilder
      *      hasSubCommands?: boolean
      *      roles?: string[]
      *      execute?: (interaction: ChatInputCommandInteraction) => Promise<void> | void
@@ -35,6 +37,7 @@ export default class AppCommand {
     constructor(options: {
         data:
             | SlashCommandBuilder
+            | SlashCommandOptionsOnlyBuilder
             | ContextMenuCommandBuilder
             | SlashCommandSubcommandsOnlyBuilder
         hasSubCommands?: boolean

@@ -1,3 +1,10 @@
 node_modules
 npm-debug.log
 .husky
+.vscode
+.idea
+dist
+*.adoc
+LICENSE
+src/.env
+src/.env.local
