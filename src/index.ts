@@ -4,6 +4,7 @@ import { readdirSync } from 'fs'
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
 import Handler from './class/Handler.js'
 import { ActiveHA } from './class/ActiveHA.js'
+import { EpsiEDT } from './class/EpsiEDT.js'
 import { Logger } from './class/Logger.js'
 import type AppCommand from './class/AppCommand.js'
 
@@ -24,6 +25,8 @@ const client = new Client({
 
 client.logger = new Logger()
 client.applicationCommands = new Collection<string, AppCommand>()
+
+client.epsiEDT = new EpsiEDT()
 
 if (process.env.LZLHA_IS_MASTER !== 'true') {
     process.env.LZLHA_IS_MASTER = 'false'

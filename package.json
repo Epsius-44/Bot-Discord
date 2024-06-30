@@ -64,6 +64,7 @@
     },
     "dependencies": {
         "@luzilab.epsinyx/ha-redis": "file:modules/ha-redis",
+        "@luzilab.epsinyx/epsi-edt": "file:modules/epsi-edt",
         "discord.js": "^14.15.3",
         "dotenv": "^16.4.5"
     }

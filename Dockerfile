@@ -13,6 +13,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY --from=builder /usr/src/app/modules ./modules
 COPY modules/ha-redis/package.docker.json ./modules/ha-redis/package.json
+COPY modules/epsi-edt/package.docker.json ./modules/epsi-edt/package.json
 RUN npm ci --omit=dev --ignore-scripts
 COPY --from=builder /usr/src/app/dist ./dist
 WORKDIR /app/dist

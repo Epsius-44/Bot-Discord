@@ -1,0 +1,20 @@
+{
+  "name": "@luzilab.epsinyx/epsi-edt",
+  "version": "0.1.0",
+  "description": "Un système de scrapping de l'EDT Reseau CD",
+  "main": "index.node",
+  "scripts": {
+    "install": "echo \"Commande install\"",
+    "test": "echo \"Commande test\""
+  },
+  "author": "Louis DUCRUET",
+  "license": "ISC",
+  "devDependencies": {
+    "cargo-cp-artifact": "^0.1"
+  },
+  "keywords": [
+    "scrapping",
+    "rust",
+    "edt"
+  ]
+}

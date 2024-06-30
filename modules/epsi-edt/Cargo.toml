@@ -1,0 +1,20 @@
+[package]
+name = "epsi-edt"
+version = "0.1.0"
+description = "Un système de scrapping de l'EDT Reseau CD"
+authors = ["Louis DUCRUET"]
+license = "ISC"
+edition = "2021"
+exclude = ["index.node"]
+
+[lib]
+crate-type = ["cdylib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+neon = "1"
+reqwest = { version = "0.12.4", features = ["blocking"] }
+scraper = "0.19.0"
+chrono = "0.4.38"
+rayon = "1.10.0"
