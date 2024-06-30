@@ -1,6 +1,6 @@
 {
   "name": "@luzilab.epsinyx/ha-redis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Un système de haute disponibilité (Actif/Passif) basé sur Redis",
   "main": "index.node",
   "scripts": {

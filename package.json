@@ -5,11 +5,11 @@
         "*.{ts,md,adoc,json,yml}": "prettier --write"
     },
     "name": "@luzilab.epsinyx/bot-discord",
-    "version": "2.0.0-alpha.0",
+    "version": "2.0.0-alpha.1",
     "description": "Bot Discord développé en TypeScript pour serveur Discord des I1 de l'EPSI WIS Nantes de la promo 2024-2025.",
     "main": "src/index.ts",
     "scripts": {
-        "prepare": "husky init",
+        "prepare": "husky",
         "lint": "eslint --cache src",
         "prettier": "prettier --write src",
         "compile": "tsc && npm run copy",
@@ -50,21 +50,21 @@
     "homepage": "https://gitlab.com/Luzilab/epsinyx/bot-discord#readme",
     "devDependencies": {
         "@tsconfig/node20": "^20.1.4",
-        "@types/node": "^20.12.11",
-        "@typescript-eslint/eslint-plugin": "^7.9.0",
-        "@typescript-eslint/parser": "^7.9.0",
-        "eslint": "^8.57.0",
+        "@types/node": "^20.14.09",
+        "@typescript-eslint/eslint-plugin": "^7.14.1",
+        "@typescript-eslint/parser": "^7.14.1",
+        "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
         "husky": "^9.0.11",
-        "lint-staged": "^15.2.2",
-        "prettier": "^3.2.5",
+        "lint-staged": "^15.2.7",
+        "prettier": "^3.3.2",
         "rimraf": "^5.0.7",
         "tsc-watch": "^6.2.0",
-        "typescript": "^5.4.5"
+        "typescript": "^5.5.2"
     },
     "dependencies": {
         "@luzilab.epsinyx/ha-redis": "file:modules/ha-redis",
-        "discord.js": "^14.15.2",
+        "discord.js": "^14.15.3",
         "dotenv": "^16.4.5"
     }
 }

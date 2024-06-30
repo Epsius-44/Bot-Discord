@@ -25,6 +25,7 @@ export class ActiveHA {
     private client: Client
     private isMaster: boolean = false
     private redisURI: string
+    private botId: string
     public instanceId: string
     public instanceName: string
     public instanceVersion: string
@@ -33,11 +34,13 @@ export class ActiveHA {
     constructor(
         client: Client,
         redisURI: string,
+        botId: string,
         instanceId: string,
         instanceName: string
     ) {
         this.client = client
         this.redisURI = redisURI
+        this.botId = botId
         this.instanceId = instanceId
         this.instanceName = instanceName
         this.instanceVersion = packageInfo.version
@@ -49,13 +52,18 @@ export class ActiveHA {
             throw new Error('Redis connection failed')
         ha_redis.setInstanceData(
             this.redisURI,
+            this.botId,
             this.instanceId,
             this.instanceName,
             this.instanceVersion,
             this.nodeVersion
         )
         for (;;) {
-            const isMaster = ha_redis.lookup(this.redisURI, this.instanceId)
+            const isMaster = ha_redis.lookup(
+                this.redisURI,
+                this.botId,
+                this.instanceId
+            )
             if (isMaster !== this.isMaster) {
                 if (isMaster) {
                     this.client.user?.setActivity({
@@ -78,7 +86,8 @@ export class ActiveHA {
 
     getClusterInfo(): InstanceInfo[] {
         const clusterInfo: InstanceInfo[] = ha_redis.getClusterInfo(
-            this.redisURI
+            this.redisURI,
+            this.botId
         )
         return clusterInfo
     }

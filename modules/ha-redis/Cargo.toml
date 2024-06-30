@@ -1,6 +1,6 @@
 [package]
 name = "ha-redis"
-version = "0.1.0"
+version = "0.1.1"
 description = "Un système de haute disponibilitée (Actif/Passif) basé sur Redis"
 authors = ["Louis DUCRUET"]
 license = "ISC"

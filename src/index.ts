@@ -30,6 +30,7 @@ if (process.env.LZLHA_IS_MASTER !== 'true') {
     client.activeHA = new ActiveHA(
         client,
         process.env.LZLHA_REDIS_URI,
+        process.env.DISCORD_CLIENT_ID,
         process.env.LZLHA_INSTANCE_ID,
         process.env.LZLHA_INSTANCE_NAME
     )
