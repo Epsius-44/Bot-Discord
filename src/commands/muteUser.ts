@@ -58,7 +58,7 @@ const command: SlashCommand = {
         const commandUser = getCommandMemberAsGuildMember(interaction);
 
         // vérifié que l'utilisateur a la permission de mute
-        if (!await checkPermission(interaction, commandUser, PermissionsBitField.Flags.ModerateMembers, `Vous n'avez pas la permission de mute`)) return;
+        //if (!await checkPermission(interaction, commandUser, PermissionsBitField.Flags.ModerateMembers, `Vous n'avez pas la permission de mute`)) return;
         // vérifié que l'utilisateur ciblé est sur le serveur
         if (!await checkMemberOnServer(interaction, memberTimeout, `L'utilisateur n'est pas sur le serveur`)) return;
         // vérifié que l'utilisateur ciblé peut être mute

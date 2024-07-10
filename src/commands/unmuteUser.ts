@@ -34,7 +34,7 @@ const command: SlashCommand = {
         const memberTimeout = await getMemberFromUser(interaction, userTimeout);
 
         // vérifié que l'utilisateur a la permission de mute
-        if (!await checkPermission(interaction, commandUser, PermissionsBitField.Flags.ModerateMembers, `Vous n'avez pas la permission d'enlever le mute`)) return;
+        //if (!await checkPermission(interaction, commandUser, PermissionsBitField.Flags.ModerateMembers, `Vous n'avez pas la permission d'enlever le mute`)) return;
 
         // vérifié que l'utilisateur ciblé est sur le serveur
         if (!await checkMemberOnServer(interaction, memberTimeout)) return;
