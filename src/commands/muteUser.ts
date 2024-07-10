@@ -10,6 +10,7 @@ import {
 } from "../modules/discordFunction";
 
 import {timeOptions} from "../modules/constant";
+import process from "process";
 
 // transforme timeOptions en {name: "secondes", value: "s"} pour chaque entrée de timeOptions
 const timeOptionsChoices = Object.entries(timeOptions).map(([key, value]) => {
@@ -19,7 +20,7 @@ const timeOptionsChoices = Object.entries(timeOptions).map(([key, value]) => {
 const timeoutMax = 28 // durée maximum d'un timeout en jours (autorisé par discord)
 
 const command: SlashCommand = {
-    roles: [process.env.ROLE_ADMIN_ID],
+    roles: [process.env.ROLE_ADMIN_ID, process.env.ROLE_RESPONSABLE_ID],
     data: new SlashCommandBuilder()
         .setName('mute')
         .setDescription("Mute un utilisateur")

@@ -11,7 +11,7 @@ import {
 
 
 const command: SlashCommand = {
-    roles: [process.env.ROLE_ADMIN_ID],
+    roles: [process.env.ROLE_ADMIN_ID, process.env.ROLE_RESPONSABLE_ID],
     data: new SlashCommandBuilder()
         .setName('unmute')
         .setDescription("Rendre la parole à un utilisateur muté")
@@ -23,7 +23,7 @@ const command: SlashCommand = {
             .setName('raison')
             .setDescription("Raison du unmute"))
         // l'utilisateur doit avoir la permission de mute les membres pour utiliser cette commande
-        //.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         // la commande ne peut pas être utilisée en DM
         .setDMPermission(false),
     execute: async (interaction) => {
