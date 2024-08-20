@@ -1,0 +1,10 @@
+= Luzilab/{org} :: bot-discord
+:org: Epsinyx|Epsius
+ifdef::env-gitlab[]
+:org: Epsinyx
+endif::[]
+ifdef::env-github[]
+:org: Epsius
+endif::[]
+
+WARNING: Projet au début de son développement, suite au refactor complet du code pour la version 2.
