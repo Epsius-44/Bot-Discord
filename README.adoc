@@ -1,4 +1,4 @@
-= Luzilab/{org} :: bot-discord
+= Luzilab/{org} : bot-discord
 :org: Epsinyx|Epsius
 ifdef::env-gitlab[]
 :org: Epsinyx

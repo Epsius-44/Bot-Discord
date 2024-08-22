@@ -1,0 +1,15 @@
+# IDE
+/.vscode/
+/.idea/
+
+# Node.js
+/node_modules/
+
+# Build
+/build/
+
+# Cache
+/.cache/
+
+# Env
+.env.local
