@@ -1,5 +1,6 @@
 {
   "name": "luzilab.epsius.bot-discord",
+  "type": "module",
   "version": "2.0.0-alpha.1",
   "description": "Bot Discord développé en TypeScript pour serveur Discord des I1 de l'EPSI WIS Nantes de la promo 2024-2025.",
   "keywords": [
@@ -23,6 +24,13 @@
     "url": "git+https://github.com/Epsius-44/Bot-Discord.git"
   },
   "license": "GPL-3.0",
+  "scripts": {
+    "lint": "pre-commit run --all-files",
+    "clean": "rm -rf build",
+    "serve": "npm run clean && tsc-watch --onSuccess \"node build/index.js\"",
+    "build": "npm run clean && tsc",
+    "start": "node build/index.js"
+  },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^22.5.0",
