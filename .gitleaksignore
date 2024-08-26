@@ -10,6 +10,3 @@
 
 # Cache
 /.cache/
-
-# Env File
-.env

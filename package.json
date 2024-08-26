@@ -1,6 +1,6 @@
 {
   "name": "luzilab.epsius.bot-discord",
-  "version": "2.0.0",
+  "version": "2.0.0-alpha.1",
   "description": "Bot Discord développé en TypeScript pour serveur Discord des I1 de l'EPSI WIS Nantes de la promo 2024-2025.",
   "keywords": [
     "bot",
@@ -22,5 +22,20 @@
     "type": "git",
     "url": "git+https://github.com/Epsius-44/Bot-Discord.git"
   },
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^22.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.2.0",
+    "@typescript-eslint/parser": "^8.2.0",
+    "eslint": "^9.9.1",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.3",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5"
+  }
 }
