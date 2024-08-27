@@ -1,3 +1,5 @@
+import { Logger } from "./class/Logger";
+
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
@@ -7,6 +9,12 @@ declare global {
     }
   }
   type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+}
+
+declare module "discord.js" {
+  export interface Client {
+    logger: Logger;
+  }
 }
 
 export {};

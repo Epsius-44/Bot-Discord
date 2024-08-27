@@ -5,6 +5,7 @@ import { readdirSync } from "fs";
 import Handler from "./class/Handler";
 import path from "path";
 import { fileURLToPath } from "url";
+import { Logger } from "./class/Logger.js";
 
 // Charge les variables d'environnement depuis le .env
 dotenv.config();
@@ -20,20 +21,21 @@ const client = new Client({
     GatewayIntentBits.GuildVoiceStates
   ]
 });
+client.logger = new Logger();
 
 // Chargement des gestionnaires (commandes, événements, etc.)
-console.info("handler - Début du chargement des gestionnaires");
+client.logger.info("handler - Début du chargement des gestionnaires");
 const handlerFiles: string[] = readdirSync(
   `${process.env.APP_PATH}/handlers`
 ).filter((file) => file.endsWith(".js") || file.endsWith(".ts"));
 for (const file of handlerFiles) {
   const handler = (await import(`${process.env.APP_PATH}/handlers/${file}`))
     .default as Handler;
-  console.debug(`handler - Chargement du gestionnaire ${file}`);
+  client.logger.debug(`handler - Chargement du gestionnaire ${file}`);
   await handler.execute(client, handler.files);
-  console.debug(`handler - Le gestionnaire ${file} est chargé`);
+  client.logger.debug(`handler - Le gestionnaire ${file} est chargé`);
 }
-console.info("handler - Fin du chargement des gestionnaires");
+client.logger.info("handler - Fin du chargement des gestionnaires");
 
 // Établissement de la connexion avec Discord
 await client.login(process.env.DISCORD_TOKEN);

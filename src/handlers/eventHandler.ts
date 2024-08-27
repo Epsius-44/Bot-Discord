@@ -7,7 +7,7 @@ export default new Handler({
   folder: `${process.env.APP_PATH}/events`,
 
   async execute(client: Client, files: string[]): Promise<void> {
-    console.info("event - Début du chargement des évènements");
+    client.logger.info("event - Début du chargement des évènements");
     for (const file of files) {
       const event: Event = (await import(`${this.folder}/${file}`))
         .default as Event;
@@ -16,8 +16,8 @@ export default new Handler({
       } else {
         client.on(event.name, (...args) => void event.execute(...args));
       }
-      console.debug(`event - L'évènement ${event.name} est chargé`);
+      client.logger.debug(`event - L'évènement ${event.name} est chargé`);
     }
-    console.info("event - Fin du chargement des évènements");
+    client.logger.info("event - Fin du chargement des évènements");
   }
 });

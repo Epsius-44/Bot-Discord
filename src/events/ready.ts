@@ -6,6 +6,6 @@ export default new Event({
   once: true,
 
   execute(client: Client): void {
-    console.info(`app - Bot lancé en tant que ${client.user?.tag} !`);
+    client.logger.info(`app - Bot lancé en tant que ${client.user?.tag} !`);
   }
 });
