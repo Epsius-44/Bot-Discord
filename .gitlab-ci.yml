@@ -3,7 +3,7 @@ stages:
 
 pre-commit:
   stage: lint
-  image: python:3.11-alpine
+  image: python:3
   before_script:
     - pip install pre-commit
     - pre-commit install
