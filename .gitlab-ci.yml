@@ -1,11 +1,10 @@
-stages: 
+stages:
   - build
 
 include:
   - component: gitlab.com/to-be-continuous/pre-commit/gitlab-ci-pre-commit@1.0.2
     inputs:
       pre-commit-args: "--all-files"
-
 # pre-commit:
 #   stage: lint
 #   image: python:3
