@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, Collection, GatewayIntentBits } from "discord.js";
 import * as dotenv from "dotenv";
 import { readdirSync } from "fs";
 import Handler from "./class/Handler";
 import path from "path";
 import { fileURLToPath } from "url";
 import { Logger } from "./class/Logger.js";
+import AppCommand from "./class/AppCommand.js";
 
 // Charge les variables d'environnement depuis le .env
 dotenv.config();
@@ -22,6 +23,7 @@ const client = new Client({
   ]
 });
 client.logger = new Logger();
+client.appCommands = new Collection<string, AppCommand>();
 
 // Chargement des gestionnaires (commandes, événements, etc.)
 client.logger.info("handler - Début du chargement des gestionnaires");

@@ -1,4 +1,6 @@
+import { Collection } from "discord.js";
 import { Logger } from "./class/Logger";
+import AppCommand from "./class/AppCommand";
 
 declare global {
   namespace NodeJS {
@@ -14,6 +16,7 @@ declare global {
 declare module "discord.js" {
   export interface Client {
     logger: Logger;
+    appCommands: Collection<string, AppCommand>;
   }
 }
 
