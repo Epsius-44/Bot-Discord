@@ -1,5 +1,6 @@
 stages:
   - lint
+  - build
 
 pre-commit:
   stage: lint
@@ -9,4 +10,28 @@ pre-commit:
     - pre-commit install
   script:
     - pre-commit run --all-files --config .pre-commit-ci.yaml
+  allow_failure: false
+
+image: node:lts
+before_script:
+  - npm install
+
+prettier:
+  stage: lint
+  script:
+    - npx prettier --check --ignore-unknown --config .prettierrc.json .
   allow_failure: true
+
+eslint:
+  stage: lint
+  script:
+    - npx eslint --config eslint.config.js --ignore-pattern build/
+  allow_failure: false
+
+tsc-build:
+  stage: build
+  needs:
+    - eslint
+  script:
+    - npm run build
+  allow_failure: false

@@ -49,7 +49,7 @@ function getCommands(command: SlashCommandBuilder): HelpCommand[] {
 
 function getSubcommand(
   subCommand: ToAPIApplicationCommandOptions
-): HelpCommand | void {
+): HelpCommand | undefined {
   const subCommandJson = subCommand.toJSON();
   if (subCommandJson.type !== ApplicationCommandOptionType.Subcommand) return;
   return {

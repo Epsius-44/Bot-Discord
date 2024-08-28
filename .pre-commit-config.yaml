@@ -46,5 +46,5 @@ repos:
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
-        files: \.(yml|yaml|json|ts|js)$
+        files: \.(yml|yaml|json|ts|js|mjs|cjs)$
         stages: [commit]

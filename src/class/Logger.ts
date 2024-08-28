@@ -3,8 +3,6 @@ function dateToString(date: Date): string {
 }
 
 export class Logger {
-  constructor() {}
-
   log(message: string): void {
     console.log(`[LOG]   ${dateToString(new Date())} : ${message}`);
   }

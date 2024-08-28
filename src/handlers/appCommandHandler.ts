@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import Handler from "../class/Handler.js";
 import AppCommand from "../class/AppCommand.js";
 import { Client, REST, Routes } from "discord.js";

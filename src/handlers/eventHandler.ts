@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import Handler from "../class/Handler.js";
 import Event from "../class/Event.js";
 import { Client } from "discord.js";
