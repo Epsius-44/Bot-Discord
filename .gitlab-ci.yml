@@ -1,6 +1,7 @@
 stages:
   - lint
   - build
+  - deploy
 
 pre-commit:
   stage: lint
@@ -55,4 +56,28 @@ tsc-build:
     - eslint
   script:
     - npm run build
+  artifacts:
+    name: "tsc-build_$env:CI_COMMIT_REF_NAME"
+    paths:
+      - build/
+      - package.json
+    expire_in: 1 hours
+  allow_failure: false
+
+docker-preprod:
+  stage: deploy
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main*'
+  needs:
+    - job: tsc-build
+      artifacts: true
+  image: docker:27.2.0
+  services:
+    - docker:27.2.0-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:dev -t $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_REF_NAME .
+    - docker push $CI_REGISTRY_IMAGE:dev
+    - docker push $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_REF_NAME
   allow_failure: false
