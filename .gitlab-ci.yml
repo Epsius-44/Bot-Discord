@@ -28,6 +28,12 @@ prettier:
 
 eslint:
   stage: lint
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
+      changes:
+        - src/**/*
+        - package.json
+        - tsconfig.json
   script:
     - npx eslint --config eslint.config.js --ignore-pattern build/
   allow_failure: false
