@@ -5,8 +5,7 @@ stages:
 pre-commit:
   stage: lint
   rules:
-    if:
-      - $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
   image: python:3
   before_script:
     - pip install pre-commit
@@ -22,8 +21,7 @@ before_script:
 prettier:
   stage: lint
   rules:
-    if:
-      - $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
   script:
     - npx prettier --check --ignore-unknown --config .prettierrc.json .
   allow_failure: true
