@@ -5,6 +5,8 @@ stages:
 
 pre-commit:
   stage: lint
+  tags:
+    - lzl-infra
   rules:
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
   image: python:3
@@ -21,6 +23,8 @@ before_script:
 
 prettier:
   stage: lint
+  tags:
+    - lzl-infra
   rules:
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
   script:
@@ -29,29 +33,21 @@ prettier:
 
 eslint:
   stage: lint
+  tags:
+    - lzl-infra
   rules:
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
-      changes:
-        - src/**/*
-        - package.json
-        - tsconfig.json
   script:
     - npx eslint --config eslint.config.js --ignore-pattern build/
   allow_failure: false
 
 tsc-build:
   stage: build
+  tags:
+    - lzl-infra
   rules:
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
-      changes:
-        - src/**/*
-        - package.json
-        - tsconfig.json
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_PIPELINE_SOURCE == "merge_request_event"
-      changes:
-        - src/**/*
-        - package.json
-        - tsconfig.json
   needs:
     - job: eslint
       artifacts: false
@@ -67,6 +63,11 @@ tsc-build:
 
 docker-preprod:
   stage: deploy
+  tags:
+    - lzl-infra-dind
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_PIPELINE_SOURCE == "merge_request_event"
   needs:
     - job: tsc-build
       artifacts: false
