@@ -4,6 +4,6 @@ ENV NODE_ENV=production
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
-COPY build ./build
+COPY build /app/build
 
 CMD ["node", "build/index.js"]
