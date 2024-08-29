@@ -2,6 +2,7 @@ import { Collection } from "discord.js";
 import { Logger } from "./class/Logger";
 import AppCommand from "./class/AppCommand";
 
+// Variables d'environnement
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
@@ -13,6 +14,7 @@ declare global {
   type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 }
 
+// Ajout de propriétés à l'objet Client de discord.js
 declare module "discord.js" {
   export interface Client {
     logger: Logger;
