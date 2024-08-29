@@ -4,6 +4,9 @@ stages:
 
 pre-commit:
   stage: lint
+  rules:
+    if:
+      - $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
   image: python:3
   before_script:
     - pip install pre-commit
@@ -18,6 +21,9 @@ before_script:
 
 prettier:
   stage: lint
+  rules:
+    if:
+      - $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
   script:
     - npx prettier --check --ignore-unknown --config .prettierrc.json .
   allow_failure: true
@@ -30,6 +36,17 @@ eslint:
 
 tsc-build:
   stage: build
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main*'
+      changes:
+        - src/**/*
+        - package.json
+        - tsconfig.json
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - src/**/*
+        - package.json
+        - tsconfig.json
   needs:
     - eslint
   script:
