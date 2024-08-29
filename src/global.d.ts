@@ -22,4 +22,5 @@ declare module "discord.js" {
   }
 }
 
+// Sans cette ligne, le fichier ne sera pas pris en compte
 export {};

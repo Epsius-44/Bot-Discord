@@ -42,7 +42,7 @@ eslint:
 tsc-build:
   stage: build
   rules:
-    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main*'
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
       changes:
         - src/**/*
         - package.json
@@ -66,8 +66,6 @@ tsc-build:
 
 docker-preprod:
   stage: deploy
-  rules:
-    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main*'
   needs:
     - job: tsc-build
       artifacts: true
