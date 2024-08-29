@@ -5,6 +5,7 @@ import AppCommand from "../class/AppCommand.js";
 export default new Event({
   name: Events.InteractionCreate,
   once: false,
+
   async execute(interaction: BaseInteraction): Promise<void> {
     if (!interaction.isChatInputCommand()) return;
 
