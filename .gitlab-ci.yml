@@ -10,6 +10,7 @@ pre-commit:
     - lzl-infra
   rules:
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
+      when: on_success
   image: python:3
   before_script:
     - pip install pre-commit
@@ -28,6 +29,7 @@ prettier:
     - lzl-infra
   rules:
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
+      when: on_success
   script:
     - npx prettier --check --ignore-unknown --config .prettierrc.json .
   allow_failure: true
@@ -38,6 +40,7 @@ eslint:
     - lzl-infra
   rules:
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
+      when: on_success
   script:
     - npx eslint --config eslint.config.js --ignore-pattern build/
   allow_failure: false
@@ -48,7 +51,7 @@ tsc-build:
     - lzl-infra
   rules:
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
-    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: on_success
   needs:
     - job: eslint
       artifacts: false
