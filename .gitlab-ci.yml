@@ -2,6 +2,7 @@ stages:
   - lint
   - build
   - deploy
+  - publish
 
 pre-commit:
   stage: lint
@@ -66,18 +67,67 @@ docker-preprod:
   tags:
     - lzl-infra-dind
   rules:
+    - if: $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
+      when: never
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
-    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: on_success
   needs:
     - job: tsc-build
       artifacts: true
   image: docker:27.2.0
   services:
     - docker:27.2.0-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
     - docker build -t $CI_REGISTRY_IMAGE:dev -t $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA .
     - docker push $CI_REGISTRY_IMAGE:dev
     - docker push $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA
+  allow_failure: false
+
+docker-prod:
+  stage: deploy
+  tags:
+    - lzl-infra-dind
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/ && $CI_COMMIT_BRANCH == 'main'
+      when: on_success
+  needs:
+    - job: tsc-build
+      artifacts: true
+  image: docker:27.2.0
+  services:
+    - docker:27.2.0-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG .
+    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+  allow_failure: false
+
+release:
+  stage: publish
+  tags:
+    - lzl-infra
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/ && $CI_COMMIT_BRANCH == 'main'
+      when: on_success
+  needs:
+    - job: docker-prod
+      artifacts: false
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  variables:
+    RELEASE_DESCRIPTION: |-
+      > ⚠️ Cette version est une alpha, elle ne possède donc pas certaines fonctionnalités et peut contenir des bugs.
+      ### Changements
+      L'ensemble des changement de cette version sont consignés dans le [CHANGELOG.adoc](https://gitlab.com/Luzilab/epsinyx/bot-discord/-/blob/main/CHANGELOG.adoc).
+  before_script:
+    - release-cli -v
+  script:
+    - release-cli --debug create --name "Release ${CI_COMMIT_TAG}" --tag-name "${CI_COMMIT_TAG}" --description "${RELEASE_DESCRIPTION}"
   allow_failure: false

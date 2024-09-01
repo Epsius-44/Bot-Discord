@@ -1,0 +1,27 @@
+= Luzilab/{org} : bot-discord
+:org: Epsinyx|Epsius
+ifdef::env-gitlab[]
+:org: Epsinyx
+endif::[]
+ifdef::env-github[]
+:org: Epsius
+endif::[]
+
+Cette page est dédiée à la liste des changements effectués sur le projet.
+
+== Version 2.0.0
+
+IMPORTANT: Cette version est une version alpha, elle est en cours de développement et n'est pas encore stable.
+
+Version minimale du bot avec la structure d'enregistrement des commandes et de réponses aux évènements.
+
+=== Ajouts
+
+* Ajout de la commande `/help` pour afficher la liste des commandes disponibles.
+* Nouvelle image docker plus légère.
+
+=== Modifications
+* Refonte de la CI/CD GitLab pour gérer les versions de dev et de prod.
+
+=== Corrections
+* Aucune correction dans la première version post refactor.
