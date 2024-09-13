@@ -2,6 +2,7 @@ import {
   ApplicationCommandOptionType,
   EmbedBuilder,
   GuildMember,
+  InteractionContextType,
   SlashCommandBuilder,
   ToAPIApplicationCommandOptions
 } from "discord.js";
@@ -69,7 +70,7 @@ export default new AppCommand({
   data: new SlashCommandBuilder()
     .setName("help")
     .setDescription("Affiche la liste des commandes disponibles")
-    .setDMPermission(false)
+    .setContexts([InteractionContextType.Guild])
     //ajouter un argument pour afficher ou non les arguments des commandes (par défaut, false)
     .addBooleanOption((option) =>
       option
