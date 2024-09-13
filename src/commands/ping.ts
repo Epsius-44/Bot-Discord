@@ -39,7 +39,7 @@ export default new AppCommand({
     const bddEmbed = new EmbedBuilder()
       .setTitle("Base de données")
       .setDescription(
-        `MongoDB en version \`${bddInfo.version}\` sur le cluster \`${clusterStatus.set}\``
+        `MongoDB en version \`${bddInfo.version}\` sur le cluster \`${clusterStatus.set}\` sur la base \`${interaction.client.db.databaseName}\``
       )
       .setColor("#50c878");
     clusterStatus.members.forEach(

@@ -11,7 +11,6 @@ declare global {
       BDD_CONNECTION: string;
       BDD_COLLECTION_CONFIG: string;
       BDD_COLLECTION_USERS: string;
-      BDD_NAME: string;
       DISCORD_CLIENT_ID: string;
       DISCORD_TOKEN: string;
       ROLE_ADMIN_ID: string;
