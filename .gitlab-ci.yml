@@ -136,3 +136,19 @@ release:
   script:
     - release-cli --debug create --name "Release ${CI_COMMIT_TAG}" --tag-name "${CI_COMMIT_TAG}" --description "${RELEASE_DESCRIPTION}"
   allow_failure: false
+
+deploy-preprod:
+  stage: publish
+  tags:
+    - lzl-infra
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
+      when: never
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord'
+      when: on_success
+  needs:
+    - job: docker-preprod
+      artifacts: false
+  before_script:
+  script:
+    - curl -X POST $API_EPSINYX_UPDATE
