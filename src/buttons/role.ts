@@ -5,6 +5,9 @@ export default new Button({
   name: "role",
 
   execute(interaction: ButtonInteraction): void {
-    interaction.client.logger.info(`btn - Activation du bouton \`role\` !`);
+    interaction.reply({
+      content: "Tu as cliqué sur le bouton !",
+      ephemeral: true
+    });
   }
 });
