@@ -49,6 +49,7 @@
     "@luzilab/irori-edt": "^1.0.0",
     "@luzilab/irori-edt_linux-x64-gnu": "^1.0.0",
     "discord.js": "^14.16.1",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "mongodb": "^6.9.0"
   }
 }

@@ -6,6 +6,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { Logger } from "./class/Logger.js";
 import AppCommand from "./class/AppCommand.js";
+import { MongoClient } from "mongodb";
 
 // Charge les variables d'environnement depuis le .env
 dotenv.config();
@@ -23,6 +24,20 @@ const client = new Client({
 });
 client.logger = new Logger();
 client.appCommands = new Collection<string, AppCommand>();
+
+// Ouverture de la connexion BDD
+client.logger.info("bdd - Ouverture de la connexion avec MongoDB");
+try {
+  const mongo = await MongoClient.connect(process.env.BDD_CONNECTION);
+  await mongo.connect();
+  client.db = mongo.db();
+  client.logger.info("bdd - Connexion établie avec MongoDB");
+} catch (error) {
+  client.logger.error(
+    `bdd - Erreur lors de la connexion avec MongoDB: ${error}`
+  );
+  throw new Error("Impossible de se connecter à la base de données");
+}
 
 // Chargement des gestionnaires (commandes, événements, etc.)
 client.logger.info("handler - Début du chargement des gestionnaires");
