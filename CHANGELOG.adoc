@@ -9,6 +9,26 @@ endif::[]
 
 Cette page est dédiée à la liste des changements effectués sur le projet.
 
+== Version 2.1.0
+
+IMPORTANT: Cette version est une version alpha, elle est en cours de développement et n'est pas encore stable.
+
+Version partielle du bot publiée pour la rentrée scolaire 2024.
+
+=== Ajouts
+
+* Ajout de la commande `/ping` pour avoir les informations du bot.
+* Ajout de la commande `/edt` pour afficher l'emploi du temps de la semaine.
+* Ajout de la commande `/help` pour afficher la liste des commandes disponibles.
+* Ajout de la commande `/roles` pour récupérer son rôle de classe.
+
+=== Modifications
+* Modification de la CI/CD pour géré la mise en préproduction et en production.
+* Modification du interactionCreate pour gérer les commandes et les boutons.
+
+=== Corrections
+* Aucune correction dans la première version post refactor.
+
 == Version 2.0.0
 
 IMPORTANT: Cette version est une version alpha, elle est en cours de développement et n'est pas encore stable.
