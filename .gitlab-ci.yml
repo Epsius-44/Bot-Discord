@@ -152,3 +152,17 @@ deploy-preprod:
   before_script:
   script:
     - curl -X POST $API_EPSINYX_UPDATE
+
+deploy-prod:
+  stage: publish
+  tags:
+    - lzl-infra
+  rules:
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
+      when: on_success
+  needs:
+    - job: docker-prod
+      artifacts: false
+  before_script:
+  script:
+    - curl -X POST $API_EPSIUS_UPDATE
