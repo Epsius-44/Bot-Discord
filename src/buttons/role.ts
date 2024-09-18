@@ -17,7 +17,7 @@ export default new Button({
     const ACTIONS = ["cyber", "sysops", "devops1", "devops2", "ia", "wis"];
     const user = await interaction.guild?.members.fetch(interaction.user.id);
     if (!user) {
-      interaction.client.logger.error(
+      interaction.client.logger.warn(
         `interaction - Membre introuvable : ${interaction.user.id}`
       );
       interaction.reply({

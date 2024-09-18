@@ -76,7 +76,7 @@ export default class AppCommand {
                 "Je suis désolé mais je n'arrive pas à me souvenir où j'ai laissé cette commande.",
               ephemeral: true
             });
-            interaction.client.logger.error(
+            interaction.client.logger.warn(
               `interaction - Une erreur s'est produite lors de l'exécution de la commande ${this.data.name} ${
                 subCommandGroup ? `${subCommandGroup}/` : ""
               } ${commandName} demandée par ${interaction.user.tag} : ${error}`
@@ -108,7 +108,7 @@ export default class AppCommand {
                 value: "error"
               }
             ]);
-            interaction.client.logger.error(
+            interaction.client.logger.warn(
               `interaction - Une erreur s'est produite lors de l'autocomplétion de ${this.data.name} ${subCommandGroup ? `${subCommandGroup}/` : ""} ${subCommandName} pour ${interaction.user.tag}: ${error}`
             );
           }
