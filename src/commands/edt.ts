@@ -112,7 +112,8 @@ export default new AppCommand({
         ephemeral: true
       });
       interaction.client.logger.warn(
-        `Erreur dans le chargement de l'emploi du temps ${username} pour ${start_date} à ${end_date}`
+        `Erreur dans le chargement de l'emploi du temps ${username} pour ${start_date} à ${end_date}`,
+        { labels: { job: "interaction" } }
       );
       return;
     }

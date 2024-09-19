@@ -7,19 +7,23 @@ export default new Handler({
   async execute(client: Client, files: string[]): Promise<void> {
     const body = [];
 
-    client.logger.info(`start:command - Début du chargement des commandes`);
+    client.logger.info(`Début du chargement des commandes`, {
+      labels: { job: "start" }
+    });
 
     for (const file of files) {
       const appCommand: AppCommand = (await import(`${this.folder}/${file}`))
         .default as AppCommand;
       body.push(appCommand.data.toJSON());
       client.appCommands.set(appCommand.data.name, appCommand);
-      client.logger.debug(
-        `start:command - La commande ${appCommand.data.name} est chargée`
-      );
+      client.logger.debug(`La commande ${appCommand.data.name} est chargée`, {
+        labels: { job: "start" }
+      });
     }
 
-    client.logger.info(`start:command - Fin du chargement des commandes`);
+    client.logger.info(`Fin du chargement des commandes`, {
+      labels: { job: "start" }
+    });
 
     const rest = new REST({ version: "10" }).setToken(
       process.env.DISCORD_TOKEN
@@ -32,12 +36,13 @@ export default new Handler({
           body: body
         }
       );
-      client.logger.info(
-        `start:command - Les commandes sont envoyées à Discord`
-      );
+      client.logger.info(`Les commandes sont envoyées à Discord`, {
+        labels: { job: "start" }
+      });
     } catch (error: any) {
       client.logger.error(
-        `command - Lors de l'envoie des commandes à discord : ${error}`
+        `Lors de l'envoie des commandes à discord : ${error}`,
+        { labels: { job: "start" } }
       );
     }
   }

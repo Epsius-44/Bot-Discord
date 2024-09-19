@@ -14,7 +14,8 @@ export default new Event({
       // Si la commande n'existe pas, on log l'erreur et on envoie un message d'erreur à l'utilisateur
       if (!command || command === undefined) {
         interaction.client.logger.warn(
-          `interaction - Commande inconnue : \`${interaction.commandName}\``
+          `Commande inconnue : \`${interaction.commandName}\``,
+          { labels: { job: "interaction" } }
         );
         interaction.reply({
           content: "Je ne me souviens pas de cette commande !",
@@ -30,7 +31,8 @@ export default new Event({
         );
         if (!member) {
           interaction.client.logger.warn(
-            `interaction - Membre introuvable : ${interaction.user.id}`
+            `Membre introuvable : ${interaction.user.id}`,
+            { labels: { job: "interaction" } }
           );
           interaction.reply({
             content: "Je ne me souviens pas de toi !",
@@ -42,7 +44,8 @@ export default new Event({
         const hasPermission = command.roles.some((role) => roles.has(role));
         if (!hasPermission) {
           interaction.client.logger.warn(
-            `interaction - Permission manquante pour \`${interaction.commandName}\` : ${interaction.user.id}`
+            `Permission manquante pour \`${interaction.commandName}\` : ${interaction.user.id}`,
+            { labels: { job: "interaction" } }
           );
           interaction.reply({
             content: "Tu n'as pas la permission d'utiliser cette commande !",
@@ -54,7 +57,8 @@ export default new Event({
       // Exclure le cas où execute n'est pas défini
       if (!command.execute) {
         interaction.client.logger.warn(
-          `interaction - Commande \`${interaction.commandName}\` sans fonction execute`
+          `Commande \`${interaction.commandName}\` sans fonction execute`,
+          { labels: { job: "interaction" } }
         );
         interaction.reply({
           content: "Je ne sais pas comment exécuter cette commande !",
@@ -63,7 +67,8 @@ export default new Event({
         return;
       }
       interaction.client.logger.debug(
-        `interaction - Activation de la commande \`${interaction.commandName}\` par ${interaction.user.id} !`
+        `Activation de la commande \`${interaction.commandName}\` par ${interaction.user.id} !`,
+        { labels: { job: "interaction" } }
       );
       await command.execute(interaction);
     } else if (interaction.isButton()) {
@@ -73,7 +78,8 @@ export default new Event({
       if (!button) return;
       //exécuter le bouton
       interaction.client.logger.debug(
-        `interaction - Activation du bouton \`${interaction.customId}\` par ${interaction.user.id} !`
+        `Activation du bouton \`${interaction.customId}\` par ${interaction.user.id} !`,
+        { labels: { job: "interaction" } }
       );
       await button.execute(interaction);
     }

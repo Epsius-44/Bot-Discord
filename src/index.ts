@@ -28,32 +28,45 @@ client.appCommands = new Collection<string, AppCommand>();
 client.appButtons = new Collection<string, Button>();
 
 // Ouverture de la connexion BDD
-client.logger.info("start:bdd - Ouverture de la connexion avec MongoDB");
+client.logger.info("Ouverture de la connexion avec MongoDB", {
+  labels: { job: "start" }
+});
 try {
   const mongo = await MongoClient.connect(process.env.BDD_CONNECTION);
   await mongo.connect();
   client.db = mongo.db();
-  client.logger.info("start:bdd - Connexion établie avec MongoDB");
+  client.logger.info("Connexion établie avec MongoDB", {
+    labels: { job: "start" }
+  });
 } catch (error) {
-  client.logger.error(
-    `start:bdd - Erreur lors de la connexion avec MongoDB: ${error}`
-  );
+  client.logger.error(`Erreur lors de la connexion avec MongoDB`, {
+    labels: { job: "start" },
+    error
+  });
   throw new Error("Impossible de se connecter à la base de données");
 }
 
 // Chargement des gestionnaires (commandes, événements, etc.)
-client.logger.info("start:handler - Début du chargement des gestionnaires");
+client.logger.info("Début du chargement des gestionnaires", {
+  labels: { job: "start" }
+});
 const handlerFiles: string[] = readdirSync(
   `${process.env.APP_PATH}/handlers`
 ).filter((file) => file.endsWith(".js") || file.endsWith(".ts"));
 for (const file of handlerFiles) {
   const handler = (await import(`${process.env.APP_PATH}/handlers/${file}`))
     .default as Handler;
-  client.logger.debug(`start:handler - Chargement du gestionnaire ${file}`);
+  client.logger.debug(`Chargement du gestionnaire ${file}`, {
+    labels: { job: "start" }
+  });
   await handler.execute(client, handler.files);
-  client.logger.debug(`start:handler - Le gestionnaire ${file} est chargé`);
+  client.logger.debug(`Le gestionnaire ${file} est chargé`, {
+    labels: { job: "start" }
+  });
 }
-client.logger.info("start:handler - Fin du chargement des gestionnaires");
+client.logger.info("Fin du chargement des gestionnaires", {
+  labels: { job: "start" }
+});
 
 // Établissement de la connexion avec Discord
 await client.login(process.env.DISCORD_TOKEN);
