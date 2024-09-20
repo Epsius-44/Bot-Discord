@@ -17,8 +17,9 @@ export default new Button({
     const ACTIONS = ["cyber", "sysops", "devops1", "devops2", "ia", "wis"];
     const user = await interaction.guild?.members.fetch(interaction.user.id);
     if (!user) {
-      interaction.client.logger.error(
-        `interaction - Membre introuvable : ${interaction.user.id}`
+      interaction.client.logger.warn(
+        `Membre introuvable : ${interaction.user.id}`,
+        { labels: { job: "interaction" } }
       );
       interaction.reply({
         content: "Je ne me souviens pas de toi !",

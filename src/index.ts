@@ -28,32 +28,58 @@ client.appCommands = new Collection<string, AppCommand>();
 client.appButtons = new Collection<string, Button>();
 
 // Ouverture de la connexion BDD
-client.logger.info("bdd - Ouverture de la connexion avec MongoDB");
+client.logger.info("Ouverture de la connexion avec MongoDB", {
+  labels: { job: "start" }
+});
 try {
   const mongo = await MongoClient.connect(process.env.BDD_CONNECTION);
   await mongo.connect();
   client.db = mongo.db();
-  client.logger.info("bdd - Connexion établie avec MongoDB");
-} catch (error) {
-  client.logger.error(
-    `bdd - Erreur lors de la connexion avec MongoDB: ${error}`
-  );
-  throw new Error("Impossible de se connecter à la base de données");
+  client.logger.info("Connexion établie avec MongoDB", {
+    labels: { job: "start" }
+  });
+} catch (error: any) {
+  error.message = `Erreur lors de la connexion avec MongoDB : ${error.message}`;
+  client.logger.error(error, { labels: { job: "start" } });
 }
 
 // Chargement des gestionnaires (commandes, événements, etc.)
-client.logger.info("handler - Début du chargement des gestionnaires");
+client.logger.info("Début du chargement des gestionnaires", {
+  labels: { job: "start" }
+});
 const handlerFiles: string[] = readdirSync(
   `${process.env.APP_PATH}/handlers`
 ).filter((file) => file.endsWith(".js") || file.endsWith(".ts"));
 for (const file of handlerFiles) {
   const handler = (await import(`${process.env.APP_PATH}/handlers/${file}`))
     .default as Handler;
-  client.logger.debug(`handler - Chargement du gestionnaire ${file}`);
+  client.logger.debug(`Chargement du gestionnaire ${file}`, {
+    labels: { job: "start" }
+  });
   await handler.execute(client, handler.files);
-  client.logger.debug(`handler - Le gestionnaire ${file} est chargé`);
+  client.logger.debug(`Le gestionnaire ${file} est chargé`, {
+    labels: { job: "start" }
+  });
 }
-client.logger.info("handler - Fin du chargement des gestionnaires");
+client.logger.info("Fin du chargement des gestionnaires", {
+  labels: { job: "start" }
+});
+
+// Gestion des erreurs
+process.on("uncaughtException", (error: any) => {
+  error.message = `Erreur non capturée : ${error.message}`;
+  client.logger.error(error, { labels: { job: "unhandled" } });
+});
+process.on("unhandledRejection", (reason: any) => {
+  client.logger.error(`Rejet non capturé : ${reason}`, {
+    labels: { job: "unhandled" }
+  });
+});
+process.on("exit", (code) => {
+  client.logger.warn(`Le processus s'est arrêté avec un code ${code}`, {
+    labels: { job: "unhandled" }
+  });
+});
 
 // Établissement de la connexion avec Discord
 await client.login(process.env.DISCORD_TOKEN);

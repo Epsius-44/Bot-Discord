@@ -1,21 +1,89 @@
-function dateToString(date: Date): string {
-  return `${date.toISOString()}`;
-}
+import LokiTransport from "winston-loki";
+import appMetadata from "../../package.json" with { type: "json" };
+import winston, { createLogger, format, transports } from "winston";
 
 export class Logger {
-  log(message: string): void {
-    console.log(`[LOG]   ${dateToString(new Date())} : ${message}`);
+  logger: winston.Logger;
+
+  constructor() {
+    if (!process.env.LOGS_AGGREGATOR_URL) {
+      this.logger = createLogger({
+        level: "debug",
+        defaultMeta: {
+          version: appMetadata.version
+        },
+        format: format.combine(
+          format.timestamp(),
+          format.printf(
+            (info) =>
+              `[${info.timestamp}] ${info.level}: ${info.labels.job} - ${info.message}`
+          ),
+          format.colorize({ all: true })
+        ),
+        transports: [new transports.Console()]
+      });
+    } else {
+      this.logger = createLogger({
+        level: "debug",
+        defaultMeta: {
+          version: appMetadata.version
+        },
+        format: format.combine(
+          format.timestamp(),
+          format.json(),
+          format.errors({ stack: true })
+        ),
+        transports: [
+          new transports.Console({
+            format: format.combine(
+              format.timestamp(),
+              format.printf(
+                (info) =>
+                  `[${info.timestamp}] ${info.level}: ${info.labels.job} - ${info.message}`
+              ),
+              format.colorize({ all: true })
+            )
+          }),
+          new LokiTransport({
+            host: process.env.LOGS_AGGREGATOR_URL,
+            basicAuth: `${process.env.LOGS_AGGREGATOR_USER}:${process.env.LOGS_AGGREGATOR_PASSWORD}`,
+            interval: 10,
+            timeout: 30000,
+            json: true,
+            labels: {
+              env: process.env.LOGS_AGGREGATOR_ENV,
+              instance: process.env.HA_INSTANCE,
+              service_name: "bot-discord",
+              job: "unhandled"
+            },
+            gracefulShutdown: true,
+            clearOnError: true,
+            onConnectionError(error) {
+              console.error(`[ERROR] Loki Connection Fail : ${error}`);
+            }
+          })
+        ]
+      });
+    }
   }
-  info(message: string): void {
-    console.info(`[INFO]  ${dateToString(new Date())} : ${message}`);
+
+  log(message: string, ...meta: any[]): void {
+    this.logger.http(message, ...meta);
   }
-  warn(message: string): void {
-    console.warn(`[WARN]  ${dateToString(new Date())} : ${message}`);
+  info(message: string, ...meta: any[]): void {
+    this.logger.info(message, ...meta);
   }
-  error(message: string): void {
-    console.error(`[ERROR] ${dateToString(new Date())} : ${message}`);
+  warn(message: string, ...meta: any[]): void {
+    this.logger.warn(message, ...meta);
   }
-  debug(message: string): void {
-    console.debug(`[DEBUG] ${dateToString(new Date())} : ${message}`);
+  error(
+    message: string,
+    p0: { labels: { job: string } },
+    ...meta: any[]
+  ): void {
+    this.logger.error(message, ...meta);
+  }
+  debug(message: string, ...meta: any[]): void {
+    this.logger.debug(message, ...meta);
   }
 }

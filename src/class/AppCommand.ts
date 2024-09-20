@@ -58,7 +58,8 @@ export default class AppCommand {
             ephemeral: true
           });
           interaction.client.logger.warn(
-            `interaction - L'utilisateur ${interaction.user.tag} a tenté d'exécuter une commande mais n'a pas fourni de sous-commande.`
+            `L'utilisateur ${interaction.user.tag} a tenté d'exécuter une commande mais n'a pas fourni de sous-commande.`,
+            { labels: { job: "interaction" } }
           );
         } else {
           try {
@@ -76,10 +77,11 @@ export default class AppCommand {
                 "Je suis désolé mais je n'arrive pas à me souvenir où j'ai laissé cette commande.",
               ephemeral: true
             });
-            interaction.client.logger.error(
-              `interaction - Une erreur s'est produite lors de l'exécution de la commande ${this.data.name} ${
+            interaction.client.logger.warn(
+              `Une erreur s'est produite lors de l'exécution de la commande ${this.data.name} ${
                 subCommandGroup ? `${subCommandGroup}/` : ""
-              } ${commandName} demandée par ${interaction.user.tag} : ${error}`
+              } ${commandName} demandée par ${interaction.user.tag} : ${error}`,
+              { labels: { job: "interaction" } }
             );
           }
         }
@@ -108,9 +110,10 @@ export default class AppCommand {
                 value: "error"
               }
             ]);
-            interaction.client.logger.error(
-              `interaction - Une erreur s'est produite lors de l'autocomplétion de ${this.data.name} ${subCommandGroup ? `${subCommandGroup}/` : ""} ${subCommandName} pour ${interaction.user.tag}: ${error}`
-            );
+            error.message = `Erreur lors de l'autocomplétion de ${this.data.name} ${subCommandGroup ? `${subCommandGroup}/` : ""} ${subCommandName}: ${error.message}`;
+            interaction.client.logger.warn(error, {
+              labels: { job: "interaction" }
+            });
           }
         }
       };

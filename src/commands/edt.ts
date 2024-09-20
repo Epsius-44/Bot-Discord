@@ -111,8 +111,9 @@ export default new AppCommand({
         content: "Erreur lors de la récupération de l'emploi du temps",
         ephemeral: true
       });
-      interaction.client.logger.error(
-        `Erreur dans le chargement de l'emploi du temps ${username} pour ${start_date} à ${end_date}`
+      interaction.client.logger.warn(
+        `Erreur dans le chargement de l'emploi du temps ${username} pour ${start_date} à ${end_date}`,
+        { labels: { job: "interaction" } }
       );
       return;
     }

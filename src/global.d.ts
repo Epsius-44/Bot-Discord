@@ -14,6 +14,11 @@ declare global {
       BDD_COLLECTION_USERS: string;
       DISCORD_CLIENT_ID: string;
       DISCORD_TOKEN: string;
+      HA_INSTANCE: string;
+      LOGS_AGGREGATOR_URL: string;
+      LOGS_AGGREGATOR_ENV: string;
+      LOGS_AGGREGATOR_USER: string;
+      LOGS_AGGREGATOR_PASSWORD: string;
       ROLE_ADMIN_ID: string;
     }
   }
