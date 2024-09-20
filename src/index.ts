@@ -38,12 +38,9 @@ try {
   client.logger.info("Connexion établie avec MongoDB", {
     labels: { job: "start" }
   });
-} catch (error) {
-  client.logger.error(`Erreur lors de la connexion avec MongoDB`, {
-    labels: { job: "start" },
-    error
-  });
-  throw new Error("Impossible de se connecter à la base de données");
+} catch (error: any) {
+  error.message = `Erreur lors de la connexion avec MongoDB : ${error.message}`;
+  client.logger.error(error, { labels: { job: "start" } });
 }
 
 // Chargement des gestionnaires (commandes, événements, etc.)
@@ -66,6 +63,22 @@ for (const file of handlerFiles) {
 }
 client.logger.info("Fin du chargement des gestionnaires", {
   labels: { job: "start" }
+});
+
+// Gestion des erreurs
+process.on("uncaughtException", (error: any) => {
+  error.message = `Erreur non capturée : ${error.message}`;
+  client.logger.error(error, { labels: { job: "unhandled" } });
+});
+process.on("unhandledRejection", (reason: any) => {
+  client.logger.error(`Rejet non capturé : ${reason}`, {
+    labels: { job: "unhandled" }
+  });
+});
+process.on("exit", (code) => {
+  client.logger.warn(`Le processus s'est arrêté avec un code ${code}`, {
+    labels: { job: "unhandled" }
+  });
 });
 
 // Établissement de la connexion avec Discord

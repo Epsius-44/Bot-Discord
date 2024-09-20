@@ -110,10 +110,10 @@ export default class AppCommand {
                 value: "error"
               }
             ]);
-            interaction.client.logger.warn(
-              `Une erreur s'est produite lors de l'autocomplétion de ${this.data.name} ${subCommandGroup ? `${subCommandGroup}/` : ""} ${subCommandName} pour ${interaction.user.tag}: ${error}`,
-              { labels: { job: "interaction" } }
-            );
+            error.message = `Erreur lors de l'autocomplétion de ${this.data.name} ${subCommandGroup ? `${subCommandGroup}/` : ""} ${subCommandName}: ${error.message}`;
+            interaction.client.logger.warn(error, {
+              labels: { job: "interaction" }
+            });
           }
         }
       };

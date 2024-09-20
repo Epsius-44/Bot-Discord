@@ -40,10 +40,8 @@ export default new Handler({
         labels: { job: "start" }
       });
     } catch (error: any) {
-      client.logger.error(
-        `Lors de l'envoie des commandes à discord : ${error}`,
-        { labels: { job: "start" } }
-      );
+      error.message = `Erreur lors de l'envoi des commandes à Discord : ${error.message}`;
+      client.logger.error(error, { labels: { job: "start" } });
     }
   }
 });
