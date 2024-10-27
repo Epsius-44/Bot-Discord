@@ -82,6 +82,15 @@ export default new Event({
         { labels: { job: "interaction" } }
       );
       await button.execute(interaction);
+    } else if (interaction.isAutocomplete()) {
+      const command = interaction.client.appCommands.get(
+        interaction.commandName
+      );
+      if (!command) return;
+      //exécuter l'autocomplete de la commande si elle a été définie
+      if (command.autocomplete) {
+        await command.autocomplete(interaction);
+      }
     }
   }
 });
