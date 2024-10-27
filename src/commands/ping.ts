@@ -4,7 +4,7 @@ import {
   SlashCommandBuilder
 } from "discord.js";
 import AppCommand from "../class/AppCommand.js";
-import packageInfo from "../../package.json" assert { type: "json" };
+import packageInfo from "../../package.json" with { type: "json" };
 
 export default new AppCommand({
   data: new SlashCommandBuilder()
