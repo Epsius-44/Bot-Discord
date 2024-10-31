@@ -71,6 +71,15 @@ export default new Event({
         { labels: { job: "interaction" } }
       );
       await command.execute(interaction);
+    } else if (interaction.isAutocomplete()) {
+      const command = interaction.client.appCommands.get(
+        interaction.commandName
+      );
+      if (!command) return;
+      //exécuter l'autocomplete de la commande si elle a été définie
+      if (command.autocomplete) {
+        await command.autocomplete(interaction);
+      }
     } else if (interaction.isButton()) {
       //obtenir l'id du bouton qui a été cliqué (uniquement jusqu'à '_')
       const buttonId = interaction.customId.split("_")[0];
@@ -82,15 +91,21 @@ export default new Event({
         { labels: { job: "interaction" } }
       );
       await button.execute(interaction);
-    } else if (interaction.isAutocomplete()) {
-      const command = interaction.client.appCommands.get(
-        interaction.commandName
+    } else if (interaction.isModalSubmit()) {
+      //obtenir l'id de la modale qui a été soumise (uniquement jusqu'à '_')
+      const modalId = interaction.customId.split("_")[0];
+      const modal = interaction.client.appModals.get(modalId);
+      if (!modal) return;
+      //exécuter la modale
+      interaction.client.logger.debug(
+        `Soumission de la modale \`${interaction.customId}\` par ${interaction.user.id} !`,
+        { labels: { job: "interaction" } }
       );
-      if (!command) return;
-      //exécuter l'autocomplete de la commande si elle a été définie
-      if (command.autocomplete) {
-        await command.autocomplete(interaction);
-      }
-    }
+      await modal.execute(interaction);
+    } else
+      return interaction.client.logger.warn(
+        `L'interaction ne fait pas partie des types gérés par le bot : ${interaction.type}`,
+        { labels: { job: "interaction" } }
+      );
   }
 });

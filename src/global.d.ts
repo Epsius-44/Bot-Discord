@@ -3,6 +3,7 @@ import { Db } from "mongodb";
 import { Logger } from "./class/Logger";
 import AppCommand from "./class/AppCommand";
 import Button from "./class/Button";
+import Modal from "./class/Modal";
 
 // Variables d'environnement
 declare global {
@@ -20,8 +21,6 @@ declare global {
       LOGS_AGGREGATOR_USER: string;
       LOGS_AGGREGATOR_PASSWORD: string;
       ROLE_ADMIN_ID: string;
-      ROLE_MODERATOR_ID: string;
-      CATEGORY_TEMP_CHANNEL: string;
     }
   }
   type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
@@ -33,6 +32,7 @@ declare module "discord.js" {
     logger: Logger;
     appCommands: Collection<string, AppCommand>;
     appButtons: Collection<string, Button>;
+    appModals: Collection<string, Modal>;
     db: Db;
   }
 }

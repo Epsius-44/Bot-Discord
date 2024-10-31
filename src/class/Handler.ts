@@ -1,4 +1,4 @@
-import { readdirSync } from "fs";
+import { readdirSync, existsSync } from "fs";
 
 /**
  * Représentation d'un handler
@@ -19,9 +19,11 @@ export default class Handler {
     execute: (...args: any) => Promise<void> | void;
   }) {
     this.folder = object.folder;
-    this.files = readdirSync(this.folder).filter(
-      (file) => file.endsWith(".js") || file.endsWith(".ts")
-    );
+    this.files = existsSync(this.folder)
+      ? readdirSync(this.folder).filter(
+          (file) => file.endsWith(".js") || file.endsWith(".ts")
+        )
+      : [];
     this.execute = object.execute;
   }
 }
