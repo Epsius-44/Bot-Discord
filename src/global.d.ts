@@ -3,6 +3,7 @@ import { Db } from "mongodb";
 import { Logger } from "./class/Logger";
 import AppCommand from "./class/AppCommand";
 import Button from "./class/Button";
+import Modal from "./class/Modal";
 
 // Variables d'environnement
 declare global {
@@ -31,6 +32,7 @@ declare module "discord.js" {
     logger: Logger;
     appCommands: Collection<string, AppCommand>;
     appButtons: Collection<string, Button>;
+    appModals: Collection<string, Modal>;
     db: Db;
   }
 }

@@ -8,6 +8,7 @@ import { Logger } from "./class/Logger.js";
 import AppCommand from "./class/AppCommand.js";
 import { MongoClient } from "mongodb";
 import Button from "./class/Button";
+import Modal from "./class/Modal";
 
 // Charge les variables d'environnement depuis le .env
 dotenv.config();
@@ -26,6 +27,7 @@ const client = new Client({
 client.logger = new Logger();
 client.appCommands = new Collection<string, AppCommand>();
 client.appButtons = new Collection<string, Button>();
+client.appModals = new Collection<string, Modal>();
 
 // Ouverture de la connexion BDD
 client.logger.info("Ouverture de la connexion avec MongoDB", {
