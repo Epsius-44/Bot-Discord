@@ -76,11 +76,7 @@ export class Logger {
   warn(message: string, ...meta: any[]): void {
     this.logger.warn(message, ...meta);
   }
-  error(
-    message: string,
-    p0: { labels: { job: string } },
-    ...meta: any[]
-  ): void {
+  error(message: string, ...meta: any[]): void {
     this.logger.error(message, ...meta);
   }
   debug(message: string, ...meta: any[]): void {
