@@ -149,7 +149,7 @@ deploy-preprod:
   needs:
     - job: docker-preprod
       artifacts: false
-  before_script:
+  before_script: []
   script:
     - curl -X POST $API_EPSINYX_UPDATE
 
@@ -163,6 +163,6 @@ deploy-prod:
   needs:
     - job: docker-prod
       artifacts: false
-  before_script:
+  before_script: []
   script:
     - curl -X POST $API_EPSIUS_UPDATE

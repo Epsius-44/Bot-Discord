@@ -1,4 +1,4 @@
-import { BaseInteraction, Events } from "discord.js";
+import { BaseInteraction, Events, MessageFlags } from "discord.js";
 import Event from "../class/Event.js";
 import AppCommand from "../class/AppCommand.js";
 
@@ -19,7 +19,7 @@ export default new Event({
         );
         interaction.reply({
           content: "Je ne me souviens pas de cette commande !",
-          ephemeral: true
+          flags: MessageFlags.Ephemeral
         });
         return;
       }
@@ -36,7 +36,7 @@ export default new Event({
           );
           interaction.reply({
             content: "Je ne me souviens pas de toi !",
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
           });
           return;
         }
@@ -49,7 +49,7 @@ export default new Event({
           );
           interaction.reply({
             content: "Tu n'as pas la permission d'utiliser cette commande !",
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
           });
           return;
         }
@@ -62,7 +62,7 @@ export default new Event({
         );
         interaction.reply({
           content: "Je ne sais pas comment exécuter cette commande !",
-          ephemeral: true
+          flags: MessageFlags.Ephemeral
         });
         return;
       }

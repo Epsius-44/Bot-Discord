@@ -1,6 +1,7 @@
 import {
   EmbedBuilder,
   InteractionContextType,
+  MessageFlags,
   SlashCommandBuilder
 } from "discord.js";
 import AppCommand from "../class/AppCommand.js";
@@ -64,7 +65,7 @@ export default new AppCommand({
 
     await interaction.reply({
       content: "Pong ! Voici les informations sur l'état du bot",
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
       embeds: [versionEmbed, bddEmbed, haEmbed]
     });
   }

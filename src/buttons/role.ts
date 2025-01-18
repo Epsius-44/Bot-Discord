@@ -1,4 +1,4 @@
-import { ButtonInteraction } from "discord.js";
+import { ButtonInteraction, MessageFlags } from "discord.js";
 import Button from "../class/Button.js";
 
 export default new Button({
@@ -23,7 +23,7 @@ export default new Button({
       );
       interaction.reply({
         content: "Je ne me souviens pas de toi !",
-        ephemeral: true
+        flags: MessageFlags.Ephemeral
       });
       return;
     }
@@ -34,7 +34,7 @@ export default new Button({
         check = true;
         return interaction.reply({
           content: `${user} vous avez déjà le role de classe \`${role.name}\`, nous ne pouvons pas vous donner aussi le role <@&${ROLES[ACTIONS.indexOf(action)]}>\nSi vous avez des questions, n'hésitez pas à demander à un membre du staff.`,
-          ephemeral: true
+          flags: MessageFlags.Ephemeral
         });
       }
     });
@@ -42,7 +42,7 @@ export default new Button({
     await user.roles.add([ROLES[ACTIONS.indexOf(action)].toString()]);
     await interaction.reply({
       content: `${user}, le role de la classe \`${action}\` viens d'être ajouté !`,
-      ephemeral: true
+      flags: MessageFlags.Ephemeral
     });
   }
 });

@@ -1,10 +1,11 @@
-import type {
-  AutocompleteInteraction,
-  ChatInputCommandInteraction,
-  ContextMenuCommandBuilder,
-  SlashCommandBuilder,
-  SlashCommandOptionsOnlyBuilder,
-  SlashCommandSubcommandsOnlyBuilder
+import {
+  MessageFlags,
+  type AutocompleteInteraction,
+  type ChatInputCommandInteraction,
+  type ContextMenuCommandBuilder,
+  type SlashCommandBuilder,
+  type SlashCommandOptionsOnlyBuilder,
+  type SlashCommandSubcommandsOnlyBuilder
 } from "discord.js";
 import type SubCommand from "./SubCommand.js";
 
@@ -55,7 +56,7 @@ export default class AppCommand {
           await interaction.reply({
             content:
               "Je ne comprends pas cette langue! C'est peut-être du PowerShell ?",
-            ephemeral: true
+            flags: MessageFlags.Ephemeral
           });
           interaction.client.logger.warn(
             `L'utilisateur ${interaction.user.tag} a tenté d'exécuter une commande mais n'a pas fourni de sous-commande.`,
@@ -75,7 +76,7 @@ export default class AppCommand {
             await interaction.reply({
               content:
                 "Je suis désolé mais je n'arrive pas à me souvenir où j'ai laissé cette commande.",
-              ephemeral: true
+              flags: MessageFlags.Ephemeral
             });
             interaction.client.logger.warn(
               `Une erreur s'est produite lors de l'exécution de la commande ${this.data.name} ${
