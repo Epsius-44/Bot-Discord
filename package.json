@@ -32,26 +32,26 @@
     "start": "node build/index.js"
   },
   "devDependencies": {
-    "@eslint/js": "^9.10.0",
+    "@eslint/js": "^9.18.0",
     "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^22.5.4",
-    "@typescript-eslint/eslint-plugin": "^8.5.0",
-    "@typescript-eslint/parser": "^8.5.0",
-    "eslint": "^9.10.0",
-    "eslint-config-prettier": "^9.1.0",
-    "globals": "^15.9.0",
-    "prettier": "^3.3.3",
-    "tsc-watch": "^6.2.0",
-    "typescript": "^5.6.2",
-    "typescript-eslint": "^8.5.0"
+    "@types/node": "^22.10.7",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "tsc-watch": "^6.2.1",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0"
   },
   "dependencies": {
     "@luzilab/irori-edt": "^1.0.0",
     "@luzilab/irori-edt_linux-x64-gnu": "^1.0.0",
-    "discord.js": "^14.16.1",
-    "dotenv": "^16.4.5",
-    "mongodb": "^6.9.0",
-    "winston": "^3.14.2",
-    "winston-loki": "^6.1.2"
+    "discord.js": "^14.17.3",
+    "dotenv": "^16.4.7",
+    "mongodb": "^6.12.0",
+    "winston": "^3.17.0",
+    "winston-loki": "^6.1.3"
   }
 }

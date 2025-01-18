@@ -3,6 +3,7 @@ import {
   EmbedBuilder,
   GuildMember,
   InteractionContextType,
+  MessageFlags,
   SlashCommandBuilder,
   ToAPIApplicationCommandOptions
 } from "discord.js";
@@ -137,6 +138,6 @@ export default new AppCommand({
           };
         })
       );
-    await interaction.reply({ embeds: [embed], ephemeral: true });
+    await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
   }
 });

@@ -2,6 +2,7 @@ import {
   APIEmbedField,
   EmbedBuilder,
   InteractionContextType,
+  MessageFlags,
   SlashCommandBuilder
 } from "discord.js";
 import AppCommand from "../class/AppCommand.js";
@@ -105,11 +106,11 @@ export default new AppCommand({
         const edt = getDays(username, start_date, end_date);
         embed = formatDays(edt, username, start_date, end_date);
       }
-      interaction.reply({ embeds: [embed], ephemeral: true });
+      interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
     } catch {
       interaction.reply({
         content: "Erreur lors de la récupération de l'emploi du temps",
-        ephemeral: true
+        flags: MessageFlags.Ephemeral
       });
       interaction.client.logger.warn(
         `Erreur dans le chargement de l'emploi du temps ${username} pour ${start_date} à ${end_date}`,

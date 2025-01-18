@@ -16,7 +16,7 @@ export class Logger {
           format.timestamp(),
           format.printf(
             (info) =>
-              `[${info.timestamp}] ${info.level}: ${info.labels.job} - ${info.message}`
+              `[${info.timestamp}] ${info.level}: ${(info.labels as Record<string, string>).job} - ${info.message}`
           ),
           format.colorize({ all: true })
         ),
@@ -39,7 +39,7 @@ export class Logger {
               format.timestamp(),
               format.printf(
                 (info) =>
-                  `[${info.timestamp}] ${info.level}: ${info.labels.job} - ${info.message}`
+                  `[${info.timestamp}] ${info.level}: ${(info.labels as Record<string, string>).job} - ${info.message}`
               ),
               format.colorize({ all: true })
             )
