@@ -1,0 +1,9 @@
+{
+  "label": "Commandes",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "slug": "/commands",
+    "description": "Liste des commandes disponibles pour interagir avec le bot Discord Epsius."
+  }
+}

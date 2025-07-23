@@ -47,10 +47,15 @@ touch .env
 Ajoutez les variables d'environnement nécessaires (voir [Configuration](./configuration) pour plus de détails) :
 
 ```env
+LZL_DISCORD_CLIENT_ID=votre_client_id_ici
 LZL_DISCORD_TOKEN=votre_token_discord_ici
 ```
 
 ## 🏗️ Compilation et lancement
+
+:::warning
+Vous devez avoir configuré votre bot avant de poursuivre. (voir [Configuration](./configuration))
+:::
 
 ### Mode développement
 

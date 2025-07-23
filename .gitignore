@@ -10,3 +10,6 @@
 
 # Cache
 /.cache/
+
+# Environment variables
+.env

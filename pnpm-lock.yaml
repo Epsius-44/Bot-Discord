@@ -10,6 +10,9 @@ importers:
       discord.js:
         specifier: ^14.21.0
         version: 14.21.0
+      dotenv:
+        specifier: ^17.2.0
+        version: 17.2.0
     devDependencies:
       "@eslint/js":
         specifier: ^9.31.0
@@ -17,6 +20,9 @@ importers:
       "@tsconfig/node22":
         specifier: ^22.0.2
         version: 22.0.2
+      "@types/dotenv":
+        specifier: ^8.2.3
+        version: 8.2.3
       "@types/node":
         specifier: ^24.1.0
         version: 24.1.0
@@ -245,6 +251,13 @@ packages:
       {
         integrity: sha512-Kmwj4u8sDRDrMYRoN9FDEcXD8UpBSaPQQ24Gz+Gamqfm7xxn+GBR7ge/Z7pK8OXNGyUzbSwJj+TH6B+DS/epyA==
       }
+
+  "@types/dotenv@8.2.3":
+    resolution:
+      {
+        integrity: sha512-g2FXjlDX/cYuc5CiQvyU/6kkbP1JtmGzh0obW50zD7OKeILVL0NSpPWLXVfqoAGQjom2/SLLx9zHq0KXvD6mbw==
+      }
+    deprecated: This is a stub types definition. dotenv provides its own type definitions, so you do not need this installed.
 
   "@types/estree@1.0.8":
     resolution:
@@ -496,6 +509,13 @@ packages:
         integrity: sha512-U5w41cEmcnSfwKYlLv5RJjB8Joa+QJyRwIJz5i/eg+v2Qvv6EYpCRhN9I2Rlf0900LuqSDg8edakUATrDZQncQ==
       }
     engines: { node: ">=18" }
+
+  dotenv@17.2.0:
+    resolution:
+      {
+        integrity: sha512-Q4sgBT60gzd0BB0lSyYD3xM4YxrXA9y4uBDof1JNYGzOXrQdQ6yX+7XIAqoFOGQFOTK1D3Hts5OllpxMDZFONQ==
+      }
+    engines: { node: ">=12" }
 
   duplexer@0.1.2:
     resolution:
@@ -1300,6 +1320,10 @@ snapshots:
 
   "@tsconfig/node22@22.0.2": {}
 
+  "@types/dotenv@8.2.3":
+    dependencies:
+      dotenv: 17.2.0
+
   "@types/estree@1.0.8": {}
 
   "@types/json-schema@7.0.15": {}
@@ -1488,6 +1512,8 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+
+  dotenv@17.2.0: {}
 
   duplexer@0.1.2: {}
 

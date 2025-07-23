@@ -23,7 +23,7 @@ Rendez-vous sur [Discord Developer Portal](https://discord.com/developers/applic
 Dans l'onglet **"General Information"** :
 - Ajoutez une description
 - Ajoutez une icône si souhaité
-- Notez l'**Application ID** (vous en aurez besoin plus tard)
+- Notez l'**Application ID** (vous en aurez besoin pour `LZL_DISCORD_CLIENT_ID`)
 
 ### 4. Créer le bot
 
@@ -34,7 +34,8 @@ Dans l'onglet **"General Information"** :
 ### 5. Configurer le bot
 
 Dans la section **"Token"** :
-- Cliquez sur **"Copy"** pour copier le token (gardez-le secret !)
+- Cliquez sur **"Copy"** pour copier le token (gardez-le secret !
+  Vous en aurez besoin pour `LZL_DISCORD_TOKEN`)
 - Activez les **Privileged Gateway Intents** si nécessaire
 
 ## 🌍 Variables d'environnement
@@ -46,6 +47,9 @@ Créez un fichier `.env` à la racine du projet :
 ```env
 # Token du bot Discord (OBLIGATOIRE)
 LZL_DISCORD_TOKEN=votre_token_discord_ici
+
+# ID de l'application Discord (OBLIGATOIRE)
+LZL_DISCORD_CLIENT_ID=votre_client_id_ici
 
 # Optionnel : Mode de développement
 NODE_ENV=development
@@ -59,11 +63,12 @@ LOG_LEVEL=info
 | Variable | Description | Obligatoire | Valeur par défaut |
 |----------|-------------|-------------|-------------------|
 | `LZL_DISCORD_TOKEN` | Token d'authentification du bot | ✅ Oui | - |
+| `LZL_DISCORD_CLIENT_ID` | ID de l'application Discord | ✅ Oui | - |
 | `NODE_ENV` | Environnement d'exécution | ❌ Non | `development` |
 | `LOG_LEVEL` | Niveau de log (error, warn, info, debug) | ❌ Non | `info` |
 
-:::danger Token Discord
-⚠️ **Ne jamais committer votre token Discord !**
+:::danger Variables sensibles
+⚠️ **Ne jamais committer vos tokens et IDs Discord !** \
 Le fichier `.env` est déjà inclus dans `.gitignore` pour éviter les accidents.
 :::
 
@@ -78,8 +83,6 @@ Le fichier `.env` est déjà inclus dans `.gitignore` pour éviter les accidents
 3. Dans **"Bot Permissions"**, sélectionnez :
    - `Send Messages`
    - `Use Slash Commands`
-   - `Read Message History`
-   - Autres permissions selon vos besoins
 
 ### 2. Inviter le bot
 
@@ -100,26 +103,23 @@ const client = new Client({
 });
 ```
 
-Pour ajouter d'autres fonctionnalités, vous pourriez avoir besoin d'autres intents :
+### Configuration automatique des commandes
 
-```typescript
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-    // Autres intents...
-  ]
-});
-```
+Le bot utilise un système de chargement automatique des commandes qui :
+
+1. **Scanne le dossier `src/commands`** pour trouver les fichiers de commandes
+2. **Charge dynamiquement** chaque commande avec son handler
+3. **Enregistre automatiquement** les commandes auprès de l'API Discord
+4. **Gère les collections** de commandes en mémoire
 
 ### Structure de configuration
 
-Le projet utilise une structure de configuration simple dans `src/app.ts`. Pour des projets plus complexes, considérez :
+Le projet utilise une architecture modulaire avec :
 
-- Un fichier de configuration dédié (`src/config/index.ts`)
-- Validation des variables d'environnement
-- Configuration par environnement (dev/prod)
+- **Variables d'environnement** : Gestion via `dotenv`
+- **Types globaux** : Définitions dans `src/global.d.ts`
+- **Handlers automatiques** : Chargement dynamique des gestionnaires
+- **Collections Discord.js** : Stockage des commandes en mémoire
 
 ## 🔧 Configuration TypeScript
 
@@ -133,7 +133,7 @@ Le projet utilise `tsconfig.json` pour la configuration TypeScript :
     "rootDir": "./src"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules", "build", "docs"]
 }
 ```
 

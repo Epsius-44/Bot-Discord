@@ -1,6 +1,6 @@
 ---
 slug: first-post
-title: Bienvenue sur le changelog d'Epsius
+title: Bienvenue sur le changelog
 description: Le changelog d'Epsius est le journal des modifications apportées au bot Discord Epsius.
 authors: [lducruet]
 tags: []
