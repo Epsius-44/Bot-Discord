@@ -1,0 +1,51 @@
+{
+  "name": "bot-discord.epsius.luzilab.net",
+  "type": "module",
+  "version": "3.0.0",
+  "description": "Bot Discord développé en TypeScript pour serveur Discord des I2 de l'EPSI WIS Nantes de la promo 2025-2026.",
+  "keywords": [
+    "bot",
+    "discord",
+    "typescript"
+  ],
+  "author": "LuziLab",
+  "contributors": [
+    {
+      "name": "Louis DUCRUET",
+      "email": "louis@ducruet.info"
+    },
+    {
+      "name": "Tom CHANSON"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Epsius-44/Bot-Discord.git"
+  },
+  "license": "GPL-3.0",
+  "scripts": {
+    "lint": "pre-commit run --all-files",
+    "prestart": "rm -rf build",
+    "start": "tsc-watch --onSuccess \"node build/app.js\"",
+    "prebuild": "rm -rf build",
+    "build": "tsc",
+    "serve": "node build/app.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.21.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@tsconfig/node22": "^22.0.2",
+    "@types/node": "^24.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "tsc-watch": "^7.1.1",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0"
+  }
+}

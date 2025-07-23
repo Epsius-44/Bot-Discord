@@ -1,0 +1,21 @@
+= Luzilab/{org} : bot-discord
+:org: Epsinyx|Epsius
+:repo: https://github.com/Epsius-44/Bot-Discord.git
+ifdef::env-gitlab[]
+:org: Epsinyx
+:repo: https://gitlab.com/Epsinyx/Bot-Discord.git
+endif::[]
+ifdef::env-github[]
+:org: Epsius
+:repo: https://github.com/Epsius-44/Bot-Discord.git
+endif::[]
+
+WARNING: Projet au début de son développement, suite au refactor complet du code pour la version 3.
+
+== Installation
+
+Pour installer le projet, il faut d'abord cloner le dépôt et installer les dépendances.
+
+> git clone {repo} +
+> cd Bot-Discord +
+> npm install
