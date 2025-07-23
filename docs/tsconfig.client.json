@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "tsBuildInfoFile": "./lib/.tsbuildinfo-client",
+    "rootDir": "./src",
+    "outDir": "lib",
+    "module": "CommonJS",
+    "target": "esnext",
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "types": ["node", "react", "@docusaurus/module-type-aliases"],
+    "baseUrl": "./",
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "paths": {
+      "@site/*": ["./*"],
+      "@theme/*": ["./node_modules/@docusaurus/theme-classic/lib/theme/*"],
+      "@generated/*": ["./.docusaurus/*"]
+    }
+  },
+  "include": ["src/ImageRenderers.tsx"],
+  "exclude": ["node_modules", "build", ".docusaurus"]
+}

@@ -1,0 +1,81 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* Import Nerd Fonts */
+@import "https://www.nerdfonts.com/assets/css/webfont.css";
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #1f60af;
+  --ifm-color-primary-dark: #1c569e;
+  --ifm-color-primary-darker: #1a5295;
+  --ifm-color-primary-darkest: #16437b;
+  --ifm-color-primary-light: #226ac1;
+  --ifm-color-primary-lighter: #246ec9;
+  --ifm-color-primary-lightest: #317edb;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #7eb0ff;
+  --ifm-color-primary-dark: #5899ff;
+  --ifm-color-primary-darker: #458dff;
+  --ifm-color-primary-darkest: #0c6aff;
+  --ifm-color-primary-light: #a4c7ff;
+  --ifm-color-primary-lighter: #b7d3ff;
+  --ifm-color-primary-lightest: #f0f6ff;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Custom styles for print export */
+@media print {
+  /* Only show brand logo in navbar content for print */
+  .navbar{
+    display: flex;
+  }
+  .navbar__item.navbar__link, .navbar__toggle {
+    display: none;
+  }
+  /* Center the brand logo in the navbar */
+  .navbar__brand {
+    margin: 0 auto;
+  }
+  /* Hide the footer edit button in print */
+  .theme-doc-footer-edit-meta-row {
+    display: none;
+  }
+}
+
+/* Twemoji styles */
+.twemoji {
+  height: 1.2em;
+  width: 1.2em;
+  margin: 0 0.05em 0 0.1em;
+  vertical-align: -0.2em;
+  display: inline-block;
+}
+
+.twemoji svg {
+  height: 100%;
+  width: 100%;
+}
+
+/* Responsive emoji sizing */
+@media (max-width: 768px) {
+  .twemoji {
+    height: 1em;
+    width: 1em;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .twemoji {
+    filter: contrast(1.2);
+  }
+}
