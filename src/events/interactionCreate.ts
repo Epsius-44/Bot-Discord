@@ -13,8 +13,19 @@ export default new Event({
 
       // Si la commande n'existe pas, on log l'erreur et on envoie un message d'erreur à l'utilisateur
       if (!command || command === undefined) {
-        console.warn(
-          `run[int]: Commande inconnue : \`${interaction.commandName}\``
+        interaction.client.logManager.logger.warn(
+          `Activation de la commande inconnue \`${interaction.commandName}\` par ${interaction.user.id}`,
+          {
+            status: "ready",
+            category: "interactionCreate-chatInputCommand",
+            metadata: {
+              interactionType: interaction.type,
+              command: interaction.commandName,
+              options: interaction.options?.data ?? [],
+              user: interaction.user.id,
+              guild: interaction.guild?.id
+            }
+          }
         );
         interaction.reply({
           content: "Je ne me souviens pas de cette commande !",
@@ -25,8 +36,19 @@ export default new Event({
 
       // Exclure le cas où execute n'est pas défini
       if (!command.execute) {
-        console.warn(
-          `run[int]: Commande \`${interaction.commandName}\` sans fonction execute`
+        interaction.client.logManager.logger.warn(
+          `Activation de la commande sans fonction \`${interaction.commandName}\` par ${interaction.user.id}`,
+          {
+            status: "ready",
+            category: "interactionCreate-chatInputCommand",
+            metadata: {
+              interactionType: interaction.type,
+              command: interaction.commandName,
+              options: interaction.options?.data ?? [],
+              user: interaction.user.id,
+              guild: interaction.guild?.id
+            }
+          }
         );
         interaction.reply({
           content: "Je ne sais pas comment exécuter cette commande !",
@@ -34,8 +56,19 @@ export default new Event({
         });
         return;
       }
-      console.debug(
-        `run[int]: Activation de la commande \`${interaction.commandName}\` par ${interaction.user.id} !`
+      interaction.client.logManager.logger.verbose(
+        `Activation de la commande \`${interaction.commandName}\` par ${interaction.user.id} !`,
+        {
+          status: "ready",
+          category: "interactionCreate-chatInputCommand",
+          metadata: {
+            interactionType: interaction.type,
+            command: interaction.commandName,
+            options: interaction.options?.data ?? [],
+            user: interaction.user.id,
+            guild: interaction.guild?.id
+          }
+        }
       );
       await command.execute(interaction);
     } else if (interaction.isAutocomplete()) {
@@ -48,9 +81,18 @@ export default new Event({
         await command.autocomplete(interaction);
       }
     } else
-      return console.warn(
-        `run[int]: L'interaction ne fait pas partie des types gérés par le bot : ${interaction.type}`,
-        { labels: { job: "interaction" } }
+      interaction.client.logManager.logger.warn(
+        `L'interaction ne fait pas partie des types gérés par le bot : ${interaction.type}`,
+        {
+          status: "ready",
+          category: "interactionCreate",
+          metadata: {
+            interactionType: interaction.type,
+            user: interaction.user.id,
+            guild: interaction.guild?.id
+          }
+        }
       );
+    return;
   }
 });

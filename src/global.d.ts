@@ -1,9 +1,24 @@
+import LogManager from "./class/LogManager";
 // Variables d'environnement
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      LOG_LEVEL:
+        | "silly"
+        | "debug"
+        | "verbose"
+        | "http"
+        | "info"
+        | "warn"
+        | "error";
+      APP_PATH: string;
+      LZL_BOT_INSTANCE_NAME: string;
       LZL_DISCORD_CLIENT_ID: string;
       LZL_DISCORD_TOKEN: string;
+      LZL_LOGS_AGGREGATOR_URL: string;
+      LZL_LOGS_AGGREGATOR_USER: string;
+      LZL_LOGS_AGGREGATOR_PASSWORD: string;
+      NODE_ENV: "development" | "production" | "test";
     }
   }
   type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
@@ -13,6 +28,7 @@ declare global {
 declare module "discord.js" {
   export interface Client {
     appCommands: Collection<string, AppCommand>;
+    logManager: LogManager;
   }
 }
 

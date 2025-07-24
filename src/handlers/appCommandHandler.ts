@@ -8,15 +8,29 @@ export default new Handler({
   async execute(client: Client, files: string[]): Promise<void> {
     const body = [];
 
-    console.info(`start[cmd]: Chargement des commandes...`);
+    client.logManager.logger.info(`Chargement des commandes...`, {
+      status: "starting",
+      category: "commands"
+    });
 
     for (const file of files) {
       const appCommand: AppCommand = (await import(`${this.folder}/${file}`))
         .default as AppCommand;
+      client.logManager.logger.verbose(
+        `Chargement de la commande ${appCommand.data.name}...`,
+        {
+          status: "starting",
+          category: `commands-${appCommand.data.name}`
+        }
+      );
       body.push(appCommand.data.toJSON());
       client.appCommands.set(appCommand.data.name, appCommand);
-      console.debug(
-        `start[cmd]: La commande ${appCommand.data.name} est chargée`
+      client.logManager.logger.debug(
+        `La commande ${appCommand.data.name} est chargée`,
+        {
+          status: "starting",
+          category: `commands-${appCommand.data.name}`
+        }
       );
     }
 
@@ -31,10 +45,16 @@ export default new Handler({
           body: body
         }
       );
-      console.info(`start[cmd]: Envoie des commandes à Discord...`);
+      client.logManager.logger.info(`Envoie des commandes à Discord...`, {
+        status: "starting",
+        category: "discord-commands"
+      });
     } catch (error: any) {
-      error.message = `start[cmd]: Erreur lors de l'envoi des commandes à Discord : ${error.message}`;
-      console.error(error);
+      error.message = `Erreur lors de l'envoi des commandes à Discord : ${error.message}`;
+      client.logManager.logger.error(error.message, {
+        status: "starting",
+        category: "discord-commands"
+      });
     }
   }
 });

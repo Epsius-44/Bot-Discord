@@ -3,7 +3,7 @@
 :repo: https://github.com/Epsius-44/Bot-Discord.git
 ifdef::env-gitlab[]
 :org: Epsinyx
-:repo: https://gitlab.com/Epsinyx/Bot-Discord.git
+:repo: https://gitlab.com/Luzilab/epsinyx/bot-discord.git
 endif::[]
 ifdef::env-github[]
 :org: Epsius
@@ -17,5 +17,5 @@ WARNING: Projet au début de son développement, suite au refactor complet du co
 Pour installer le projet, il faut d'abord cloner le dépôt et installer les dépendances.
 
 > git clone {repo} +
-> cd Bot-Discord +
+> cd bot-discord +
 > npm install

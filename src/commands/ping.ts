@@ -1,7 +1,8 @@
 import {
   InteractionContextType,
   MessageFlags,
-  SlashCommandBuilder
+  SlashCommandBuilder,
+  TextDisplayBuilder
 } from "discord.js";
 import AppCommand from "../class/AppCommand.js";
 
@@ -17,8 +18,8 @@ export default new AppCommand({
   hasSubCommands: false,
   async execute(interaction): Promise<void> {
     await interaction.reply({
-      content: "Pong !",
-      flags: MessageFlags.Ephemeral
+      components: [new TextDisplayBuilder().setContent("Pong! :ping_pong:")],
+      flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
     });
   }
 });

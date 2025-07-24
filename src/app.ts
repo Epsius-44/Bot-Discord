@@ -5,6 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import Handler from "./class/Handler";
 import AppCommand from "./class/AppCommand";
+import LogManager from "./class/LogManager.js";
 
 // Chargement des variables d'environnement depuis le .env
 dotenv.config();
@@ -16,9 +17,15 @@ const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
 
+client.logManager = new LogManager();
 client.appCommands = new Collection<string, AppCommand>();
 
-console.info("start: Chargement des gestionnaires...");
+client.logManager.logger.info("Chargement des gestionnaires...", {
+  status: "starting",
+  category: "handlers",
+  timestamp: new Date().toISOString()
+});
+
 // Les gestionnaires sont des classes qui permettent de gérer les événements, les commandes, etc.
 // Ils sont chargés dynamiquement depuis le dossier handlers
 const handlerFiles: string[] = readdirSync(
@@ -27,15 +34,27 @@ const handlerFiles: string[] = readdirSync(
 for (const file of handlerFiles) {
   const handler = (await import(`${process.env.APP_PATH}/handlers/${file}`))
     .default as Handler;
-  console.debug(`start: Chargement du gestionnaire ${handler.name}`);
+  client.logManager.logger.verbose(
+    `Chargement du gestionnaire ${handler.name}`,
+    {
+      status: "starting",
+      category: `handlers-${handler.name}`
+    }
+  );
   // Cette méthode est responsable de l'initialisation du gestionnaire
   // Par exemple, pour le gestionnaire d'événements, elle va charger tous les événements
   // et les enregistrer auprès du client Discord
   await handler.execute(client, handler.files);
-  console.debug(`start: Le gestionnaire ${handler.name} est chargé`);
+  client.logManager.logger.debug(`Le gestionnaire ${handler.name} est chargé`, {
+    status: "starting",
+    category: `handlers-${handler.name}`
+  });
 }
 
 // Connexion du client Discord
-console.info("start: Connexion du bot...");
+client.logManager.logger.verbose("Connexion du bot...", {
+  status: "starting",
+  category: "discord-login"
+});
 // Le token du bot est stocké dans les variables d'environnement
 client.login(process.env.LZL_DISCORD_TOKEN || "");

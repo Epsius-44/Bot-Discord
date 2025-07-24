@@ -55,8 +55,19 @@ export default class AppCommand {
               "Je ne sais pas quelle sous-commande exécuter. Veuillez en fournir une valide.",
             flags: MessageFlags.Ephemeral
           });
-          console.warn(
-            `run[cmd-${interaction.commandName}]: L'utilisateur ${interaction.user.username} a tenté d'exécuter une commande mais n'a pas fourni de sous-commande.`
+          interaction.client.logManager.logger.warn(
+            `Activation de la commande ${interaction.commandName} par ${interaction.user.id} sans fournir de sous-commande.`,
+            {
+              status: "ready",
+              category: "appCommand-subCommand",
+              metadata: {
+                interactionType: interaction.type,
+                command: interaction.commandName,
+                options: interaction.options?.data ?? [],
+                user: interaction.user.id,
+                guild: interaction.guild?.id
+              }
+            }
           );
         } else {
           try {
@@ -71,13 +82,24 @@ export default class AppCommand {
           } catch (error: any) {
             await interaction.reply({
               content:
-                "Je suis désolé mais je n'arrive pas à me souvenir où j'ai laissé cette commande.",
+                "Je suis désolé, mais je n'ai pas pu exécuter cette sous-commande.",
               flags: MessageFlags.Ephemeral
             });
-            console.warn(
-              `run[cmd-${this.data.name}]: Une erreur s'est produite lors de l'exécution de la commande ${this.data.name} ${
+            interaction.client.logManager.logger.warn(
+              `Activation de la commande ${this.data.name} ${
                 subCommandGroup ? `${subCommandGroup}/` : ""
-              } ${commandName} demandée par ${interaction.user.tag} : ${error}`
+              } ${commandName} par ${interaction.user.id} avec une erreur : ${error}`,
+              {
+                status: "ready",
+                category: "appCommand-subCommand",
+                metadata: {
+                  interactionType: interaction.type,
+                  command: `${this.data.name} ${subCommandGroup ? `${subCommandGroup}/` : ""}${commandName}`,
+                  options: interaction.options?.data ?? [],
+                  user: interaction.user.id,
+                  guild: interaction.guild?.id
+                }
+              }
             );
           }
         }
@@ -106,8 +128,18 @@ export default class AppCommand {
                 value: "error"
               }
             ]);
-            error.message = `run[cmd-${this.data.name}]: Erreur lors de l'autocomplétion de ${this.data.name} ${subCommandGroup ? `${subCommandGroup}/` : ""} ${subCommandName}: ${error.message}`;
-            console.warn(error);
+            error.message = `Activation de la commande ${this.data.name} ${subCommandGroup ? `${subCommandGroup}/` : ""} ${subCommandName} par ${interaction.user.id} avec une erreur d'autocomplétion : ${error.message}`;
+            interaction.client.logManager.logger.warn(error.message, {
+              status: "ready",
+              category: "appCommand-subCommand",
+              metadata: {
+                interactionType: interaction.type,
+                command: `${this.data.name} ${subCommandGroup ? `${subCommandGroup}/` : ""}${subCommandName}`,
+                options: interaction.options?.data ?? [],
+                user: interaction.user.id,
+                guild: interaction.guild?.id
+              }
+            });
           }
         }
       };
