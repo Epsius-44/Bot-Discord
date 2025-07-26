@@ -57,14 +57,14 @@ export default new Event({
         return;
       }
       interaction.client.logManager.logger.verbose(
-        `Activation de la commande \`${interaction.commandName}\` par ${interaction.user.id} !`,
+        `Activation de la commande \`${interaction.commandName}\` par ${interaction.user.id} ! Options: ${JSON.stringify(interaction.options?.data ?? [])}`,
         {
           status: "ready",
           category: "interactionCreate-chatInputCommand",
           metadata: {
             interactionType: interaction.type,
             command: interaction.commandName,
-            options: interaction.options?.data ?? [],
+            options: JSON.stringify(interaction.options?.data ?? []),
             user: interaction.user.id,
             guild: interaction.guild?.id
           }

@@ -131,7 +131,7 @@ const config: Config = {
     },
     footer: {
       style: "dark",
-      copyright: `Copyright © ${new Date().getFullYear()} Luzidocs. Built with <a class="footer__link-item" href="https://docusaurus.io/" target="_blank" rel="noopener noreferrer">Docusaurus</a>.`
+      copyright: `Copyright © ${new Date().getFullYear()} Luzidocs. <a class="footer__link-item" href="https://docusaurus.io/" target="_blank" rel="noopener noreferrer">Built with Docusaurus</a>.`
     },
     prism: {
       theme: prismThemes.oneLight,
