@@ -1,6 +1,7 @@
 import {
   ApplicationCommandOptionType,
-  EmbedBuilder,
+  ComponentType,
+  ContainerBuilder,
   InteractionContextType,
   MessageFlags,
   SlashCommandBuilder,
@@ -98,38 +99,41 @@ export default new AppCommand({
       return a.name.localeCompare(b.name);
     });
 
-    const embed = new EmbedBuilder()
-      .setTitle("Liste des commandes utilisables")
-      .setDescription(
-        "Liste des commandes disponibles sur le bot auquel vous avez accès"
-      )
-      .setColor(0x00ff00)
-      .addFields(
-        commandsList.map((command) => {
-          let commandDescription = command.description;
-          if (showArgs) {
-            commandDescription =
-              command.description +
-              "\n" +
-              command.args
-                ?.map((arg) => {
-                  return (
-                    "__*" +
-                    arg.name +
-                    "*__" +
-                    (arg.required ? "" : " (falculatif)") +
-                    ": " +
-                    arg.description
-                  );
-                })
-                .join("\n");
-          }
-          return {
-            name: "/" + command.name,
-            value: commandDescription
-          };
+    // Construction du message de réponse
+    let message =
+      "## Liste des commandes utilisables\nVoici la liste des commandes disponibles sur le bot auquel vous avez accès :";
+    commandsList.forEach((command) => {
+      message += `\n- \`${command.name}\` ${command.description}`;
+      if (showArgs && command.args) {
+        if (command.args.length != 0) {
+          message += "\n  Arguments :";
+        }
+        command.args.forEach((arg) => {
+          message += `\n  - __**${arg.name}** (${arg.required ? ":exclamation:" : ":grey_question:"})__ : ${arg.description}`;
+        });
+      }
+    });
+    if (commandsList.length === 0) {
+      message += "\nAucune commande n'est disponible.";
+    }
+    if (showArgs) {
+      message +=
+        "\n-# **Légende :** :exclamation: = obligatoire, :grey_question: = optionnel";
+    }
+
+    // Répondre à l'interaction avec le message formaté
+    await interaction.reply({
+      components: [
+        new ContainerBuilder({
+          components: [
+            {
+              content: message,
+              type: ComponentType.TextDisplay
+            }
+          ]
         })
-      );
-    await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+      ],
+      flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
+    });
   }
 });
