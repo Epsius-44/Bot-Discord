@@ -16,24 +16,36 @@ export interface HelpCommand {
 }
 
 function getCommands(command: SlashCommandBuilder): HelpCommand[] {
-  //vérifier si la commande possède des sous-commandes (elle possède des sous-commandes si elle possède des options avec la propriété type === 1)
   const commandJson = command.toJSON();
   const commandResult: HelpCommand[] = [];
-  //vérifier si la commande possède des sous-commandes
-  if (
-    commandJson.options?.some(
-      (option) => option.type === ApplicationCommandOptionType.Subcommand
-    )
-  ) {
-    //si la commande possède des sous-commandes, on les récupère
+
+  // Vérifier si la commande possède des sous-commandes ou des groupes de sous-commandes
+  const hasSubCommands = commandJson.options?.some(
+    (option) => option.type === ApplicationCommandOptionType.Subcommand
+  );
+  const hasSubCommandGroups = commandJson.options?.some(
+    (option) => option.type === ApplicationCommandOptionType.SubcommandGroup
+  );
+
+  if (hasSubCommands || hasSubCommandGroups) {
+    // Si la commande possède des sous-commandes ou des groupes, on les traite
     command.options.forEach((option) => {
-      const subCommand = getSubcommand(option);
-      if (!subCommand) return;
-      subCommand.name = command.name + " " + subCommand.name;
-      commandResult.push(subCommand);
+      const optionJson = option.toJSON();
+
+      if (optionJson.type === ApplicationCommandOptionType.SubcommandGroup) {
+        // Traiter les groupes de sous-commandes
+        const subCommandGroup = getSubcommandGroup(option, command.name);
+        commandResult.push(...subCommandGroup);
+      } else if (optionJson.type === ApplicationCommandOptionType.Subcommand) {
+        // Traiter les sous-commandes directes
+        const subCommand = getSubcommand(option);
+        if (!subCommand) return;
+        subCommand.name = command.name + " " + subCommand.name;
+        commandResult.push(subCommand);
+      }
     });
   } else {
-    //si la commande ne possède pas de sous-commandes, on la récupère
+    // Si la commande ne possède pas de sous-commandes, on la récupère
     commandResult.push({
       name: commandJson.name,
       description: commandJson.description,
@@ -65,6 +77,37 @@ function getSubcommand(
       };
     })
   };
+}
+
+function getSubcommandGroup(
+  subCommandGroup: ToAPIApplicationCommandOptions,
+  commandName: string
+): HelpCommand[] {
+  const subCommandGroupJson = subCommandGroup.toJSON();
+  const result: HelpCommand[] = [];
+
+  if (subCommandGroupJson.type !== ApplicationCommandOptionType.SubcommandGroup)
+    return result;
+
+  // Parcourir toutes les sous-commandes dans le groupe
+  subCommandGroupJson.options?.forEach((option) => {
+    if (option.type === ApplicationCommandOptionType.Subcommand) {
+      const subCommand: HelpCommand = {
+        name: `${commandName} ${subCommandGroupJson.name} ${option.name}`,
+        description: option.description,
+        args: option.options?.map((arg) => {
+          return {
+            name: arg.name,
+            description: arg.description,
+            required: arg.required ?? false
+          };
+        })
+      };
+      result.push(subCommand);
+    }
+  });
+
+  return result;
 }
 
 export default new AppCommand({
