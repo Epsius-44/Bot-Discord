@@ -1,4 +1,6 @@
 import { Client, Collection, GatewayIntentBits } from "discord.js";
+import { PrismaClient } from "@prisma/client";
+import { withAccelerate } from "@prisma/extension-accelerate";
 import dotenv from "dotenv";
 import { readdirSync } from "fs";
 import path from "path";
@@ -29,6 +31,7 @@ const client = new Client({
 
 client.logManager = new LogManager();
 client.appCommands = new Collection<string, AppCommand>();
+client.prisma = new PrismaClient().$extends(withAccelerate());
 
 client.logManager.logger.info("Chargement des gestionnaires...", {
   status: "starting",
