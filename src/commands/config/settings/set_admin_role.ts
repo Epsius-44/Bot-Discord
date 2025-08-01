@@ -1,3 +1,4 @@
+import { MessageFlags, TextDisplayBuilder } from "discord.js";
 import SubCommand from "../../../class/SubCommand.js";
 
 export default new SubCommand({
@@ -7,8 +8,12 @@ export default new SubCommand({
 
     if (!guild) {
       await interaction.reply({
-        content: "Cette commande ne peut être utilisée que dans un serveur.",
-        ephemeral: true
+        components: [
+          new TextDisplayBuilder({
+            content: "Cette commande ne peut être utilisée que dans un serveur."
+          })
+        ],
+        flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
       });
       return;
     }
@@ -34,9 +39,13 @@ export default new SubCommand({
           }
         );
         await interaction.reply({
-          content:
-            "Une erreur est survenue lors de la mise à jour du rôle d'administrateur.",
-          ephemeral: true
+          components: [
+            new TextDisplayBuilder({
+              content:
+                "Une erreur est survenue lors de la mise à jour du rôle d'administrateur."
+            })
+          ],
+          flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
         });
         return;
       })
@@ -57,8 +66,12 @@ export default new SubCommand({
         );
       });
     await interaction.reply({
-      content: `Le rôle d'administrateur a été défini sur \`${role.name}\`.`,
-      ephemeral: true
+      components: [
+        new TextDisplayBuilder({
+          content: `Le rôle d'administrateur a été défini sur \`${role.name}\`.`
+        })
+      ],
+      flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
     });
   }
 });
