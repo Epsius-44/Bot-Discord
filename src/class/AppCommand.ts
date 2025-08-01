@@ -73,7 +73,7 @@ export default class AppCommand {
           try {
             const command = (
               await import(
-                `../subCommands/${this.data.name}/${
+                `../commands/${this.data.name}/${
                   subCommandGroup ? `${subCommandGroup}/` : ""
                 }${commandName}.js`
               )
@@ -113,7 +113,7 @@ export default class AppCommand {
           try {
             const subCommand = (
               await import(
-                `../subCommands/${this.data.name}/${
+                `../commands/${this.data.name}/${
                   subCommandGroup ? `${subCommandGroup}/` : ""
                 }${subCommandName}.js`
               )
