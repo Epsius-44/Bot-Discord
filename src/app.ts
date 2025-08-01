@@ -12,6 +12,16 @@ dotenv.config();
 // Définition du chemin de l'application
 process.env.APP_PATH = path.dirname(fileURLToPath(import.meta.url));
 
+// Initialisation des variables d'environnement si elles ne sont pas définies
+if (!process.env.LOG_LEVEL) {
+  process.env.LOG_LEVEL = "info";
+}
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = "development";
+}
+if (!process.env.LZL_BOT_INSTANCE_NAME) {
+  process.env.LZL_BOT_INSTANCE_NAME = Math.random().toString(36).slice(2, 16);
+}
 // Définition du client Discord avec ses intents (intents sont les permissions que le bot demande)
 const client = new Client({
   intents: [GatewayIntentBits.Guilds]

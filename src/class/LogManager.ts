@@ -11,7 +11,7 @@ export default class LogManager {
 
   constructor() {
     this.logger = createLogger({
-      level: process.env.LOG_LEVEL || "info",
+      level: process.env.LOG_LEVEL,
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.json(),
@@ -46,10 +46,8 @@ export default class LogManager {
           labels: {
             app: appMetadata.name,
             version: appMetadata.version,
-            instance:
-              process.env.LZL_BOT_INSTANCE_NAME ||
-              Math.random().toString(36).slice(2, 16),
-            env: env.NODE_ENV || "development"
+            instance: process.env.LZL_BOT_INSTANCE_NAME,
+            env: env.NODE_ENV
           },
           interval: 10,
           timeout: 30000,
