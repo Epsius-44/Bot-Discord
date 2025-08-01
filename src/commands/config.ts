@@ -1,4 +1,8 @@
-import { InteractionContextType, SlashCommandBuilder } from "discord.js";
+import {
+  ChannelType,
+  InteractionContextType,
+  SlashCommandBuilder
+} from "discord.js";
 import AppCommand from "../class/AppCommand.js";
 
 export default new AppCommand({
@@ -30,6 +34,34 @@ export default new AppCommand({
               option
                 .setName("role")
                 .setDescription("Le rôle à définir comme modérateur")
+                .setRequired(true)
+            )
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName("set_tempchannel_category")
+            .setDescription(
+              "Définir la catégorie des salons temporaires pour le serveur"
+            )
+            .addChannelOption((option) =>
+              option
+                .setName("category")
+                .setDescription(
+                  "La catégorie à définir pour les salons temporaires"
+                )
+                .addChannelTypes(ChannelType.GuildCategory)
+                .setRequired(true)
+            )
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName("set_archive_category")
+            .setDescription("Définir la catégorie d'archivage pour le serveur")
+            .addChannelOption((option) =>
+              option
+                .setName("category")
+                .setDescription("La catégorie à définir pour l'archivage")
+                .addChannelTypes(ChannelType.GuildCategory)
                 .setRequired(true)
             )
         )
