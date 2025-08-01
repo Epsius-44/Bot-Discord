@@ -17,8 +17,10 @@ model Guild {
   id                   String       @id // Discord Guild ID
   adminRole            String?      // Discord Admin Role ID
   moderatorRole        String?      // Discord Moderator Role ID
+  teacherRole          String?      // Discord Teacher Role ID
   tempChannelCategory  String?      // Discord Temp Channel Category ID
   archiveCategory      String?      // Discord Archive Category ID
+  moderationChannel    String?      // Discord Moderation Channel ID
 
   // Relations
   classes              Class[]

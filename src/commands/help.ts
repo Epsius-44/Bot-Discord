@@ -113,7 +113,7 @@ function getSubcommandGroup(
 export default new AppCommand({
   data: new SlashCommandBuilder()
     .setName("help")
-    .setDescription("Affiche la liste des commandes disponibles")
+    .setDescription("Afficher la liste des commandes disponibles")
     .setContexts([InteractionContextType.Guild])
     //ajouter un argument pour afficher ou non les arguments des commandes (par défaut, false)
     .addBooleanOption((option) =>
@@ -148,9 +148,6 @@ export default new AppCommand({
     commandsList.forEach((command) => {
       message += `\n- \`${command.name}\` ${command.description}`;
       if (showArgs && command.args) {
-        if (command.args.length != 0) {
-          message += "\n  Arguments :";
-        }
         command.args.forEach((arg) => {
           message += `\n  - __**${arg.name}** (${arg.required ? ":exclamation:" : ":grey_question:"})__ : ${arg.description}`;
         });
