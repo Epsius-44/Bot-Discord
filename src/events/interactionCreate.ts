@@ -1,4 +1,4 @@
-import { BaseInteraction, Events, MessageFlags } from "discord.js";
+import { BaseInteraction, Client, Events, MessageFlags } from "discord.js";
 import Event from "../class/Event.js";
 import AppCommand from "../class/AppCommand.js";
 
@@ -6,7 +6,7 @@ export default new Event({
   name: Events.InteractionCreate,
   once: false,
 
-  async execute(interaction: BaseInteraction): Promise<void> {
+  async execute(client: Client, interaction: BaseInteraction): Promise<void> {
     if (interaction.isChatInputCommand()) {
       const command: AppCommand | undefined =
         interaction.client.appCommands.get(interaction.commandName);

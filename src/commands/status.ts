@@ -11,7 +11,7 @@ import packageInfo from "../../package.json" with { type: "json" };
 export default new AppCommand({
   data: new SlashCommandBuilder()
     .setName("status")
-    .setDescription("Affiche l'état du bot à l'instant T")
+    .setDescription("Afficher l'état du bot à l'instant T")
     .setContexts([InteractionContextType.Guild]),
   hasSubCommands: false,
   async execute(interaction): Promise<void> {

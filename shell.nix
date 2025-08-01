@@ -5,6 +5,8 @@ mkShell {
     nodejs_22
     pnpm
     pre-commit
+    openssl
+    prisma-engines
   ];
 
   shellHook = ''

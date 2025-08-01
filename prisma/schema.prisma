@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("LZL_DATABASE_URL")
+}
+
+model Guild {
+  id                   String       @id // Discord Guild ID
+  adminRole            String?      // Discord Admin Role ID
+  moderatorRole        String?      // Discord Moderator Role ID
+  teacherRole          String?      // Discord Teacher Role ID
+  tempChannelCategory  String?      // Discord Temp Channel Category ID
+  archiveCategory      String?      // Discord Archive Category ID
+  moderationChannel    String?      // Discord Moderation Channel ID
+
+  // Relations
+  classes              Class[]
+  moderations          Moderation[]
+
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+
+  @@map("guilds")
+}
+
+model Class {
+  id           String   @id @db.VarChar(3) // Max 3 characters
+  name         String
+  description  String
+  roles        String   // JSON array of Discord Role IDs
+
+  // Relations
+  guild        Guild    @relation(fields: [guildId], references: [id], onDelete: Cascade)
+  guildId      String
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("classes")
+}
+
+model SanctionType {
+  id           Int          @id @default(autoincrement())
+  name         String       @unique // "warn", "mute", "kick", "ban", etc.
+  description  String?
+
+  // Relations
+  moderations  Moderation[]
+
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@map("sanction_types")
+}
+
+model Moderation {
+  id           Int           @id @default(autoincrement())
+  user         String        // Discord User ID
+  moderator    String        // Discord Moderator ID
+  duration     Int?          // Duration in minutes (null for permanent)
+  reason       String
+
+  // Relations
+  guild        Guild         @relation(fields: [guildId], references: [id], onDelete: Cascade)
+  guildId      String
+  sanctionType SanctionType  @relation(fields: [sanctionTypeId], references: [id])
+  sanctionTypeId Int
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  expiresAt    DateTime?     // Calculated field based on createdAt + duration
+
+  @@map("moderations")
+}
+
+model User {
+  id           String   @id // Discord User ID
+  epsiId       String?  @unique // ID Epsi
+  name         String?  // User display name
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("users")
+}
