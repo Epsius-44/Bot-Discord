@@ -1,9 +1,9 @@
 import {
-  ComponentType,
   ContainerBuilder,
   InteractionContextType,
   MessageFlags,
-  SlashCommandBuilder
+  SlashCommandBuilder,
+  TextDisplayBuilder
 } from "discord.js";
 import AppCommand from "../class/AppCommand.js";
 import packageInfo from "../../package.json" with { type: "json" };
@@ -59,14 +59,9 @@ export default new AppCommand({
 
     await interaction.reply({
       components: [
-        new ContainerBuilder({
-          components: [
-            {
-              content: statusMessage,
-              type: ComponentType.TextDisplay
-            }
-          ]
-        })
+        new ContainerBuilder().addTextDisplayComponents(
+          new TextDisplayBuilder().setContent(statusMessage)
+        )
       ],
       flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
     });
