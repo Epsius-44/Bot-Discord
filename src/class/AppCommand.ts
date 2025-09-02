@@ -1,5 +1,6 @@
 import {
   MessageFlags,
+  TextDisplayBuilder,
   type AutocompleteInteraction,
   type ChatInputCommandInteraction,
   type ContextMenuCommandBuilder,
@@ -51,9 +52,12 @@ export default class AppCommand {
 
         if (!commandName) {
           await interaction.reply({
-            content:
-              "Je ne sais pas quelle sous-commande exécuter. Veuillez en fournir une valide.",
-            flags: MessageFlags.Ephemeral
+            components: [
+              new TextDisplayBuilder().setContent(
+                "Je ne sais pas quelle sous-commande exécuter. Veuillez en fournir une valide."
+              )
+            ],
+            flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
           });
           interaction.client.logManager.logger.warn(
             `Activation de la commande ${interaction.commandName} par ${interaction.user.id} sans fournir de sous-commande.`,
@@ -81,9 +85,12 @@ export default class AppCommand {
             await command.execute(interaction);
           } catch (error: any) {
             await interaction.reply({
-              content:
-                "Je suis désolé, mais je n'ai pas pu exécuter cette sous-commande.",
-              flags: MessageFlags.Ephemeral
+              components: [
+                new TextDisplayBuilder().setContent(
+                  "Je suis désolé, mais je n'ai pas pu exécuter cette sous-commande."
+                )
+              ],
+              flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
             });
             interaction.client.logManager.logger.warn(
               `Activation de la commande ${this.data.name} ${

@@ -14,19 +14,21 @@ export default new Event({
       }
     );
 
+    const commands = client.appCommands
+      ? Array.from(client.appCommands.keys())
+      : Array.from(client.application?.commands.cache.values() ?? []).map(
+          (cmd) => cmd.name
+        );
     client.logManager.logger.verbose(
-      `===== INFORMATION SUR LE BOT =====
+      `
+===== INFORMATION SUR LE BOT =====
 🤖 Bot: ${client.user?.username} (${client.user?.id})
 ---
 📅 Date de démarrage: ${new Date().toLocaleString()}
 ✅ Statut: ${client.ws.status === 0 ? "En ligne" : "Hors ligne"}
-🔗 Latence: ${client.ws.ping}ms
 ---
-⚡ Commandes: ${client.appCommands?.size || 0}
-📡 Événements: ${client.eventNames().length}
----
-🏫 Serveurs: ${client.guilds.cache.size || 0}
-👥 Utilisateurs: ${client.users.cache.size || 0}
+⚡ Commandes: ${client.appCommands?.size || 0} (${commands.join(", ")})
+📡 Événements: ${client.eventNames().length} (${client.eventNames().join(", ")})
 ==================================`,
       {
         status: "ready",

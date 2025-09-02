@@ -1,4 +1,9 @@
-import { BaseInteraction, Events, MessageFlags } from "discord.js";
+import {
+  BaseInteraction,
+  Events,
+  MessageFlags,
+  TextDisplayBuilder
+} from "discord.js";
 import Event from "../class/Event.js";
 import AppCommand from "../class/AppCommand.js";
 
@@ -28,8 +33,12 @@ export default new Event({
           }
         );
         interaction.reply({
-          content: "Je ne me souviens pas de cette commande !",
-          flags: MessageFlags.Ephemeral
+          components: [
+            new TextDisplayBuilder().setContent(
+              "Je ne me souviens pas de cette commande !"
+            )
+          ],
+          flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
         });
         return;
       }
@@ -51,8 +60,12 @@ export default new Event({
           }
         );
         interaction.reply({
-          content: "Je ne sais pas comment exécuter cette commande !",
-          flags: MessageFlags.Ephemeral
+          components: [
+            new TextDisplayBuilder().setContent(
+              "Je ne sais pas comment exécuter cette commande !"
+            )
+          ],
+          flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
         });
         return;
       }

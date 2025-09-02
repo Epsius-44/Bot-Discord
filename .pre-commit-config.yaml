@@ -8,7 +8,7 @@ repos:
         stages: [pre-commit]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         stages: [pre-commit]
@@ -31,7 +31,7 @@ repos:
         stages: [pre-commit]
 
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: "v9.31.0"
+    rev: "v9.34.0"
     hooks:
       - id: eslint
         files: \.[jt]sx?$

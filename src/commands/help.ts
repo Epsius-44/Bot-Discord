@@ -1,10 +1,10 @@
 import {
   ApplicationCommandOptionType,
-  ComponentType,
   ContainerBuilder,
   InteractionContextType,
   MessageFlags,
   SlashCommandBuilder,
+  TextDisplayBuilder,
   ToAPIApplicationCommandOptions
 } from "discord.js";
 import AppCommand from "../class/AppCommand.js";
@@ -124,14 +124,9 @@ export default new AppCommand({
     // Répondre à l'interaction avec le message formaté
     await interaction.reply({
       components: [
-        new ContainerBuilder({
-          components: [
-            {
-              content: message,
-              type: ComponentType.TextDisplay
-            }
-          ]
-        })
+        new ContainerBuilder().addTextDisplayComponents(
+          new TextDisplayBuilder().setContent(message)
+        )
       ],
       flags: [MessageFlags.Ephemeral, MessageFlags.IsComponentsV2]
     });
