@@ -10,7 +10,7 @@ export default new Event({
       `Le bot est connecté avec discord et est disponible !`,
       {
         status: "ready",
-        category: "client-ready"
+        category: "events-clientReady"
       }
     );
 
@@ -32,7 +32,7 @@ export default new Event({
 ==================================`,
       {
         status: "ready",
-        category: "client-ready"
+        category: "events-clientReady"
       }
     );
   }
