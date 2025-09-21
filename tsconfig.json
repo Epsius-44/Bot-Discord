@@ -13,6 +13,8 @@
     "resolveJsonModule": true,
     "module": "ESNext",
     "moduleResolution": "Node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,

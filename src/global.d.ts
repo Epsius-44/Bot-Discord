@@ -18,6 +18,8 @@ declare global {
       LZL_LOGS_AGGREGATOR_URL: string;
       LZL_LOGS_AGGREGATOR_USER: string;
       LZL_LOGS_AGGREGATOR_PASSWORD: string;
+      MONGO_DB_NAME: string;
+      MONGO_URI: string;
       NODE_ENV: "development" | "production" | "test";
     }
   }

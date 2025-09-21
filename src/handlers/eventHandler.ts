@@ -22,9 +22,12 @@ export default new Handler({
         }
       );
       if (event.once) {
-        client.once(event.name, (...args) => void event.execute(...args));
+        client.once(
+          event.name,
+          (...args) => void event.execute(client, ...args)
+        );
       } else {
-        client.on(event.name, (...args) => void event.execute(...args));
+        client.on(event.name, (...args) => void event.execute(client, ...args));
       }
       client.logManager.logger.debug(`L'évènement ${event.name} est chargé`, {
         status: "starting",

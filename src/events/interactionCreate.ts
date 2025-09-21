@@ -1,5 +1,6 @@
 import {
   BaseInteraction,
+  Client,
   Events,
   MessageFlags,
   TextDisplayBuilder
@@ -11,18 +12,18 @@ export default new Event({
   name: Events.InteractionCreate,
   once: false,
 
-  async execute(interaction: BaseInteraction): Promise<void> {
+  async execute(client: Client, interaction: BaseInteraction): Promise<void> {
     if (interaction.isChatInputCommand()) {
       const command: AppCommand | undefined =
         interaction.client.appCommands.get(interaction.commandName);
 
       // Si la commande n'existe pas, on log l'erreur et on envoie un message d'erreur à l'utilisateur
       if (!command || command === undefined) {
-        interaction.client.logManager.logger.warn(
+        client.logManager.logger.warn(
           `Activation de la commande inconnue \`${interaction.commandName}\` par ${interaction.user.id}`,
           {
             status: "ready",
-            category: "interactionCreate-chatInputCommand",
+            category: "events-interactionCreate-chatInputCommand",
             metadata: {
               interactionType: interaction.type,
               command: interaction.commandName,
@@ -45,11 +46,11 @@ export default new Event({
 
       // Exclure le cas où execute n'est pas défini
       if (!command.execute) {
-        interaction.client.logManager.logger.warn(
+        client.logManager.logger.warn(
           `Activation de la commande sans fonction \`${interaction.commandName}\` par ${interaction.user.id}`,
           {
             status: "ready",
-            category: "interactionCreate-chatInputCommand",
+            category: "events-interactionCreate-chatInputCommand",
             metadata: {
               interactionType: interaction.type,
               command: interaction.commandName,
@@ -69,11 +70,11 @@ export default new Event({
         });
         return;
       }
-      interaction.client.logManager.logger.verbose(
+      client.logManager.logger.verbose(
         `Activation de la commande \`${interaction.commandName}\` par ${interaction.user.id} ! Options: ${JSON.stringify(interaction.options?.data ?? [])}`,
         {
           status: "ready",
-          category: "interactionCreate-chatInputCommand",
+          category: "events-interactionCreate-chatInputCommand",
           metadata: {
             interactionType: interaction.type,
             command: interaction.commandName,
@@ -94,11 +95,11 @@ export default new Event({
         await command.autocomplete(interaction);
       }
     } else
-      interaction.client.logManager.logger.warn(
+      client.logManager.logger.warn(
         `L'interaction ne fait pas partie des types gérés par le bot : ${interaction.type}`,
         {
           status: "ready",
-          category: "interactionCreate",
+          category: "events-interactionCreate",
           metadata: {
             interactionType: interaction.type,
             user: interaction.user.id,
