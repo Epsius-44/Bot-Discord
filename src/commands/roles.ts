@@ -17,29 +17,29 @@ export default new AppCommand({
   async execute(interaction): Promise<void> {
     const actionRow1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder()
-        .setLabel("I1 Cyber")
+        .setLabel("I2 Cyber")
         .setStyle(ButtonStyle.Primary)
         .setCustomId(`role_cyber`),
       new ButtonBuilder()
-        .setLabel("I1 SysOps")
+        .setLabel("I2 SysOps")
         .setStyle(ButtonStyle.Secondary)
         .setCustomId(`role_sysops`),
       new ButtonBuilder()
-        .setLabel("I1 IA")
+        .setLabel("I2 IA")
         .setStyle(ButtonStyle.Primary)
         .setCustomId(`role_ia`)
     );
     const actionRow2 = new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder()
-        .setLabel("I1 DevOps G1")
+        .setLabel("I2 DevOps G1")
         .setStyle(ButtonStyle.Secondary)
         .setCustomId(`role_devops1`),
       new ButtonBuilder()
-        .setLabel("I1 DevOps G2")
+        .setLabel("I2 DevOps G2")
         .setStyle(ButtonStyle.Primary)
         .setCustomId(`role_devops2`),
       new ButtonBuilder()
-        .setLabel("I1 WIS")
+        .setLabel("I2 WIS")
         .setStyle(ButtonStyle.Secondary)
         .setCustomId(`role_wis`)
     );

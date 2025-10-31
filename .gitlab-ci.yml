@@ -50,7 +50,7 @@ tsc-build:
   tags:
     - lzl-infra
   rules:
-    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main_v2'
       when: on_success
     - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
       when: on_success
@@ -74,7 +74,7 @@ docker-preprod:
   rules:
     - if: $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
       when: never
-    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main'
+    - if: $CI_PROJECT_PATH == 'Luzilab/epsinyx/bot-discord' && $CI_COMMIT_BRANCH == 'main_v2'
       when: on_success
   needs:
     - job: tsc-build

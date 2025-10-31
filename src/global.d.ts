@@ -21,6 +21,7 @@ declare global {
       LOGS_AGGREGATOR_USER: string;
       LOGS_AGGREGATOR_PASSWORD: string;
       ROLE_ADMIN_ID: string;
+      ROLE_MODERATOR_ID: string;
     }
   }
   type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
