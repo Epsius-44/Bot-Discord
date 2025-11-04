@@ -94,6 +94,57 @@ export default new Event({
       if (command.autocomplete) {
         await command.autocomplete(interaction);
       }
+    } else if (interaction.isModalSubmit()) {
+      const modal = interaction.client.modals.get(interaction.customId);
+      if (!modal) {
+        client.logManager.logger.warn(
+          `Activation de la modale inconnue \`${interaction.customId}\` par ${interaction.user.id}`,
+          {
+            status: "ready",
+            category: "events-interactionCreate-modalSubmit",
+            metadata: {
+              interactionType: interaction.type,
+              modal: interaction.customId,
+              options: JSON.stringify(interaction.fields),
+              user: interaction.user.id,
+              guild: interaction.guild?.id
+            }
+          }
+        );
+        return;
+      }
+      if (!modal.execute) {
+        client.logManager.logger.warn(
+          `Activation de la modale sans fonction \`${interaction.customId}\` par ${interaction.user.id}`,
+          {
+            status: "ready",
+            category: "events-interactionCreate-modalSubmit",
+            metadata: {
+              interactionType: interaction.type,
+              modal: interaction.customId,
+              options: JSON.stringify(interaction.fields),
+              user: interaction.user.id,
+              guild: interaction.guild?.id
+            }
+          }
+        );
+        return;
+      }
+      client.logManager.logger.verbose(
+        `Activation de la modale \`${interaction.customId}\` par ${interaction.user.id} ! Options: ${JSON.stringify(interaction.fields)}`,
+        {
+          status: "ready",
+          category: "events-interactionCreate-modalSubmit",
+          metadata: {
+            interactionType: interaction.type,
+            modal: interaction.customId,
+            options: JSON.stringify(interaction.fields),
+            user: interaction.user.id,
+            guild: interaction.guild?.id
+          }
+        }
+      );
+      await modal.execute(interaction);
     } else
       client.logManager.logger.warn(
         `L'interaction ne fait pas partie des types gérés par le bot : ${interaction.type}`,

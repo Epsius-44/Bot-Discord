@@ -51,6 +51,10 @@ export default new AppCommand({
       `📦 Version de l'application : \`${packageInfo.version}\``,
       `⚡ Commandes chargées : \`${commandsCount}\`` +
         (commandsCount > 0 ? ` (${commands.join(", ")})` : ""),
+      `📦 Modales chargées : \`${client.modals.size}\`` +
+        (client.modals.size > 0
+          ? ` (${Array.from(client.modals.keys()).join(", ")})`
+          : ""),
       `📡 Évènements chargés : \`${eventsCount}\`` +
         (eventsCount > 0 ? ` (${eventsList.join(", ")})` : "")
     ]

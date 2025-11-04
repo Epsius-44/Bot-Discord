@@ -77,13 +77,14 @@ export default class AppCommand {
           try {
             const command = (
               await import(
-                `../subCommands/${this.data.name}/${
+                `../commands/${this.data.name}/${
                   subCommandGroup ? `${subCommandGroup}/` : ""
                 }${commandName}.js`
               )
             ).default as SubCommand;
             await command.execute(interaction);
           } catch (error: any) {
+            console.error(error);
             await interaction.reply({
               components: [
                 new TextDisplayBuilder().setContent(
@@ -95,7 +96,7 @@ export default class AppCommand {
             interaction.client.logManager.logger.warn(
               `Activation de la commande ${this.data.name} ${
                 subCommandGroup ? `${subCommandGroup}/` : ""
-              } ${commandName} par ${interaction.user.id} avec une erreur : ${error}`,
+              }${commandName} par ${interaction.user.id} avec une erreur : ${error}`,
               {
                 status: "ready",
                 category: "appCommand-subCommand",
@@ -120,7 +121,7 @@ export default class AppCommand {
           try {
             const subCommand = (
               await import(
-                `../subCommands/${this.data.name}/${
+                `../commands/${this.data.name}/${
                   subCommandGroup ? `${subCommandGroup}/` : ""
                 }${subCommandName}.js`
               )

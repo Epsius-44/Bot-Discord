@@ -1,4 +1,4 @@
-import { Client, Events } from "discord.js";
+import { ActivityType, Client, Events } from "discord.js";
 import Event from "../class/Event.js";
 
 export default new Event({
@@ -14,6 +14,11 @@ export default new Event({
       }
     );
 
+    client.user?.setActivity({
+      name: `Use /help | v${process.env.npm_package_version}`,
+      type: ActivityType.Custom
+    });
+
     const commands = client.appCommands
       ? Array.from(client.appCommands.keys())
       : Array.from(client.application?.commands.cache.values() ?? []).map(
@@ -28,6 +33,7 @@ export default new Event({
 ✅ Statut: ${client.ws.status === 0 ? "En ligne" : "Hors ligne"}
 ---
 ⚡ Commandes: ${client.appCommands?.size || 0} (${commands.join(", ")})
+📦 Modales: ${client.modals.size} (${Array.from(client.modals.keys()).join(", ")})
 📡 Événements: ${client.eventNames().length} (${client.eventNames().join(", ")})
 ==================================`,
       {

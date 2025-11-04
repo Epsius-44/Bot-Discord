@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import Handler from "./class/Handler";
 import AppCommand from "./class/AppCommand";
 import LogManager from "./class/LogManager.js";
+import Modal from "./class/Modal";
 
 // Chargement des variables d'environnement depuis le .env
 dotenv.config();
@@ -23,6 +24,7 @@ const client = new Client({
 
 client.logManager = new LogManager();
 client.appCommands = new Collection<string, AppCommand>();
+client.modals = new Collection<string, Modal>();
 
 client.logManager.logger.info("Chargement des gestionnaires...", {
   status: "starting",
