@@ -13,6 +13,7 @@ export default new AppCommand({
     .setName("status")
     .setDescription("Affiche l'état du bot à l'instant T")
     .setContexts([InteractionContextType.Guild]),
+  isPublic: false,
   hasSubCommands: false,
   async execute(interaction): Promise<void> {
     // Récupère des informations sur le bot
@@ -51,7 +52,7 @@ export default new AppCommand({
       `📦 Version de l'application : \`${packageInfo.version}\``,
       `⚡ Commandes chargées : \`${commandsCount}\`` +
         (commandsCount > 0 ? ` (${commands.join(", ")})` : ""),
-      `📦 Modales chargées : \`${client.modals.size}\`` +
+      `🖼️ Modales chargées : \`${client.modals.size}\`` +
         (client.modals.size > 0
           ? ` (${Array.from(client.modals.keys()).join(", ")})`
           : ""),

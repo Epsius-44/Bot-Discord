@@ -33,7 +33,7 @@ export default new Event({
 ✅ Statut: ${client.ws.status === 0 ? "En ligne" : "Hors ligne"}
 ---
 ⚡ Commandes: ${client.appCommands?.size || 0} (${commands.join(", ")})
-📦 Modales: ${client.modals.size} (${Array.from(client.modals.keys()).join(", ")})
+🖼️  Modales: ${client.modals.size} (${Array.from(client.modals.keys()).join(", ")})
 📡 Événements: ${client.eventNames().length} (${client.eventNames().join(", ")})
 ==================================`,
       {

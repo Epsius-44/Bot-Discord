@@ -6,7 +6,8 @@ export default new Handler({
   name: "appCommandHandler",
   folder: `${process.env.APP_PATH}/commands`,
   async execute(client: Client, files: string[]): Promise<void> {
-    const body = [];
+    const publicCommands = [];
+    const privateCommands = [];
 
     client.logManager.logger.info(`Chargement des commandes...`, {
       status: "starting",
@@ -23,10 +24,16 @@ export default new Handler({
           category: `commands-${appCommand.data.name}`
         }
       );
-      body.push(appCommand.data.toJSON());
+      if (appCommand.isPublic === true) {
+        publicCommands.push(appCommand.data.toJSON());
+      } else {
+        privateCommands.push(appCommand.data.toJSON());
+      }
       client.appCommands.set(appCommand.data.name, appCommand);
+
+      const visibility = appCommand.isPublic === true ? "publique" : "privée";
       client.logManager.logger.debug(
-        `La commande ${appCommand.data.name} est chargée`,
+        `La commande ${appCommand.data.name} (${visibility}) est chargée`,
         {
           status: "starting",
           category: `commands-${appCommand.data.name}`
@@ -42,15 +49,42 @@ export default new Handler({
       await rest.put(
         Routes.applicationCommands(process.env.LZL_DISCORD_CLIENT_ID),
         {
-          body: body
+          body: publicCommands
         }
       );
-      client.logManager.logger.info(`Envoie des commandes à Discord...`, {
+      client.logManager.logger.info(
+        `Envoie des commandes publiques à Discord...`,
+        {
+          status: "starting",
+          category: "discord-commands"
+        }
+      );
+    } catch (error: any) {
+      error.message = `Erreur lors de l'envoi des commandes publiques à Discord : ${error.message}`;
+      client.logManager.logger.error(error.message, {
         status: "starting",
         category: "discord-commands"
       });
+    }
+    try {
+      await rest.put(
+        Routes.applicationGuildCommands(
+          process.env.LZL_DISCORD_CLIENT_ID,
+          process.env.LZL_BOT_ADMIN_GUILD_ID
+        ),
+        {
+          body: privateCommands
+        }
+      );
+      client.logManager.logger.info(
+        `Envoie des commandes privées à Discord...`,
+        {
+          status: "starting",
+          category: "discord-commands"
+        }
+      );
     } catch (error: any) {
-      error.message = `Erreur lors de l'envoi des commandes à Discord : ${error.message}`;
+      error.message = `Erreur lors de l'envoi des commandes privées à Discord : ${error.message}`;
       client.logManager.logger.error(error.message, {
         status: "starting",
         category: "discord-commands"
