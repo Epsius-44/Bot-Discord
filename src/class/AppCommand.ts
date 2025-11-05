@@ -20,6 +20,7 @@ export default class AppCommand {
     | ContextMenuCommandBuilder
     | SlashCommandSubcommandsOnlyBuilder;
   hasSubCommands?: boolean;
+  isPublic?: boolean;
   execute?: (interaction: ChatInputCommandInteraction) => Promise<void> | void;
   autocomplete?: (interaction: AutocompleteInteraction) => Promise<void> | void;
 
@@ -27,6 +28,7 @@ export default class AppCommand {
    * @param {{
    *      data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | ContextMenuCommandBuilder | SlashCommandSubcommandsOnlyBuilder
    *      hasSubCommands?: boolean
+   *      isPublic?: boolean
    *      execute?: (interaction: ChatInputCommandInteraction) => Promise<void> | void
    *      autocomplete?: (interaction: AutocompleteInteraction) => Promise<void> | void
    *  }} options
@@ -38,6 +40,7 @@ export default class AppCommand {
       | ContextMenuCommandBuilder
       | SlashCommandSubcommandsOnlyBuilder;
     hasSubCommands?: boolean;
+    isPublic?: boolean;
     execute?: (
       interaction: ChatInputCommandInteraction
     ) => Promise<void> | void;
@@ -164,5 +167,6 @@ export default class AppCommand {
       this.autocomplete = options.autocomplete;
     }
     this.hasSubCommands = options.hasSubCommands ?? false;
+    this.isPublic = options.isPublic ?? true;
   }
 }

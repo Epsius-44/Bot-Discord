@@ -21,6 +21,7 @@ declare global {
       LZL_BOT_CONFIG_ROLE_TEACHER: string;
       LZL_BOT_CONFIG_CATEGORY_TMPCHANNELS: string;
       LZL_BOT_CONFIG_CATEGORY_ARCHIVE: string;
+      LZL_BOT_ADMIN_GUILD_ID: string;
       // Variables spécifiques aux services externes
       LZL_DISCORD_CLIENT_ID: string;
       LZL_DISCORD_TOKEN: string;
