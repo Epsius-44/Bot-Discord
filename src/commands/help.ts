@@ -4,8 +4,7 @@ import {
   InteractionContextType,
   MessageFlags,
   SlashCommandBuilder,
-  TextDisplayBuilder,
-  ToAPIApplicationCommandOptions
+  TextDisplayBuilder
 } from "discord.js";
 import AppCommand from "../class/AppCommand.js";
 
@@ -14,57 +13,69 @@ export interface HelpCommand {
   description: string;
   args?: { name: string; description: string; required: boolean }[];
 }
-
-function getCommands(command: SlashCommandBuilder): HelpCommand[] {
-  //vérifier si la commande possède des sous-commandes (elle possède des sous-commandes si elle possède des options avec la propriété type === 1)
-  const commandJson = command.toJSON();
-  const commandResult: HelpCommand[] = [];
-  //vérifier si la commande possède des sous-commandes
-  if (
-    commandJson.options?.some(
-      (option) => option.type === ApplicationCommandOptionType.Subcommand
-    )
-  ) {
-    //si la commande possède des sous-commandes, on les récupère
-    command.options.forEach((option) => {
-      const subCommand = getSubcommand(option);
-      if (!subCommand) return;
-      subCommand.name = command.name + " " + subCommand.name;
-      commandResult.push(subCommand);
-    });
-  } else {
-    //si la commande ne possède pas de sous-commandes, on la récupère
-    commandResult.push({
-      name: commandJson.name,
-      description: commandJson.description,
-      args: commandJson.options?.map((option) => {
-        return {
-          name: option.name,
-          description: option.description,
-          required: option.required ?? false
-        };
-      })
-    });
-  }
-  return commandResult;
+interface CommandEntry {
+  baseName: string; // root command name
+  path?: string; // subcommand or subgroup/subcommand path
+  description?: string;
+  args?: { name: string; description: string; required: boolean }[];
 }
 
-function getSubcommand(
-  subCommand: ToAPIApplicationCommandOptions
-): HelpCommand | undefined {
-  const subCommandJson = subCommand.toJSON();
-  if (subCommandJson.type !== ApplicationCommandOptionType.Subcommand) return;
-  return {
-    name: subCommandJson.name,
-    description: subCommandJson.description,
-    args: subCommandJson.options?.map((option) => {
-      return {
-        name: option.name,
-        description: option.description,
-        required: option.required ?? false
-      };
-    })
-  };
+function extractEntries(command: SlashCommandBuilder): CommandEntry[] {
+  const json = command.toJSON();
+  const results: CommandEntry[] = [];
+
+  // If there are options, check for subcommand groups or subcommands
+  if (json.options && json.options.length > 0) {
+    // iterate over builder options (some are groups, some are subcommands)
+    command.options.forEach((option) => {
+      const optJson = option.toJSON();
+      // Subcommand group
+      if (optJson.type === ApplicationCommandOptionType.SubcommandGroup) {
+        // optJson.options are the subcommands
+        (optJson.options || []).forEach((sub: any) => {
+          if (sub.type === ApplicationCommandOptionType.Subcommand) {
+            results.push({
+              baseName: json.name,
+              path: `${optJson.name} ${sub.name}`,
+              description: sub.description || json.description,
+              args: (sub.options || []).map((o: any) => ({
+                name: o.name,
+                description: o.description,
+                required: o.required ?? false
+              }))
+            });
+          }
+        });
+      } else if (optJson.type === ApplicationCommandOptionType.Subcommand) {
+        // Direct subcommand
+        results.push({
+          baseName: json.name,
+          path: optJson.name,
+          description: optJson.description || json.description,
+          args: (optJson.options || []).map((o: any) => ({
+            name: o.name,
+            description: o.description,
+            required: o.required ?? false
+          }))
+        });
+      }
+    });
+  }
+
+  // If no subcommands/subgroups found, push the base command itself
+  if (results.length === 0) {
+    results.push({
+      baseName: json.name,
+      description: json.description,
+      args: (json.options || []).map((o: any) => ({
+        name: o.name,
+        description: o.description,
+        required: o.required ?? false
+      }))
+    });
+  }
+
+  return results;
 }
 
 export default new AppCommand({
@@ -83,45 +94,73 @@ export default new AppCommand({
 
   hasSubCommands: false,
   async execute(interaction): Promise<void> {
-    // récupérer les commandes du bot
     const getShowArgs = interaction.options.get("with-args");
     const showArgs = getShowArgs ? (getShowArgs.value as boolean) : false;
-    //récupérer les commandes pour lesquelles l'utilisateur a les permissions nécessaires pour les utiliser
-    const commands = interaction.client.appCommands;
-    // créer un tableau avec les commandes
-    const commandsList: HelpCommand[] = [];
-    commands.forEach((command: { data: SlashCommandBuilder }) => {
-      if (!(command.data instanceof SlashCommandBuilder)) return;
-      commandsList.push(...getCommands(command.data));
-    });
-    //trier les commandes par ordre alphabétique
-    commandsList.sort((a, b) => {
-      return a.name.localeCompare(b.name);
+
+    const isAdminGuild =
+      !!interaction.guild &&
+      interaction.guild.id === process.env.LZL_BOT_ADMIN_GUILD_ID;
+
+    // Build entries from registered AppCommand definitions
+    const entries: CommandEntry[] = [];
+    interaction.client.appCommands.forEach((appCommand: AppCommand) => {
+      if (!(appCommand.data instanceof SlashCommandBuilder)) return;
+      // Skip private commands unless we're in admin guild
+      if (appCommand.isPublic === false && !isAdminGuild) return;
+      entries.push(...extractEntries(appCommand.data));
     });
 
-    // Construction du message de réponse
+    // Fetch registered commands to get IDs for mentions
+    const globalCommands = interaction.client.application?.commands
+      ? await interaction.client.application.commands.fetch()
+      : undefined;
+    const guildCommands = interaction.guild
+      ? await interaction.guild.commands.fetch()
+      : undefined;
+
+    // Sort entries
+    entries.sort((a, b) => {
+      const na = `${a.baseName} ${a.path ?? ""}`.trim();
+      const nb = `${b.baseName} ${b.path ?? ""}`.trim();
+      return na.localeCompare(nb);
+    });
+
+    // Build message
     let message =
       "## Liste des commandes utilisables\nVoici la liste des commandes disponibles sur le bot auquel vous avez accès :";
-    commandsList.forEach((command) => {
-      message += `\n- \`${command.name}\` ${command.description}`;
-      if (showArgs && command.args) {
-        if (command.args.length != 0) {
-          message += "\n  Arguments :";
-        }
-        command.args.forEach((arg) => {
-          message += `\n  - __**${arg.name}** (${arg.required ? ":exclamation:" : ":grey_question:"})__ : ${arg.description}`;
-        });
-      }
-    });
-    if (commandsList.length === 0) {
+
+    if (entries.length === 0) {
       message += "\nAucune commande n'est disponible.";
     }
-    if (showArgs) {
-      message +=
-        "\n-# **Légende :** :exclamation: = obligatoire, :grey_question: = optionnel";
+
+    for (const entry of entries) {
+      // Prefer guild command id (for admin/private commands), otherwise global
+      const registered =
+        (guildCommands &&
+          guildCommands.find((c) => c.name === entry.baseName)) ||
+        (globalCommands &&
+          globalCommands.find((c) => c.name === entry.baseName));
+
+      const label = entry.path
+        ? `${entry.baseName} ${entry.path}`
+        : entry.baseName;
+      const mention = registered
+        ? `</${label}:${registered.id}>`
+        : `\`${label}\``;
+
+      message += `\n${mention} : ${entry.description ?? ""}`;
+
+      if (showArgs && entry.args && entry.args.length > 0) {
+        entry.args.forEach((arg) => {
+          message += `\n- ${arg.name} (${arg.required ? "❗" : "❔"}) : ${arg.description}`;
+        });
+      }
     }
 
-    // Répondre à l'interaction avec le message formaté
+    if (showArgs) {
+      message += "\n\nLégende : (❗) = obligatoire, (❔) = optionnel";
+    }
+
     await interaction.reply({
       components: [
         new ContainerBuilder().addTextDisplayComponents(
