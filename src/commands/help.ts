@@ -158,7 +158,7 @@ export default new AppCommand({
     }
 
     if (showArgs) {
-      message += "\n\nLégende : (❗) = obligatoire, (❔) = optionnel";
+      message += "\n\n-# Légende : (❗) = obligatoire, (❔) = optionnel";
     }
 
     await interaction.reply({

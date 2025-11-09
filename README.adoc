@@ -12,10 +12,62 @@ endif::[]
 
 WARNING: Projet au début de son développement, suite au refactor complet du code pour la version 3.
 
-== Installation
+== Contribuer au développement du bot {org}
 
-Pour installer le projet, il faut d'abord cloner le dépôt et installer les dépendances.
+=== Prérequis
 
-> git clone {repo} +
-> cd bot-discord +
-> npm install
+Avant de commencer, assurez-vous d'avoir installé les outils suivants sur votre machine :
+- Node.js (version 22 ou supérieure)
+- pnpm
+- Git
+- pre-commit
+
+Il vous faudra également un compte Discord, une application Discord et les permissions nécessaires pour ajouter un bot à un serveur Discord.
+
+=== Installation
+
+Pour initialiser le projet en local, commencez par cloner le dépôt Git et installer les dépendances avec pnpm :
+
+[source, shell, subs="attributes"]
+----
+# Cloner le dépôt
+git clone {repo}
+cd bot-discord
+# Installer les dépendances
+pnpm install
+# Initialiser les hooks pre-commit
+pre-commit install
+pre-commit install-hooks
+----
+
+=== Configuration des variables d'environnement
+
+Ensuite, il faut créer un fichier `.env` à la racine du projet avec les variables d'environnement nécessaires. Vous pouvez vous baser sur le fichier `.env.example` fourni.
+
+[source, bash]
+----
+cp .env.example .env
+vim .env
+----
+
+Remplissez les variables d'environnement dans le fichier `.env` avec les valeurs appropriées pour votre configuration.
+
+=== Lancement du bot
+
+Pour lancer le bot en mode développement, utilisez la commande suivante :
+
+[source, bash]
+----
+# Lancer le projet avec une compilation en continue
+pnpm start
+----
+
+Pour lancer le bot en mode production, utilisez la commande suivante :
+
+[source, bash]
+----
+# Compiler le projet
+pnpm build
+# Lancer le projet compilé
+NODE_ENV=production pnpm serve
+----
